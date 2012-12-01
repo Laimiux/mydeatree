@@ -4,16 +4,16 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-<h1> Ideas:</h1>
+<h1> Ideas</h1>
 {% load ideas_extra %}
 {% top_ideas parent_idea %}
 
 {% else %}
 
 <div class="well">
-	<h1>Welcome to Mydea!</h1>
+	<h1>Welcome to MydeaTree!</h1>
 	<p>
-		Welcome to Mydea! You ever wanted to keep track of all your awesome ideas? Well
+		You ever wanted to keep track of all your awesome ideas? Well
 		look no more. Sign up and enjoy!
 	</p>
 </div>
