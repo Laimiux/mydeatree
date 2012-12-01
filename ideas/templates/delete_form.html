@@ -1,0 +1,9 @@
+{% extends "base_login.html" %}
+
+{% block content %}
+	<form action='' method="post">{% csrf_token %}
+       	<p> {{ idea.title }} -- {{ idea.text }}</p>
+       	<p> Are you sure you want to delete it and all it's children?</p>
+        <input type="submit" value="Delete">
+    </form>
+{% endblock %}

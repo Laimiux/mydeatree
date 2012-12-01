@@ -1,0 +1,27 @@
+{% if idea_list %}
+<div id="idea_list">
+	<table>
+		<tr>
+			<th>Title</th>
+			<th>Description</th>
+			<th>Category </th>
+			<th>Options</th>
+		</tr>
+
+		{% for idea in idea_list %}
+		<tr>
+			<td><a href="{{ idea.get_absolute_url }}">{{ idea.title }} </a></td>
+			<td> {{idea.text}} </td>
+			<td>{% if idea.category %} {{ idea.category }} {% else %} None {% endif %}</td>
+			<td><a href="{{ idea.get_add_url }}">Add</a> -- <a href="{{ idea.get_del_url }}">Delete</a> -- <a href="{{ idea.get_edit_url }}">Edit</a></td>
+		</tr>
+
+		{% endfor %}
+
+	</table>
+</div>
+{% else %}
+Currently you have not added any ideas.
+
+{% endif %}
+

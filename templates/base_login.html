@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block extra-header %}
+<div id="login_class">
+	{% if user.is_authenticated %}
+	You are logged in, {{ user }}.
+	<br>
+	<a href="/accounts/logout">Logout</a>
+	<br>
+	{% include "includes/nav.html" %}
+	{% else %}
+	{% include "includes/header_login.html" %}
+	{% endif %}
+
+</div>
+{% endblock %}

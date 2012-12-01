@@ -1,0 +1,23 @@
+{% extends "base_login.html" %}
+{% block title %}Register for an account{% endblock %}
+
+
+{% block content %}
+{% if user.is_authenticated %}
+	<p> You are already logged in! <a href="/"> Return Home</a> </p>
+{% else %}
+<div id="login_section">
+	<h1>Sign Up</h1>
+	<table>
+		<form method='post' action=''>
+			{% csrf_token %}
+			{{ form }}
+			<tr>
+				<td></td><td>
+				<input type="submit" value="Sign Up" />
+				</td>
+		</form>
+	</table>
+</div>
+{% endif %}
+{% endblock %}

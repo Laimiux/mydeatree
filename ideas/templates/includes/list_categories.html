@@ -1,0 +1,21 @@
+{% if categories %}
+<div id="categories_list">
+	<table>
+		<tr>
+			<th>Name</th>
+			<th>Options</th>
+		</tr>
+
+		{% for category in categories %}
+		<tr>
+			<td>{{ category.name }}</td>
+
+			<td><a href="#">Ideas</a> -- <a href="{{ category.get_del_url }}">Delete</a> </td>
+		</tr>
+		{% endfor %}
+
+	</table>
+</div>
+{% else %}
+Currently you haven't created any categories.
+{% endif %}

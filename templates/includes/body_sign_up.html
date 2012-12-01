@@ -1,0 +1,19 @@
+{% if form.errors %}
+<p class="errors">
+	Please correct the errors below: {{ form.non_field_errors }}
+</p>
+{% endif %}
+
+<h1>Create an account</h1>
+
+<form method="post" action="{% url registration_register %}">
+    {% csrf_token %}
+    <p><label for="id_username">Username:</label> <input id="id_username" type="text" name="username" maxlength="30" /></p>
+    <p><label for="id_password">Email Address:</label> <input id="id_email" type="email" name="email"/></p>
+    <p><label for="id_password">Password:</label> <input type="password" name="password1" id="id_password1" /></p>
+    <p><label for="id_password">Password(Re-enter):</label> <input type="password" name="password2" id="id_password2" /></p>
+
+    <input type="submit" value="Sign Up" />
+    <input type="hidden" name="next" value="" />
+</form>
+

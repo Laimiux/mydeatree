@@ -1,0 +1,28 @@
+{% extends 'base_login.html' %}
+{% block title %}Ideas{% endblock %}
+
+{% block content %}
+
+<p>
+	Top idea -- {{ parent_idea.title }}
+	<br>
+	{{ parent_idea.text }}
+</p>
+
+<div class="display_ideas">
+	{% include "includes/list_ideas.html" %}
+</div>
+
+<p>
+	<a href="{{ parent_idea.get_add_url }}">Add</a> -- 
+	<a href="{{ parent_idea.get_edit_url }}">Edit</a> --
+	<a href=" {{ parent_idea.get_del_url }} ">Delete</a> -- 
+		{% if parent_idea.parent %}
+		<a href="{{ parent_idea.parent.get_absolute_url }}"> Previous</a> 
+	{% else %}
+		<a href="/"> See all ideas</a> 
+
+	{% endif %}
+</p>
+
+{% endblock %}

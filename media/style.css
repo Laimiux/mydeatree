@@ -1,0 +1,158 @@
+/* For basic layout */
+body {
+	font-family: georgia;
+}
+
+.main_body {
+	text-align: center;
+	border: 1px solid black;
+	margin-bottom: 1em;
+	padding: 2em;
+}
+.container {
+	width: 80%;
+}
+
+.header {
+	margin-bottom: 1em;
+	border: 1px solid black;
+}
+
+.header_login {
+	text-align: center;
+	padding: 1em;
+}
+
+.categories table {
+	border: none;
+	border-collapse: collapse;
+}
+
+.body_sign_up {
+
+}
+
+.footer {
+	border: 1px solid black;
+	text-align: center;
+}
+
+.display_ideas {
+	text-align: center;
+}
+
+/* includes/nav.html */
+#nav table {
+	border-collapse: collapse;
+	width: 100%;
+	border: 1px solid black;
+}
+
+#nav th {
+	background-color: green;
+	color: white;
+	height: 50px;
+}
+
+#nav a:link {
+	color: white;
+	text-decoration: none;
+}
+#nav a:visited {
+	color: white;
+}
+#nav a:hover {
+	color: black;
+}
+#nav a:active {
+	color: red;
+}/* selected link */
+
+/* includes/list_ideas.html */
+#idea_list table, th, td {
+	border: 1px solid black;
+}
+
+#idea_list table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+#idea_list th {
+	background-color: green;
+	color: white;
+	height: 50px;
+}
+
+#idea_list td {
+	padding: 5px;
+}
+
+/* login form */
+#login_section table {
+	margin-left: auto;
+	margin-right: auto;
+}
+#login_section table td {
+	border: 0;
+	padding: 4px;
+}
+#login_section table tr {
+	border: 0;
+	padding: 4px;
+}
+
+#login_section table th {
+	border: 0;
+	padding: 4px;
+}
+
+/* includes/list_categories.html */
+#categories_list table, th, td {
+	border: 1px solid black;
+}
+
+#categories_list table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+#categories_list th {
+	background-color: green;
+	color: white;
+	height: 50px;
+}
+
+#categories_list td {
+	padding: 5px;
+}
+
+#login_class {
+	text-align: center;
+}
+
+/* Registration fields */
+.field {
+	padding: 2px;
+}
+
+/* registration_form */
+.registration_form {
+	border: 1px solid red;
+	margin-bottom: 1em;
+	padding-bottom: 1em;
+}
+
+/* note_detail.html */
+ul.errorlist {
+	margin: 0;
+	padding: 0;
+}
+.errorlist li {
+	background-color: red;
+	color: white;
+	display: block;
+	font-size: 10px;
+	margin: 0 0 3px;
+	padding: 4px 5px;
+}
