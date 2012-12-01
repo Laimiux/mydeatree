@@ -67,7 +67,7 @@ DEFAULT_FROM_EMAIL = 'limeblaststudios@gmail.com'
 SERVER_EMAIL = 'limeblaststudios@gmail.com'
 
 # For the static files
-STATIC_ROOT = "static"
+STATIC_ROOT = os.path.join(ROOT_PATH, "static/")
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(ROOT_PATH, 'media')
@@ -81,6 +81,13 @@ TEMPLATE_DIRS = (os.path.join(ROOT_PATH, 'templates'),)
 
 ROOT_URLCONF = 'urls'
 
+BOOTSTRAP_BASE_URL      = MEDIA_URL + '/bootstrap/'
+BOOTSTRAP_CSS_BASE_URL  = BOOTSTRAP_BASE_URL + 'css/'
+BOOTSTRAP_CSS_URL       = BOOTSTRAP_CSS_BASE_URL + 'bootstrap.css'
+BOOTSTRAP_JS_BASE_URL   = BOOTSTRAP_BASE_URL + 'js/'
+
+# Enable for single bootstrap.js file
+BOOTSTRAP_JS_URL        = BOOTSTRAP_JS_BASE_URL + 'bootstrap.js'
 
 # For Production
 # Comment out for debug
