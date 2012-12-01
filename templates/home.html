@@ -1,41 +1,33 @@
 {% extends 'base_login.html' %}
 {% block title %}Welcome{% endblock %}
-{% block preload_js %}
-
-<script type="text/javascript">
-	// we will add our javascript code here
-	//	$(document).ready(function() {
-	// do stuff when DOM is ready
-	//		$("a").click(function() {
-	//			alert("Hello world!");
-	//		});
-	//	});
-</script>
-
-{% endblock %}
-
-
-
 
 {% block content %}
 
-	{% if user.is_authenticated %}
-	<h1> Ideas:</h1>
-	{% load ideas_extra %}
-	{% top_ideas parent_idea %}
+{% if user.is_authenticated %}
+<h1> Ideas:</h1>
+{% load ideas_extra %}
+{% top_ideas parent_idea %}
 
-	{% else %}
-	<div class="welcome_text">
+{% else %}
+
+<div class="well">
 	<h1>Welcome to Mydea!</h1>
-		<p>
-			Welcome to Mydea! You ever wanted to keep track of all your awesome ideas? Well
-			<br>
-			look no more. Sign up and enjoy!
-		</p>
-	</div>
-	<div class="body_sign_up">
+	<p>
+		Welcome to Mydea! You ever wanted to keep track of all your awesome ideas? Well
+		look no more. Sign up and enjoy!
+	</p>
+</div>
+
+<div class="row">
+	<div class="span5">
 		{% include "includes/body_sign_up.html" %}
 	</div>
-	{% endif %}
+
+	<div class="span4">
+		{% include "includes/header_login.html" %}
+	</div>
+</div>
+
+{% endif %}
 
 {% endblock %}

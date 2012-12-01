@@ -1,4 +1,4 @@
-{% extends "registration/registration_base.html" %}
+{% extends "base_login.html" %}
 {% block title %}Login{% endblock %}
 {% block content %}
 
@@ -22,7 +22,7 @@
 </table>
 <p><a href="{% url auth_password_reset %}">Forgot</a> your password?  <a href="{% url registration_register %}">Need an account</a>?</p>
 
-<input type="submit" value="login" />
+<button type="submit" class="btn btn-primary">Sign In</button>
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 

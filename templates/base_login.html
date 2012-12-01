@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
 
 {% block extra-header %}
-<div id="login_class">
 	{% if user.is_authenticated %}
 	{% include "includes/nav_in.html" %}
-	<br>
-	You are logged in, {{ user }}.
-	<br>
+	<p style="text-align: center;">You are logged in, {{ user }}.</p>
+
 
 	{% else %}
-	{% include "includes/header_login.html" %}
+	{% include "includes/nav_out.html" %}
 	{% endif %}
+	
+{% endblock %}
 
-</div>
+{% block content %}
+
 {% endblock %}

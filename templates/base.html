@@ -2,14 +2,23 @@
 {% load bootstrap_toolkit %}
 <html lang="en">
 	<head>
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<meta name="author" content="Laimonas Turauskas">
+		
 		<title>{% block title %}{% endblock %} - MydeaTree</title>
-		<!--<link rel="stylesheet" href="/media/style.css"> -->
 
+		<style type="text/css">
+			body {
+				padding-top: 60px;
+			}
+		</style>
 		{% bootstrap_stylesheet_tag %}
 
-		<script type="text/javascript" src="media/jquery-1.8.3.min.js"></script>
+		{% bootstrap_javascript_tag "dropdown" %}
 
-		{% bootstrap_javascript_tag "dropdown" %} 
+		<!--<script type="text/javascript" src="media/jquery-1.8.3.min.js"></script>-->
+
 		{% block css %}
 		{% endblock %}
 
@@ -21,54 +30,29 @@
 	</head>
 
 	<body>
-		
-		
-		<div id="header" class="header">
-			<a id="logo" href="/">Mydea</a>
 
-			{% block extra-header %}
+		{% block extra-header %}
 
-			{% endblock %}
-		</div>
-
-		<div class="columns">
-			<div id="content" class="column">
-				{% block content-header %}
-				{% if error %}
-				<div class="error">
-					{{ error }}
-				</div>
-				{% endif %}
-				{% if info %}
-				<div class="info">
-					{{ info }}
-				</div>{% endif %}
-				{% if messages %}
-				{% for message in messages %}
-				<div class="info">
-					{{ message }}
-				</div>
-				{% endfor %}
-				{% endif %}
-				{% endblock %}
-				<div class="main_body">
-					{% block content %}{% endblock %}
-				</div>
-			</div>
-
-			<div id="sidebar" class="column">
-				{% block sidebar %}
-				{% endblock %}
-			</div>
-		</div>
-
-		<div id="footer" class="footer">
-			<p>
-				Developed by Zygura
-			</p>
-		</div>
-
-		{% block js %}
 		{% endblock %}
+
+		<div class="container">
+
+			{% block content %}Empty page{% endblock %}
+
+			<p>
+				<hr>
+			</p>
+			<footer class="row">
+				<div style="text-align:center">
+					<p>
+						&copy; <a href="http://www.zygura.com">Zygura</a> 2012
+					</p>
+				</div>
+			</footer>
+
+			{% block js %}
+			{% endblock %}
+
+		</div>
 	</body>
 </html>

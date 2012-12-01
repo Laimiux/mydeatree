@@ -4,18 +4,16 @@
 </p>
 {% endif %}
 
-<h1>Create an account</h1>
-{% load bootstrap_toolkit %}
+<h2>Create an account</h2>
 
 <form method="post" action="{% url registration_register %}">
     {% csrf_token %}
-    {{ form|as_bootstrap }}
     <p><label for="id_username">Username:</label> <input id="id_username" type="text" name="username" maxlength="30" /></p>
     <p><label for="id_password">Email Address:</label> <input id="id_email" type="email" name="email"/></p>
     <p><label for="id_password">Password:</label> <input type="password" name="password1" id="id_password1" /></p>
     <p><label for="id_password">Password(Re-enter):</label> <input type="password" name="password2" id="id_password2" /></p>
 
-    <input type="submit" value="Sign Up" />
+	<button type="submit" class="btn btn-primary">Sign Up</button>
     <input type="hidden" name="next" value="" />
 </form>
 
