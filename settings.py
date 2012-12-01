@@ -25,7 +25,7 @@ INSTALLED_APPS = (
     'dbindexer',
     'about',
     'ideas',
-    'crispy_forms',
+    'bootstrap_toolkit',
     'contactus',
     'tastypie',
     'djangotoolbox',
