@@ -13,7 +13,17 @@
 			<td><a href="{{ idea.get_absolute_url }}">{{ idea.title }} </a></td>
 			<td> {{idea.text}} </td>
 			<td>{% if idea.category %} {{ idea.category }} {% else %} None {% endif %}</td>
-			<td><a href="{{ idea.get_add_url }}">Add</a> -- <a href="{{ idea.get_del_url }}">Delete</a> -- <a href="{{ idea.get_edit_url }}">Edit</a></td>
+
+			<td>
+			<button class="btn btn-primary" onclick="location.href='{{ idea.get_add_url }}';">
+				New
+			</button>
+			<button class="btn btn-danger" onclick="location.href='{{ idea.get_del_url }}';">
+				Delete
+			</button>
+			<button class="btn btn-success" onclick="location.href='{{ idea.get_edit_url }}';">
+				Edit
+			</button></td>
 		</tr>
 
 		{% endfor %}
