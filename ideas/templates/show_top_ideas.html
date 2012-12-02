@@ -13,8 +13,10 @@
 <div class="display_ideas">
 {% include "includes/list_ideas.html" %}
 </div>
+<p style="text-align: center;">
 {% if parent_idea %}
-	<p><a href="{{ parent_idea.get_add_url }}">Add Idea</a></p>
+	<a href="{{ parent_idea.get_add_url }}">Add Idea</a>
 {% else %}
-	<p><a href="/new/">Add Idea</a></p>
+	<a href="/new/">Add Idea</a>
 {% endif %}
+</p>

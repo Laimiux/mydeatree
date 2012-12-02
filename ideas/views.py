@@ -29,13 +29,14 @@ def custom_proc(request):
     
 def new_idea(request):
     if request.method == 'POST':
-        form = IdeaForm(request.POST)
+        form = IdeaForm(request.POST,user=request.user)
         if form.is_valid():
             cd = form.cleaned_data
             idea = Idea.objects.create(owner=request.user, title=cd['title'], text=cd['text'], category=cd['category'])
             return HttpResponseRedirect('/')
     else:
-        form = IdeaForm(initial={'title': 'I love your site!', 'text' : 'Sample idea!'})
+        form = IdeaForm(initial={'title': 'I love your site!', 'text' : 'Sample idea!'},user=request.user)
+        
         
     return render_to_response('idea_form.html', { 'form': form }, context_instance=RequestContext(request))
 
@@ -45,13 +46,13 @@ def new_children_idea(request, id):
      parent_idea = get_object_or_404(Idea, id=object_id)
 
      if request.method == 'POST':
-        form = IdeaForm(request.POST)
+        form = IdeaForm(request.POST, user=request.user)
         if form.is_valid():
             cd = form.cleaned_data
             idea = Idea.objects.create(owner=request.user, title=cd['title'], text=cd['text'], category=cd['category'], parent=parent_idea)
             return HttpResponseRedirect(parent_idea.get_absolute_url())
      else:
-        form = IdeaForm(
+        form = IdeaForm(user=request.user,
             initial={'title': 'I love your site!', 'text' : 'Sample idea!'})
         
      return render_to_response('idea_form.html', { 'form': form }, context_instance=RequestContext(request))

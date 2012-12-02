@@ -6,6 +6,14 @@ class IdeaForm(forms.Form):
     text = forms.CharField(max_length=140, widget=forms.Textarea)
     category = forms.ModelChoiceField(queryset=Category.objects.all(), required=False)
     
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user")        
+        super(IdeaForm, self).__init__(*args, **kwargs)
+        
+        if user:
+            self.fields['category'].queryset = Category.objects.filter(owner=user)
+        
+        
     def clean_text(self):
         text = self.cleaned_data['text']
         num_words = len(text.split())
