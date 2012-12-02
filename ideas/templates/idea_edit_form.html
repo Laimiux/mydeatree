@@ -1,30 +1,21 @@
 {% extends "base_login.html" %}
 {% block title %}New Idea{% endblock %}
 {% block content %}
-<div class="field{% if form.message.errors %} errors{% endif %}">
-	{% if form.message.errors %}
-	<ul>
-		{% for error in form.message.errors %}
-		<li>
-			<strong>{{ error }}</strong>
-		</li>
-		{% endfor %}
-	</ul>
-	{% endif %}
-	{{ form.message }}
-</div>
 
 {% load bootstrap_toolkit %}
+<div class="well">
+	<h1>Editing an Idea</h1>
+	<form action="" method="post">
+		{% csrf_token %}
+		{{ form|as_bootstrap }}
+		<div class="submit">
+			<p>
+				<button type="submit" class="btn btn-primary">
+					Save Idea
+				</button>
+			</p>
+		</div>
 
-<form action="" method="post">
-	{% csrf_token %}
-	{{ form|as_bootstrap }}
-	<div class="submit">
-		<p>
-			<button type="submit" class="btn btn-primary">Save Idea</button>
-		</p>
-	</div>
-
-</form>
-
+	</form>
+</div>
 {% endblock %}

@@ -38,15 +38,15 @@ def new_idea(request):
         form = IdeaForm(initial={'title': 'I love your site!', 'text' : 'Sample idea!'},user=request.user)
         
         
-    return render_to_response('idea_form.html', { 'form': form }, context_instance=RequestContext(request))
+    return render_to_response('idea_form_top.html', { 'form': form }, context_instance=RequestContext(request))
 
 def new_children_idea(request, id):
      object_id = convert_to_int(id)
 
-     parent_idea = get_object_or_404(Idea, id=object_id)
+     parent_idea = get_object_or_404(Idea, id=object_id, owner=request.user)
 
      if request.method == 'POST':
-        form = IdeaForm(request.POST, user=request.user)
+        form = IdeaForm(request.POST, owner=request.user)
         if form.is_valid():
             cd = form.cleaned_data
             idea = Idea.objects.create(owner=request.user, title=cd['title'], text=cd['text'], category=cd['category'], parent=parent_idea)
@@ -55,22 +55,22 @@ def new_children_idea(request, id):
         form = IdeaForm(user=request.user,
             initial={'title': 'I love your site!', 'text' : 'Sample idea!'})
         
-     return render_to_response('idea_form.html', { 'form': form }, context_instance=RequestContext(request))
+     return render_to_response('idea_form.html', { 'form': form, 'parent_idea': parent_idea }, context_instance=RequestContext(request))
 
 def show_idea(request, id):
     current_user = request.user
     object_id = convert_to_int(id)      
-    parent_idea = get_object_or_404(Idea, id=object_id)
+    parent_idea = get_object_or_404(Idea, id=object_id, owner=request.user)
     children_ideas = parent_idea.idea_set.all()
     return render_to_response('show_children_ideas.html', {'user_name' : current_user, 'parent_idea' : parent_idea, 'idea_list' : children_ideas}, context_instance=RequestContext(request))
 
 
 def edit_idea(request, id):
     object_id = convert_to_int(id)
-    idea = get_object_or_404(Idea, id=object_id)
+    idea = get_object_or_404(Idea, id=object_id, owner=request.user)
     
     if request.method == 'POST':
-        form = IdeaForm(request.POST, user=request.user)
+        form = IdeaForm(request.POST, owner=request.user)
         if form.is_valid():
             cd = form.cleaned_data
             idea.title = cd['title']
@@ -87,7 +87,7 @@ def edit_idea(request, id):
 
 def delete_idea(request, id):
     object_id = convert_to_int(id)
-    idea_to_be_deleted = get_object_or_404(Idea, id=object_id)
+    idea_to_be_deleted = get_object_or_404(Idea, id=object_id, owner=request.user)
     
     if request.method == "POST":
         if idea_to_be_deleted.parent is not None:
@@ -129,7 +129,7 @@ def show_categories(request):
 
 def delete_category(request, id):
     object_id = convert_to_int(id)
-    category_to_be_del = get_object_or_404(Category, id=object_id)
+    category_to_be_del = get_object_or_404(Category, id=object_id, owner=request.user)
     
     if request.method == "POST":        
         category_to_be_del.delete()     

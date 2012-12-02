@@ -3,48 +3,24 @@
 {% block content %}
 
 <div class="well">
-	<h1>Create New Idea</h1>
-	<p>Express yourself in 140 characters or less.</p>
-</div>
-<div class="field{% if form.message.errors %} errors{% endif %}">
-	{% if form.message.errors %}
-	<ul>
-		{% for error in form.message.errors %}
-		<li>
-			<strong>{{ error }}</strong>
-		</li>
-		{% endfor %}
-	</ul>
-	{% endif %}
-	{{ form.message }}
-</div>
-{% load bootstrap_toolkit %}
+	<h1>Adding idea to "{{ parent_idea.title }}"</h1>
+	<p>{{ parent_idea.text }}</p>
 
-<form action="" method="post">
-	{% csrf_token %}
-	{{ form|as_bootstrap }}
-	<!--
-	<div class="field">
-		{{ form.title.errors }}
-		<label for="id_title">Title:</label>
-		{{ form.title }}
-	</div>
-	<div class="field">
-		{{ form.text.errors }}
-		<label for="id_message">Text:</label>
-		{{ form.text }}
-	</div>
-	<div class="field">
-		<label for="id_category">Category:</label>
-		{{ form.category }}
-	</div>
-	-->
-	<div class="submit">
-		<p>
-			<button type="submit" class="btn btn-primary">New Idea</button>
-		</p>
-	</div>
-	
-</form>
 
+	{% load bootstrap_toolkit %}
+
+	<form action="" method="post">
+		{% csrf_token %}
+		{{ form|as_bootstrap }}
+
+		<div class="submit">
+			<p>
+				<button type="submit" class="btn btn-primary">
+					New Idea
+				</button>
+			</p>
+		</div>
+
+	</form>
+</div>
 {% endblock %}
