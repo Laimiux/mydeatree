@@ -46,7 +46,7 @@ def new_children_idea(request, id):
      parent_idea = get_object_or_404(Idea, id=object_id, owner=request.user)
 
      if request.method == 'POST':
-        form = IdeaForm(request.POST, owner=request.user)
+        form = IdeaForm(request.POST, user=request.user)
         if form.is_valid():
             cd = form.cleaned_data
             idea = Idea.objects.create(owner=request.user, title=cd['title'], text=cd['text'], category=cd['category'], parent=parent_idea)
@@ -70,7 +70,7 @@ def edit_idea(request, id):
     idea = get_object_or_404(Idea, id=object_id, owner=request.user)
     
     if request.method == 'POST':
-        form = IdeaForm(request.POST, owner=request.user)
+        form = IdeaForm(request.POST, user=request.user)
         if form.is_valid():
             cd = form.cleaned_data
             idea.title = cd['title']
