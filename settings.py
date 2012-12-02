@@ -94,7 +94,7 @@ BOOTSTRAP_JS_URL        = BOOTSTRAP_JS_BASE_URL + 'bootstrap.js'
 #EMAIL_BACKEND = 'appengine_emailbackend.EmailBackend'
 EMAIL_BACKEND = 'appengine_emailbackend.async.EmailBackend'
 
-#DEBUG = TEMPLATE_DEBUG = False
+DEBUG = TEMPLATE_DEBUG = False
 
 ADMINS = (
     ('Laimonas Turauskas', 'laimiux@gmail.com'),

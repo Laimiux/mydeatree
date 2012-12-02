@@ -70,7 +70,7 @@ def edit_idea(request, id):
     idea = get_object_or_404(Idea, id=object_id)
     
     if request.method == 'POST':
-        form = IdeaForm(request.POST)
+        form = IdeaForm(request.POST, user=request.user)
         if form.is_valid():
             cd = form.cleaned_data
             idea.title = cd['title']
@@ -79,7 +79,7 @@ def edit_idea(request, id):
             idea.save()
             return HttpResponseRedirect(idea.get_absolute_url())
     else:
-        form = IdeaForm(initial={'title':  idea.title, 'text' : idea.text, 'category' : idea.category})
+        form = IdeaForm(initial={'title':  idea.title, 'text' : idea.text, 'category' : idea.category}, user=request.user)
         
     return render_to_response('idea_edit_form.html', { 'form': form }, context_instance=RequestContext(request))
 
