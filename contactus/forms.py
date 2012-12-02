@@ -5,5 +5,5 @@ from django.forms.widgets import *
 class ContactForm(forms.Form):
     name = forms.CharField()
     email = forms.EmailField()
-    topic = forms.CharField()
+    topic = forms.CharField(max_length=30)
     message = forms.CharField(widget=Textarea())

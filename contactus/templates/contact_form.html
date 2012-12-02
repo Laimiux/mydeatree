@@ -2,32 +2,19 @@
 {% block title %} Contact Us {% endblock %}
 
 {% block content %}
-<div id="well">
-	<form name="theform" action="." method="post" id="theform">
+{% load bootstrap_toolkit %}
+<div class="well">
+	<h1>Contact Us</h1>
+	<form action="" method="post">
 		{% csrf_token %}
-
-		<div id="name_email">
-			<div class="field">
-				<label id="id_name">Name:</label>
-				{{ form.name }}
-			</div>
-			<div class="field">
-				<label id="id_email">Email:</label>
-				{{ form.email }}
-			</div>
-		</div><!-- end name_email -->
-		<div id="message">
-			<div class="field">
-				<label id="id_message">Message:</label>
-				{{ form.message }}
-			</div>
-		</div><!-- end message -->
+		{{ form|as_bootstrap }}
+		
 		<div class="submit">
 			<p>
 				<button type="submit" class="btn btn-primary">Contact Us</button>
 			</p>
 		</div>
-		<input class="hidden" type="hidden" name="topic" value="Contact Submission from {{ site.domain }}" id="subject" />
+		<!--<input class="hidden" type="hidden" name="topic" value="Contact Submission from {{ site.domain }}" id="subject" />-->
 	</form>
 </div><!-- end contact -->
 

@@ -10,7 +10,15 @@
 		<tr>
 			<td>{{ category.name }}</td>
 
-			<td><a href="#">Ideas</a> -- <a href="{{ category.get_del_url }}">Delete</a> </td>
+			<td>
+			<div class="btn-group">
+				<button class="btn btn-info" onclick="location.href='#';">
+					Ideas
+				</button>
+				<button class="btn btn-danger" onclick="location.href='{{ category.get_del_url }}';">
+					Delete
+				</button>
+			</div></td>
 		</tr>
 		{% endfor %}
 
