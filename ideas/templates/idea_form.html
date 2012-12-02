@@ -1,6 +1,11 @@
 {% extends "base_login.html" %}
 {% block title %}New Idea{% endblock %}
 {% block content %}
+
+<div class="well">
+	<h1>Create New Idea</h1>
+	<p>Express yourself in 140 characters or less.</p>
+</div>
 <div class="field{% if form.message.errors %} errors{% endif %}">
 	{% if form.message.errors %}
 	<ul>
