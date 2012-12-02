@@ -5,7 +5,7 @@
 		<meta charset="utf-8">
 		<meta name="description" content="">
 		<meta name="author" content="Laimonas Turauskas">
-		
+
 		<title>{% block title %}{% endblock %} - MydeaTree</title>
 
 		<style type="text/css">
@@ -37,19 +37,21 @@
 
 		<div class="container">
 
-			{% block content %}Empty page{% endblock %}
-
+			<div class="containter">
+				{% block content %}Empty page{% endblock %}
+			</div>
 			<p>
 				<hr>
 			</p>
-			<footer class="row">
-				<div style="text-align:center">
-					<p>
-						&copy; <a href="http://www.zygura.com">Zygura</a> 2012
-					</p>
-				</div>
-			</footer>
-
+			<div class="container-fluid">
+				<footer class="row">
+					<div style="text-align:center">
+						<p>
+							&copy; <a href="http://www.zygura.com">Zygura</a> 2012
+						</p>
+					</div>
+				</footer>
+			</div>
 			{% block js %}
 			{% endblock %}
 

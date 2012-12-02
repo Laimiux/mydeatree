@@ -1,9 +1,21 @@
 {% extends "base_login.html" %}
 
 {% block content %}
-	<form action='' method="post">{% csrf_token %}
-       	<p> {{ idea.title }} -- {{ idea.text }}</p>
-       	<p> Are you sure you want to delete it and all it's children?</p>
-        <input type="submit" value="Delete">
-    </form>
+<form action='' method="post">
+	{% csrf_token %}
+	<div class="well">
+		<h1>{{ idea.title }} </h1>
+		<p>
+			{{ idea.text }}
+		</p>
+	</div>
+	<p style="text-align: center;">
+		Are you sure you want to delete it and all it's children?
+	</p>
+	<div style="text-align: center;">
+		<button type="submit" class="btn btn-danger">
+			Delete Idea
+		</button>
+	</div>
+</form>
 {% endblock %}

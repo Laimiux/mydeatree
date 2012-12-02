@@ -3,24 +3,38 @@
 
 {% block content %}
 
-<p>
-	Top idea -- {{ parent_idea.title }}
+<div class="well">
+	<h1>{{ parent_idea.title }}</h1>
 	<br>
 	{{ parent_idea.text }}
-</p>
+</div>
 
 <div class="display_ideas">
 	{% include "includes/list_ideas.html" %}
 </div>
 
 <p style="text-align: center;">
-	<a href="{{ parent_idea.get_add_url }}">Add</a> -- 
-	<a href="{{ parent_idea.get_edit_url }}">Edit</a> --
-	<a href=" {{ parent_idea.get_del_url }} ">Delete</a> -- 
-		{% if parent_idea.parent %}
-		<a href="{{ parent_idea.parent.get_absolute_url }}"> Previous</a> 
+	<button class="btn btn-success" onclick="location.href='{{ parent_idea.get_add_url }}';">
+		New Idea
+	</button>
+
+	<button class="btn btn-primary" onclick="location.href='{{ parent_idea.get_edit_url }}';">
+		Edit Idea
+	</button>
+
+	<button class="btn btn-danger" onclick="location.href='{{ parent_idea.get_del_url }}';">
+		Delete Idea
+	</button>
+
+	{% if parent_idea.parent %}
+	<button class="btn btn-info" onclick="location.href='{{ parent_idea.parent.get_absolute_url }}';">
+		Previous Idea
+	</button>
+
 	{% else %}
-		<a href="/"> See all ideas</a> 
+	<button class="btn btn-info" onclick="location.href='/';">
+		See All Ideas
+	</button>
 
 	{% endif %}
 </p>

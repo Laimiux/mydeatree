@@ -1,22 +1,10 @@
-
-{% if parent_idea %}
-	<p> Top idea -- {{ parent_idea.title }} <br> 
-		{{ parent_idea.text }}</p>
-
-	{% if parent_idea.parent %}
-		<a href="{{ parent_idea.parent.get_absolute_url }}"> Go to previous idea!</a>
-	{% else %}
-			<a href="/"> See all ideas</a>
-	{% endif %}
-{% endif %}
-
 <div class="display_ideas">
 {% include "includes/list_ideas.html" %}
 </div>
 <p style="text-align: center;">
 {% if parent_idea %}
-	<a href="{{ parent_idea.get_add_url }}">Add Idea</a>
+	<button class="btn btn-primary" onclick="location.href='{{ parent_idea.get_add_url }}';">New Idea</button>
 {% else %}
-	<a href="/new/">Add Idea</a>
+	<button class="btn btn-primary" onclick="location.href='/new/';">New Idea</button>
 {% endif %}
 </p>
