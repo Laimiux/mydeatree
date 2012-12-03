@@ -100,8 +100,11 @@ def delete_idea(request, id):
         return HttpResponseRedirect(returned)
     
     return render_to_response('delete_form.html', { 'idea' : idea_to_be_deleted }, context_instance=RequestContext(request))
-        
-def new_category(request):
+            
+def show_categories(request):
+    
+    categories = Category.objects.filter(owner=request.user)
+    
     if request.method == 'POST':
         form = CategoryForm(request.POST)
         if form.is_valid():
@@ -117,14 +120,9 @@ def new_category(request):
                 return HttpResponseRedirect('/categories/')
     else:
         form = CategoryForm()
-        
-    return render_to_response('new_category.html', { 'form' : form}, context_instance=RequestContext(request))
-        
-def show_categories(request):
     
-    categories = Category.objects.filter(owner=request.user)
     
-    return render_to_response('show_categories.html', { 'categories' : categories }, context_instance=RequestContext(request) )        
+    return render_to_response('show_categories.html', { 'categories' : categories, 'form': form, 'layout': 'inline', }, context_instance=RequestContext(request) )        
 
 
 def delete_category(request, id):

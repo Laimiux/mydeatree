@@ -1,0 +1,13 @@
+{% load bootstrap_toolkit %}
+<form class="form-{{ layout }}" action="" method="post">
+	{% csrf_token %}
+	<div class="span4">
+		{{ form|as_bootstrap:layout }}
+	</div>
+	<div span="span4">
+		<button type="submit" class="btn btn-primary">
+			New Category
+		</button>
+	</div>
+	
+</form>

@@ -12,6 +12,5 @@ urlpatterns = patterns('',
     (r'^idea/(?P<id>\d+)/del/$', requires_login(delete_idea)),
     (r'^idea/(?P<id>\d+)/edit/$', requires_login(edit_idea)),
     (r'^categories/$', requires_login(show_categories)),
-    (r'^categories/new/$', requires_login(new_category)),
     (r'^categories/(?P<id>\d+)/del/$', requires_login(delete_category)),
 )

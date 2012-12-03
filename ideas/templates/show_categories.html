@@ -4,14 +4,14 @@
 {% block content %}
 <div class="well">
 	<h1>Categories</h1>
-	<p>Manage the catagories by which you organize your ideas.</p>
+	<p>
+		Manage the catagories by which you organize your ideas.
+	</p>
+
+</div>
+<div class="container">
+	{% include "includes/new_category_form.html" with form=form layout=layout %}
 </div>
 {% include "includes/list_categories.html" %}
 
-<p style="text-align: center;">
-	<button class="btn btn-primary" onclick="location.href='/categories/new/';">
-		New Category
-	</button>
-
-</p>
 {% endblock %}
