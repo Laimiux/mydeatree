@@ -1,23 +1,28 @@
 {% extends "base_login.html" %}
 {% block title %}Register for an account{% endblock %}
 
-
 {% block content %}
-{% if user.is_authenticated %}
-	<p> You are already logged in! <a href="/"> Return Home</a> </p>
-{% else %}
 <div class="well">
-	<h1>Sign Up</h1>
-	<table>
-		<form method='post' action=''>
+
+	{% if user.is_authenticated %}
+	<p>
+		You are already logged in! <a href="/"> Return Home</a>
+	</p>
+	{% else %}
+	{% load bootstrap_toolkit %}
+	<div class="container-fluid" style="text-align: center;">
+		<h1>Sign Up</h1>
+		<form action='' method="post">
 			{% csrf_token %}
-			{{ form }}
-			<tr>
-				<td></td><td>
-				<button type="submit" class="btn btn-primary">Sign Up</button>
-				</td>
+			{{ form|as_bootstrap }}
+
+			<button type="submit" class="btn btn-primary">
+				Sign Up
+			</button>
+
 		</form>
-	</table>
+	</div>
+	{% endif %}
+
 </div>
-{% endif %}
 {% endblock %}

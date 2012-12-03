@@ -4,6 +4,7 @@
 {% block content %}
 {% load bootstrap_toolkit %}
 <div class="well">
+	<div class="container-fluid" style="text-align: center;">
 	<h1>Contact Us</h1>
 	<form action="" method="post">
 		{% csrf_token %}
@@ -16,6 +17,7 @@
 		</div>
 		<!--<input class="hidden" type="hidden" name="topic" value="Contact Submission from {{ site.domain }}" id="subject" />-->
 	</form>
+	</div>
 </div><!-- end contact -->
 
 {% endblock %}
