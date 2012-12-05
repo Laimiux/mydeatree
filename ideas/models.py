@@ -1,10 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+from djangotoolbox.fields import ListField
+from django import forms
 
-import uuid, datetime
+import datetime
 
-def _createUUID(): 
-    return uuid.uuid4()
     
 class IdeaManager(models.Manager):
     def title_count(self, keyword):
@@ -29,6 +29,8 @@ class Idea(models.Model):
     text = models.CharField(max_length=140) 
     parent = models.ForeignKey('self', blank=True, null=True)
     category = models.ForeignKey(Category, blank=True, null=True)
+
+    contributors = ListField(null=True, blank=True)
     
     objects = IdeaManager()
     
@@ -60,4 +62,5 @@ class Idea(models.Model):
     
     def __unicode__(self):
         return self.title
-    
+ 
+

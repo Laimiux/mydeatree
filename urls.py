@@ -32,11 +32,6 @@ urlpatterns = patterns('',
     (r'^', include('ideas.urls')),
     (r'^', include('contactus.urls')),
     (r'^api/', include(v1_api.urls)),
-
-    
-    #Remove later
-    (r'^somepage/$', 'ideas.views.method_splitter', {'GET': ideas.views.some_page_get, 'POST': ideas.views.some_page_post}),
-    
 )
 
 
