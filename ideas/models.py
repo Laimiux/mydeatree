@@ -51,6 +51,11 @@ class Idea(models.Model):
        if not self.id:
             self.created_date = datetime.datetime.today()
        self.modified_date = datetime.datetime.today()
+       
+       if self.parent:
+           self.parent.modified_date = self.modified_date
+           self.parent.save()
+           
        super(Idea, self).save(*args, **kwargs)
         
     def delete(self):
