@@ -35,6 +35,7 @@ urlpatterns = patterns('',
     (r'^about/(\w+)/$', about_pages),
     (r'^', include('ideas.urls')),
     (r'^', include('contactus.urls')),
+    (r'^', include('friends.urls')),
     (r'^api/', include(v1_api.urls)),
 
 )

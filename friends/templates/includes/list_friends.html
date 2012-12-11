@@ -1,0 +1,22 @@
+<div class="container">
+	<table class="table table-striped">
+		<tr>
+			<th>User</th>
+			<th>First Name</th>
+			<th>Email</th>
+			<th>Options</th>
+		</tr>
+
+		{% for friend in friend_list %}
+		<tr>
+			<td><a href="#">{{ friend.username }} </a></td>
+			<td> {{ friend.first_name}} </td>
+			
+			<td>{{ friend.email }}</td>
+			<td> Currently no options</td>
+		</tr>
+
+		{% endfor %}
+
+	</table>
+</div>

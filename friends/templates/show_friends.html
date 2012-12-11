@@ -1,0 +1,11 @@
+{% extends "base_login.html" %}
+
+{% block content %}
+<div class="well">
+	<h1>Friends</h1>
+	<p>These are friends that you have.</p>
+</div>
+<div class=container>
+	{% include 'includes/list_friends.html' %}
+</div>
+{% endblock %}

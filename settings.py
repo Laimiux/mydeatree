@@ -28,6 +28,7 @@ INSTALLED_APPS = (
     'bootstrap_toolkit',
     'contactus',
     'pagination',
+    'friends',
     'tastypie',
     'djangotoolbox',
     
@@ -90,6 +91,8 @@ BOOTSTRAP_JS_BASE_URL   = BOOTSTRAP_BASE_URL + 'js/'
 # Enable for single bootstrap.js file
 BOOTSTRAP_JS_URL        = BOOTSTRAP_JS_BASE_URL + 'bootstrap.js'
 
+
+AUTH_PROFILE_MODULE = 'friends.UserProfile'
 
 # For Production
 # Comment out for debug

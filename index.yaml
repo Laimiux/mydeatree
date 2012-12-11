@@ -27,6 +27,16 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
+- kind: friends_myclass
+  properties:
+  - name: __key__
+    direction: desc
+
+- kind: friends_userprofile
+  properties:
+  - name: __key__
+    direction: desc
+
 - kind: ideas_category
   properties:
   - name: __key__
