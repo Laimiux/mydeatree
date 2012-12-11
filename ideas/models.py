@@ -7,12 +7,20 @@ import datetime
 
     
 class IdeaManager(models.Manager):
+    
+    def pagination_by_date(self, items_per_page, page, *args, **kwargs):
+        return self.order_by('created_date').reverse()[items_per_page*(page-1):page*items_per_page]
+    
+    #filter(owner=current_user, parent=None).
     def title_count(self, keyword):
         return self.filter(title__icontains=keyword).count()
     
 class Category(models.Model):
     owner = models.ForeignKey(User, null=True, blank=True)
     name = models.CharField(max_length=30)
+    
+    created_date = models.DateTimeField(default=datetime.datetime.today())
+    modified_date = models.DateTimeField(default=datetime.datetime.today())
     
     def get_absolute_url(self):
         return "/categories/%i/" % self.id
@@ -23,17 +31,28 @@ class Category(models.Model):
     def __unicode__(self):
         return self.name
 
-class Idea(models.Model):
+class Idea(models.Model): 
     owner = models.ForeignKey(User, null=True, blank=True)
     title = models.CharField(max_length=30)
     text = models.CharField(max_length=140) 
     parent = models.ForeignKey('self', blank=True, null=True)
     category = models.ForeignKey(Category, blank=True, null=True)
+    
+    created_date = models.DateTimeField(default=datetime.datetime.today())
+    modified_date = models.DateTimeField(default=datetime.datetime.today())
 
     contributors = ListField(null=True, blank=True)
     
     objects = IdeaManager()
     
+    
+    def save(self, *args, **kwargs):
+       ''' On save, update timestamps '''
+       if not self.id:
+            self.created_date = datetime.datetime.today()
+       self.modified_date = datetime.datetime.today()
+       super(Idea, self).save(*args, **kwargs)
+        
     def delete(self):
         children_ideas = self.idea_set.all()
         super(Idea, self).delete()     
@@ -63,4 +82,3 @@ class Idea(models.Model):
     def __unicode__(self):
         return self.title
  
-

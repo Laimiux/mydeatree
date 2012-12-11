@@ -1,0 +1,18 @@
+<div class="pagination pagination-centered">
+	<ul>
+		<!--<li class="disabled"><a href="#">Prev</a></li>-->
+		{% if number_of_pages %}
+		{% for number in number_of_pages %}
+		{% if forloop.counter == current_page %}
+		<li class="active">
+			<a href="#">{{ forloop.counter }}</a>
+		</li>
+		{% else %}
+		<li>
+			<a href="{{ page_url }}{{ forloop.counter }}">{{ forloop.counter }}</a>
+		</li>
+		{% endif %}
+		{% endfor %}
+		{% endif %}
+	</ul>
+</div>

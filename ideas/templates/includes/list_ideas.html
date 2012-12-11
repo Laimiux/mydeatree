@@ -1,30 +1,45 @@
 {% if idea_list %}
-<div id="idea_list">
+{% load pagination %}
+<div class="span12">
 	<table class="table table-striped">
 		<tr>
 			<th>Title</th>
 			<th>Description</th>
-			<th>Category </th>
+			<th>Category</th>
 			<th>Options</th>
 		</tr>
 
 		{% for idea in idea_list %}
 		<tr>
 			<td><a href="{{ idea.get_absolute_url }}">{{ idea.title }} </a></td>
-			<td> {{idea.text}} </td>
+			<td> {{ idea.text|softwraphtml }} </td>
+			
 			<td>{% if idea.category %} {{ idea.category }} {% else %} None {% endif %}</td>
 
 			<td>
-			<div class="btn-group">
-			<button class="btn btn-primary" onclick="location.href='{{ idea.get_add_url }}';">
-				New
-			</button>
-			<button class="btn btn-danger" onclick="location.href='{{ idea.get_del_url }}';">
-				Delete
-			</button>
-			<button class="btn btn-success" onclick="location.href='{{ idea.get_edit_url }}';">
-				Edit
-			</button></div></td>
+			<div class="btn-group" style="margin: 0;">
+				<button class="btn btn-primary" onclick="location.href='{{ idea.get_add_url }}';">
+					New
+				</button>
+				<button class="btn btn-danger" onclick="location.href='{{ idea.get_del_url }}';">
+					Delete
+				</button>
+				<button class="btn btn-success" onclick="location.href='{{ idea.get_edit_url }}';">
+					Edit
+				</button>
+
+           <div class="btn-group">
+                <a class="btn btn-warning dropdown-toggle" data-toggle="dropdown" href="#" >Share <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#">Separated link</a></li>
+                </ul>
+              </div
+
+			</div></td>
 		</tr>
 
 		{% endfor %}

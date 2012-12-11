@@ -1,10 +1,10 @@
-<div class="display_ideas">
-{% include "includes/list_ideas.html" %}
-</div>
 <p style="text-align: center;">
-{% if parent_idea %}
-	<button class="btn btn-primary" onclick="location.href='{{ parent_idea.get_add_url }}';">New Idea</button>
-{% else %}
-	<button class="btn btn-primary" onclick="location.href='/new/';">New Idea</button>
-{% endif %}
+	<button class="btn btn-primary" onclick="location.href='/new/';">
+		New Idea
+	</button>
 </p>
+<div class="display_ideas">
+	{% include "includes/list_ideas.html" %}
+</div>
+{% load pagination %}
+{% page_index ?page= %}

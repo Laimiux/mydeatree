@@ -8,8 +8,8 @@
 	<h1>Ideas</h1>
 	These are your top ideas, from you can branch and have more ideas.
 </div>
-{% load ideas_extra %}
-{% top_ideas parent_idea %}
+
+{% include 'show_top_ideas.html' with idea_list=idea_list %}
 
 {% else %}
 

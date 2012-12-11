@@ -10,12 +10,13 @@ from ideas import views
 from about.views import about_pages
 from ideas.views import requires_login
 
-from api import IdeaResource, UserResource
+from api.resources import IdeaResource, UserResource, CategoryResource
 from tastypie.api import Api
 
 v1_api = Api(api_name='v1')
 v1_api.register(UserResource())
 v1_api.register(IdeaResource())
+v1_api.register(CategoryResource())
 
 admin.autodiscover()
 

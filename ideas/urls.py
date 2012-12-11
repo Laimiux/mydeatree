@@ -6,7 +6,7 @@ from ideas.views import *
 
 
 urlpatterns = patterns('',
-    (r'^new/$', requires_login(new_idea)),
+    (r'^new/$', requires_login(new_top_idea)),
     (r'^idea/(?P<id>\d+)/$', requires_login(show_idea)),
     (r'^idea/(?P<id>\d+)/add/$', requires_login(new_children_idea)),
     (r'^idea/(?P<id>\d+)/del/$', requires_login(delete_idea)),

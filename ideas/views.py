@@ -18,7 +18,7 @@ def requires_login(view):
         return view(request, *args, **kwargs)
     return new_view
     
-def new_idea(request):
+def new_top_idea(request):
     form = IdeaForm(request.POST or None, initial={'title': 'I love your site!', 'text' : 'Sample idea!'}, user=request.user)
     if form.is_valid():
         model = form.save()
@@ -40,13 +40,29 @@ def new_children_idea(request, id):
      return render_to_response('idea_form.html', { 'form': form, 'parent_idea': parent_idea }, context_instance=RequestContext(request))
 
 def show_idea(request, id):
-    current_user = request.user
+    # Get the page number.
+    current_page = convert_to_int(request.GET.get('page') or 1)
+    # Number of objects per page
+    results_per_page = 10
+    current_user = request.user; 
+    
     object_id = convert_to_int(id)      
     parent_idea = get_object_or_404(Idea, id=object_id, owner=request.user)
-    children_ideas = parent_idea.idea_set.all()
-    return render_to_response('show_children_ideas.html', {'user_name' : current_user, 'parent_idea' : parent_idea, 'idea_list' : children_ideas}, context_instance=RequestContext(request))
+        
+    number_of_pages = parent_idea.idea_set.all().count()
+    
+    if number_of_pages % results_per_page != 0:
+        number_of_pages = number_of_pages/results_per_page + 1
+    else:
+        number_of_pages = number_of_pages/results_per_page
+    
+    
 
-
+    children_ideas = parent_idea.idea_set.all().order_by('modified_date').reverse()[results_per_page*(current_page-1):current_page*results_per_page]
+    
+    return render_to_response('show_children_ideas.html', { 'user_name' : current_user, 'idea_list' : children_ideas, 
+                                  'parent_idea' : parent_idea, 'number_of_pages' : number_of_pages, 
+                                                'current_page' : current_page}, context_instance=RequestContext(request))
 def edit_idea(request, id):
     object_id = convert_to_int(id)
     idea = get_object_or_404(Idea, id=object_id, owner=request.user)

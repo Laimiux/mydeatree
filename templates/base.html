@@ -14,11 +14,7 @@
 			}
 		</style>
 		{% bootstrap_stylesheet_tag %}
-
-		{% bootstrap_javascript_tag "dropdown" %}
-
-		<!--<script type="text/javascript" src="media/jquery-1.8.3.min.js"></script>-->
-
+		
 		{% block css %}
 		{% endblock %}
 
@@ -56,5 +52,10 @@
 			{% endblock %}
 
 		</div>
+		 <!-- THE javascript
+    	================================================== -->
+   		 <!-- Placed at the end of the document so the pages load faster --> 
+		<script type="text/javascript" src="media/jquery-1.8.3.min.js"></script>
+		{% bootstrap_javascript_tag "dropdown" %}
 	</body>
 </html>
