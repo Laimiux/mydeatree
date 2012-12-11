@@ -10,6 +10,8 @@ from ideas import views
 from about.views import about_pages
 from ideas.views import requires_login
 
+from registration.forms import RegistrationFormUniqueEmail
+
 from api.resources import IdeaResource, UserResource, CategoryResource
 from tastypie.api import Api
 
@@ -23,6 +25,7 @@ admin.autodiscover()
 handler500 = 'djangotoolbox.errorviews.server_error'
 
 urlpatterns = patterns('',
+    (r'^accounts/register/$', 'registration.views.register', {'form_class' : RegistrationFormUniqueEmail, 'backend':'registration.backends.default.DefaultBackend' }),
     (r'^accounts/', include('registration.backends.default.urls')),
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT }),
     ('^_ah/warmup$', 'djangoappengine.views.warmup'),
@@ -33,6 +36,7 @@ urlpatterns = patterns('',
     (r'^', include('ideas.urls')),
     (r'^', include('contactus.urls')),
     (r'^api/', include(v1_api.urls)),
+
 )
 
 
