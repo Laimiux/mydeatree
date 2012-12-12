@@ -1,4 +1,5 @@
 <div class="container">
+	{% if friend_list %}
 	<table class="table table-striped">
 		<tr>
 			<th>User</th>
@@ -19,4 +20,7 @@
 		{% endfor %}
 
 	</table>
+	{% else %}
+	<p>You currently don't have any friends</p>
+	{% endif %}
 </div>

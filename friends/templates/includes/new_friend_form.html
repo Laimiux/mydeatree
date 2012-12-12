@@ -1,0 +1,13 @@
+{% load bootstrap_toolkit %}
+<form class="form-inline" action="" method="post">
+	{% csrf_token %}
+	<div class="span4">
+		{{ form|as_bootstrap:'inline' }}
+	</div>
+	<div span="span4">
+		<button type="submit" class="btn btn-primary">
+			Add Friend
+		</button>
+	</div>
+	
+</form>

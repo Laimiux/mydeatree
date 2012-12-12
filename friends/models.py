@@ -39,9 +39,11 @@ class UserProfile(models.Model):
     friends = ModelListField(models.ForeignKey(User), null=True, blank=True)
     
     def get_friends(self):
-        from itertools import chain
-        result_list = []
+        if not self.friends:
+            return ''
         
+        result_list = []
+    
         for friend in self.friends:
             result_list += User.objects.filter(pk__exact=friend)
 

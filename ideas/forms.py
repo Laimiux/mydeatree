@@ -4,7 +4,6 @@ from ideas.models import Category, Idea
 
 class IdeaForm(forms.ModelForm):
 
-    
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user")  
         super(IdeaForm, self).__init__(*args, **kwargs)

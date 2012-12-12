@@ -5,7 +5,11 @@
 	<h1>Friends</h1>
 	<p>These are friends that you have.</p>
 </div>
-<div class=container>
-	{% include 'includes/list_friends.html' %}
+<div class="container">
+	{% include "includes/new_friend_form.html" with form=form %}
 </div>
+
+	{% include 'includes/list_friends.html' %}
+	
+
 {% endblock %}
