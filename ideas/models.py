@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from djangotoolbox.fields import ListField
 from django import forms
+from django.forms import ModelForm
+
+from friends.models import ModelListField
 
 import datetime
 
@@ -41,7 +44,7 @@ class Idea(models.Model):
     created_date = models.DateTimeField(default=datetime.datetime.today())
     modified_date = models.DateTimeField(default=datetime.datetime.today())
 
-    contributors = ListField(null=True, blank=True)
+    contributors = ModelListField(models.ForeignKey(User), null=True, blank=True)
     
     objects = IdeaManager()
     
@@ -76,6 +79,9 @@ class Idea(models.Model):
     def get_edit_url(self):
         return self.get_absolute_url() + "edit/"
     
+    def get_add_collab_url(self):
+        return self.get_absolute_url() + "collaboration/"
+    
     def get_all_children(self, include_self=True):
         r = []
         if include_self:
@@ -86,4 +92,13 @@ class Idea(models.Model):
     
     def __unicode__(self):
         return self.title
+    
+class IdeaForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(IdeaForm, self).__init__(*args, **kwargs)
+        self.fields['contributors'].widget.choices = [(i.pk, i) for i in User.objects.all()]
+        if self.instance.pk:
+            self.fields['contributors'].initial = self.instance.contributors1
+    class Meta:
+        model = Idea
  

@@ -16,7 +16,7 @@ def show_user_friends(request):
     
     if form.is_valid():
         cd = form.cleaned_data
-        # if email doesn't equal your's continue
+        # if email doesn't equal your email continue
         if current_user.email != cd['email']:
             try:
                 friend = User.objects.get(email=cd['email'])

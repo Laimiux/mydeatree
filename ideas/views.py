@@ -63,6 +63,18 @@ def show_idea(request, id):
     return render_to_response('show_children_ideas.html', { 'user_name' : current_user, 'idea_list' : children_ideas, 
                                   'parent_idea' : parent_idea, 'number_of_pages' : number_of_pages, 
                                                 'current_page' : current_page}, context_instance=RequestContext(request))
+
+def idea_collab(request, id):
+    current_user = request.user; 
+    
+    object_id = convert_to_int(id)      
+    parent_idea = get_object_or_404(Idea, id=object_id, owner=request.user)
+        
+    return render_to_response('idea_collaboration.html', { 'user_name' : current_user,
+                                  'parent_idea' : parent_idea,}, context_instance=RequestContext(request))
+
+
+
 def edit_idea(request, id):
     object_id = convert_to_int(id)
     idea = get_object_or_404(Idea, id=object_id, owner=request.user)

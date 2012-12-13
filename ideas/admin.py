@@ -1,7 +1,8 @@
 from django.contrib import admin
-from ideas.models import Idea, Category
+from ideas.models import Idea, Category, IdeaForm
 
 class IdeaAdmin(admin.ModelAdmin):
+    form = IdeaForm
     list_display = ('owner', 'title', 'text')
     
 class CategoryAdmin(admin.ModelAdmin):

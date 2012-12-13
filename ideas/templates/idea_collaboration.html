@@ -1,0 +1,22 @@
+{% extends 'base_login.html' %}
+{% block title %}Ideas{% endblock %}
+
+{% block content %}
+
+<div class="well">
+	<h1>{{ parent_idea.title }}</h1>
+	<br>
+	{{ parent_idea.text }}
+	
+	
+</div>
+
+
+
+<p style="text-align: center;">
+	<button class="btn btn-primary" onclick="location.href='#';">
+		New Contributor
+	</button>
+</p>
+
+{% endblock %}
