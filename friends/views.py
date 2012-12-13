@@ -3,6 +3,8 @@ from django.template import RequestContext
 
 from friends.forms import FriendForm
 
+from django.http import HttpResponse
+
 from django.contrib.auth.models import User
 from django.forms.util import ErrorList
 
@@ -17,7 +19,15 @@ def show_user_friends(request):
         # if email doesn't equal your's continue
         if current_user.email != cd['email']:
             try:
-                User.objects.get(email=cd['email'])
+                friend = User.objects.get(email=cd['email'])
+                
+                profile = current_user.get_profile()
+                
+                if friend.pk in profile.friends:
+                    form._errors['email'] = ErrorList([u'A user with email ' + cd['email'] + ' has already been added'])
+                else:
+                    profile.friends.append(friend.pk)
+                    profile.save()
             except User.DoesNotExist:
                 form._errors["email"] = ErrorList([u'There is no user by such email!'])
 
