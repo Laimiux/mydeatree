@@ -64,6 +64,10 @@ def show_idea(request, id):
                                   'parent_idea' : parent_idea, 'number_of_pages' : number_of_pages, 
                                                 'current_page' : current_page}, context_instance=RequestContext(request))
 
+def show_public_ideas(request):
+    idea_list = Idea.objects.get_public_ideas()
+    return render_to_response('show_public_ideas.html', { 'idea_list' : idea_list }, RequestContext(request))
+
 def idea_collab(request, id):
     current_user = request.user; 
     
@@ -125,6 +129,14 @@ def show_categories(request):
     return render_to_response('show_categories.html', { 'categories' : categories, 'form': form, 'layout': 'inline', }, context_instance=RequestContext(request))        
 
 
+def make_idea_public(request, id):
+    idea_id = convert_to_int(id)
+    idea = get_object_or_404(Idea, id=idea_id)
+    idea.public = True
+    idea.save()
+    return HttpResponseRedirect("/public/")
+    
+
 def delete_category(request, id):
     object_id = convert_to_int(id)
     category_to_be_del = get_object_or_404(Category, id=object_id, owner=request.user)
@@ -134,6 +146,5 @@ def delete_category(request, id):
         return HttpResponseRedirect("/categories/")   
     return render_to_response('category_del_form.html', { 'category' : category_to_be_del }, context_instance=RequestContext(request))
              
-
 
 

@@ -12,7 +12,10 @@ import datetime
 class IdeaManager(models.Manager):
     
     def pagination_by_date(self, items_per_page, page, *args, **kwargs):
-        return self.order_by('created_date').reverse()[items_per_page*(page-1):page*items_per_page]
+        return self.order_by('modified_date').reverse()[items_per_page*(page-1):page*items_per_page]
+    
+    def get_public_ideas(self):
+        return self.filter(public=True).order_by('modified_date').reverse()
     
     #filter(owner=current_user, parent=None).
     def title_count(self, keyword):
@@ -40,6 +43,8 @@ class Idea(models.Model):
     text = models.CharField(max_length=140) 
     parent = models.ForeignKey('self', blank=True, null=True)
     category = models.ForeignKey(Category, blank=True, null=True)
+    
+    public = models.BooleanField(default=False)
     
     created_date = models.DateTimeField(default=datetime.datetime.today())
     modified_date = models.DateTimeField(default=datetime.datetime.today())
@@ -82,6 +87,9 @@ class Idea(models.Model):
     def get_add_collab_url(self):
         return self.get_absolute_url() + "collaboration/"
     
+    def get_make_public_url(self):
+        return self.get_absolute_url() + "make-public/"
+    
     def get_all_children(self, include_self=True):
         r = []
         if include_self:
@@ -98,7 +106,7 @@ class IdeaForm(ModelForm):
         super(IdeaForm, self).__init__(*args, **kwargs)
         self.fields['contributors'].widget.choices = [(i.pk, i) for i in User.objects.all()]
         if self.instance.pk:
-            self.fields['contributors'].initial = self.instance.contributors1
+            self.fields['contributors'].initial = self.instance.contributors
     class Meta:
         model = Idea
  

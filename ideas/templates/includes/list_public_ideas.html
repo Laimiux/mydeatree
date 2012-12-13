@@ -1,0 +1,18 @@
+{% if idea_list %}
+{% load pagination %}
+<div class="container">
+	{% for idea in idea_list %}
+	<div class="well">
+		<h2>{{ idea.title }} <small>by {{ idea.owner }}</small> </h2>
+		<p>{{ idea.text }}</p>
+		<p>Date modified: {{ idea.modified_date }}</p>
+		<button class="btn btn-primary">Share</button>
+	</div>
+	
+	{% endfor %}
+</div>
+{% else %}
+Currently there is no public ideas.
+
+{% endif %}
+

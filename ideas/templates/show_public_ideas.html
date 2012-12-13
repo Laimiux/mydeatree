@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Public Ideas{% endblock %}
+
+{% block content %}
+
+<div class="well">
+	<h1>Public Ideas</h1>
+	<p>Ideas posted by fellow members.</p>
+</div>
+
+<div class="display_ideas">
+	{% include "includes/list_public_ideas.html" %}
+</div>
+
+
+{% endblock %}

@@ -91,6 +91,17 @@ indexes:
   - name: modified_date
     direction: desc
 
+- kind: ideas_idea
+  properties:
+  - name: public
+  - name: modified_date
+
+- kind: ideas_idea
+  properties:
+  - name: public
+  - name: modified_date
+    direction: desc
+
 - kind: ideas_uniqueid
   properties:
   - name: __key__
