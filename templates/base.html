@@ -14,7 +14,7 @@
 			}
 		</style>
 		{% bootstrap_stylesheet_tag %}
-		
+
 		{% block css %}
 		{% endblock %}
 
@@ -27,6 +27,15 @@
 
 	<body>
 
+		{% if user.is_authenticated %}
+		{% include "includes/nav_in.html" %}
+		<p style="text-align: center;">
+			You are logged in, {{ user }}.
+		</p>
+
+		{% else %}
+		{% include "includes/nav_out.html" %}
+		{% endif %}
 		{% block extra-header %}
 
 		{% endblock %}
@@ -52,9 +61,9 @@
 			{% endblock %}
 
 		</div>
-		 <!-- THE javascript
-    	================================================== -->
-   		 <!-- Placed at the end of the document so the pages load faster --> 
+		<!-- THE javascript
+		================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
 		<script type="text/javascript" src="media/jquery-1.8.3.min.js"></script>
 		{% bootstrap_javascript_tag "dropdown" %}
 	</body>
