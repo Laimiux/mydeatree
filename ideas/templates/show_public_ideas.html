@@ -8,6 +8,12 @@
 	<p>Ideas posted by fellow members.</p>
 </div>
 
+{% if user.is_authenticated %}
+	{% include "includes/idea_nav.html" with active=2 %}
+{% endif %}
+
+
+
 <div class="display_ideas">
 	{% include "includes/list_public_ideas.html" %}
 </div>

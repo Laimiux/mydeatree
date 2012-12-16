@@ -1,0 +1,25 @@
+<ul class="nav nav-tabs">
+	{% if active == 1 %}
+	<li class="active">
+	{% else %}
+	<li>
+	{% endif %}
+		<a href="/">Mine</a>
+	</li>
+	
+	{% if active == 2 %}
+	<li class="active">
+	{% else %}
+	<li>
+	{% endif %}
+		<a href="/public/">Public</a>
+	</li>
+	{% if active == 3 %}
+	<li class="active">
+	{% else %}
+	<li>
+	{% endif %}
+		<a href="#">Shared</a>
+	</li>
+
+</ul>
