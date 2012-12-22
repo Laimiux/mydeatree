@@ -68,6 +68,10 @@ def show_public_ideas(request):
     idea_list = Idea.objects.get_public_ideas()
     return render_to_response('show_public_ideas.html', { 'idea_list' : idea_list }, RequestContext(request))
 
+def show_shared_ideas(request):
+    idea_list = Idea.objects.filter(contributors__isnull=False, owner = request.user)
+    return render_to_response('show_shared_ideas.html', { 'idea_list' : idea_list } , RequestContext(request))
+
 def idea_collab(request, id):
     current_user = request.user; 
     

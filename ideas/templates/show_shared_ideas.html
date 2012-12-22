@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Public Ideas{% endblock %}
+
+{% block content %}
+
+<div class="container container-fluid">
+	<div class="well">
+		<h1>Shared Ideas</h1>
+		<p>
+			Ideas shared with other contributors.
+		</p>
+	</div>
+
+	{% include "includes/idea_nav.html" with active=3 %}
+	{% include "includes/list_ideas.html" %}
+</div>
+
+{% endblock %}

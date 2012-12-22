@@ -3,20 +3,19 @@
 
 {% block content %}
 
-<div class="well">
-	<h1>Public Ideas</h1>
-	<p>Ideas posted by fellow members.</p>
-</div>
+<div class="container container-fluid">
+	<div class="well">
+		<h1>Public Ideas</h1>
+		<p>
+			Ideas posted by fellow members.
+		</p>
+	</div>
 
-{% if user.is_authenticated %}
+	{% if user.is_authenticated %}
 	{% include "includes/idea_nav.html" with active=2 %}
-{% endif %}
+	{% endif %}
 
-
-
-<div class="display_ideas">
 	{% include "includes/list_public_ideas.html" %}
 </div>
-
 
 {% endblock %}

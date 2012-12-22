@@ -9,25 +9,14 @@ from django.shortcuts import get_object_or_404
 from tastypie import fields
 from ideas.models import Idea, Category
 
-
-class IdeaAuthorization(Authorization):
-    def apply_limits(self, request, object_list=None):
-        if request and request.method in ('GET', 'DELETE'):  # 1.
-            return object_list.filter(author=request.user)
- 
-        if isinstance(object_list, Bundle):  # 2.
-            bundle = object_list # for clarity, lets call it a bundle            
-            bundle.data['author'] = {'pk': request.user.pk}  # 3.
-            return bundle
- 
-        return []  # 4.
-    
     
 class CategoryResource(ModelResource):
     class Meta:
         queryset = Category.objects.all()
         resource_name = 'category'
 
+    def apply_authorization_limits(self, request, object_list):
+        return object_list.filter(owner=request.user)
 
 class UserResource(ModelResource):
     class Meta:
@@ -35,10 +24,15 @@ class UserResource(ModelResource):
         resource_name = 'user'
         fields = ['username', 'first_name', 'last_name', 'last_login']
         excludes = ['email', 'password', 'is_active', 'is_staff', 'is_superuser']
-        #allowed_methods = ['get']
+        
+        allowed_methods = ['get']
         # Add it here.
-        authentication = ApiKeyAuthentication()
+        authentication = BasicAuthentication()
         authorization = DjangoAuthorization()
+        
+    
+    def apply_authorization_limits(self, request, object_list):
+        return object_list.filter(username=request.user)
         
 class IdeaResource(ModelResource):
     #user = fields.ForeignKey(UserResource, 'user')

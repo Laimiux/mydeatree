@@ -16,6 +16,8 @@ urlpatterns = patterns('',
     (r'^idea/(?P<id>\d+)/make-public/$', requires_login(make_idea_public)),
     (r'^categories/$', requires_login(show_categories)),
     (r'^categories/(?P<id>\d+)/del/$', requires_login(delete_category)),
+    (r'^shared/$', requires_login(show_shared_ideas)),
+    
     
     #public urls
     (r'^public/$', show_public_ideas),
