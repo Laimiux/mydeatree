@@ -10,6 +10,8 @@ from django.forms.util import ErrorList
 
 from ideas.utils import convert_to_int
 
+import itertools
+
 # Requires login function
 def requires_login(view):
     def new_view(request, *args, **kwargs):
@@ -51,20 +53,20 @@ def show_private_idea(request, idea):
     number_of_pages = parent_idea.idea_set.all().count()
     
     if number_of_pages % results_per_page != 0:
-        number_of_pages = number_of_pages/results_per_page + 1
+        number_of_pages = number_of_pages / results_per_page + 1
     else:
-        number_of_pages = number_of_pages/results_per_page
+        number_of_pages = number_of_pages / results_per_page
     
     
 
-    children_ideas = parent_idea.idea_set.all().order_by('modified_date').reverse()[results_per_page*(current_page-1):current_page*results_per_page]
+    children_ideas = parent_idea.idea_set.all().order_by('modified_date').reverse()[results_per_page * (current_page - 1):current_page * results_per_page]
     
-    return render_to_response('show_children_ideas.html', { 'user_name' : current_user, 'idea_list' : children_ideas, 
-                                  'parent_idea' : parent_idea, 'number_of_pages' : number_of_pages, 
+    return render_to_response('show_children_ideas.html', { 'user_name' : current_user, 'idea_list' : children_ideas,
+                                  'parent_idea' : parent_idea, 'number_of_pages' : number_of_pages,
                                                 'current_page' : current_page}, context_instance=RequestContext(request))
 
 def show_public_idea(request, idea): 
-    return render_to_response('public_idea.html',{ 'parent_idea' : idea }, RequestContext(request))
+    return render_to_response('public_idea.html', { 'parent_idea' : idea }, RequestContext(request))
 
 def show_collab_idea(request, idea):
     return HttpResponse("You are looking at a contributing idea")
@@ -75,16 +77,23 @@ def show_idea(request, id):
     
     if parent_idea.owner == request.user:
         return show_private_idea(request, parent_idea)
+    elif request.user.pk in parent_idea.contributors:
+        return show_collab_idea(request, parent_idea)
     elif parent_idea.public:
         return show_public_idea(request, parent_idea)
-
+    else:
+        raise Http404
+    
 def show_public_ideas(request):
     idea_list = Idea.objects.get_public_ideas()
     return render_to_response('show_public_ideas.html', { 'idea_list' : idea_list }, RequestContext(request))
 
 def show_shared_ideas(request):
-    idea_list = Idea.objects.filter(owner=request.user).exclude(contributors__isnull=True)#.exclude(contributors='')
-    return render_to_response('show_shared_ideas.html', { 'idea_list' : idea_list } , RequestContext(request))
+    idea_list = Idea.objects.filter(owner=request.user).exclude(contributors__isnull=True)
+    contrib_list = Idea.objects.filter(contributors=request.user.pk)
+    #idea_contrib = Idea.objects.filter(contributors=request.user.pk)
+    all_ideas = itertools.chain(idea_list, contrib_list)
+    return render_to_response('show_shared_ideas.html', { 'idea_list' : all_ideas } , RequestContext(request))
 
 def idea_collab(request, id):
     current_user = request.user; 
@@ -95,10 +104,13 @@ def idea_collab(request, id):
     # Pass the contributor list to the template
     contributors = idea.get_contributors()
     
-    form = ContributorForm()
+    form = ContributorForm(request.POST or None)
+    
+    if form.is_valid:
+        pass
         
     return render_to_response('idea_collaboration.html', { 'user_name' : current_user, 'contributors' : contributors,
-                                  'form' : form, 'parent_idea' : idea,}, RequestContext(request))
+                                  'form' : form, 'parent_idea' : idea, }, RequestContext(request))
 
 def edit_idea(request, id):
     object_id = convert_to_int(id)

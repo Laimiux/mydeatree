@@ -11,22 +11,28 @@
 		<h3 id="myModalLabel">New Contributor</h3>
 	</div>
 	<div class="modal-body">
+		
+			<b>Here you will have selection of friends</b>
+		
 
-		{% load bootstrap_toolkit %}
+			
 
-		<form action="" method="post">
-			{% csrf_token %}
-			{{ form|as_bootstrap }}
+			{% load bootstrap_toolkit %}
 
-			<div class="submit">
-				<p>
-					<button type="submit" class="btn btn-primary">
-						Add
-					</button>
-				</p>
-			</div>
+			<form action="" method="post">
+				{% csrf_token %}
+				{{ form|as_bootstrap:'inline' }}
 
-		</form>
+				<div class="submit">
+					<p>
+						<button type="submit" class="btn btn-primary">
+							Add
+						</button>
+					</p>
+				</div>
+
+			</form>
+		
 	</div>
 	<div class="modal-footer">
 		<button class="btn" data-dismiss="modal" aria-hidden="true">

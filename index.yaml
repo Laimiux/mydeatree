@@ -56,6 +56,12 @@ indexes:
   properties:
   - name: contributors
   - name: owner_id
+  - name: contributors
+
+- kind: ideas_idea
+  properties:
+  - name: contributors
+  - name: owner_id
   - name: parent_id
   - name: modified_date
     direction: desc

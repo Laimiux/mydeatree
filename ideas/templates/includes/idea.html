@@ -1,5 +1,6 @@
 {% load pagination %}
-<h1><a href="{{ idea.get_absolute_url }}">{{ idea.title|softwraphtml }}</a> {% if idea.public %}<span class="label label-info">Public</span> {% endif %} </h1>
+<h1><a href="{{ idea.get_absolute_url }}">{{ idea.title|softwraphtml }}</a> {% if idea.public %}<span class="label label-info">Public</span> {% endif %} 
+	{% if idea.contributors %}<span class="label label-success">Shared</span> {% endif %}</h1>
 <p>
 	{{ idea.text|softwraphtml }}
 </p>
