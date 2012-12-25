@@ -3,10 +3,12 @@
 
 {% block content %}
 
+{% load pagination %}
 <div class="hero-unit">
-	<h1>{{ parent_idea.title }}</h1>
+	
+	<h1>{{ parent_idea.title|softwraphtml }}</h1>
 	<p>
-		{{ parent_idea.text }}
+		{{ parent_idea.text|softwraphtml }}
 	</p>
 
 	<p style="text-align: left;">
@@ -34,6 +36,7 @@
 
 		{% endif %}
 	</p>
+
 </div>
 
 <div class="display_ideas">

@@ -2,21 +2,57 @@
 {% block title %}Ideas{% endblock %}
 
 {% block content %}
+<!-- Modal -->
+<div id="addContrib" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			×
+		</button>
+		<h3 id="myModalLabel">New Contributor</h3>
+	</div>
+	<div class="modal-body">
 
-<div class="well">
-	<h1>{{ parent_idea.title }}</h1>
-	<br>
-	{{ parent_idea.text }}
-	
-	
+		{% load bootstrap_toolkit %}
+
+		<form action="" method="post">
+			{% csrf_token %}
+			{{ form|as_bootstrap }}
+
+			<div class="submit">
+				<p>
+					<button type="submit" class="btn btn-primary">
+						Add
+					</button>
+				</p>
+			</div>
+
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">
+			Close
+		</button>
+		<button class="btn btn-primary">
+			Save changes
+		</button>
+	</div>
 </div>
 
+{% load pagination %}
+<div class="hero-unit">
+	<h1>{{ parent_idea.title|softwraphtml }}</h1>
+	<p>
+		{{ parent_idea.text|softwraphtml }}
+	</p>
+	<p style="text-align: center;">
+		<a href="#addContrib" role="button" class="btn btn-primary" data-toggle="modal">New Contributor</a>
+	</p>
+</div>
 
-
-<p style="text-align: center;">
-	<button class="btn btn-primary" onclick="location.href='#';">
-		New Contributor
-	</button>
-</p>
+<div class="container container-fluid">
+	{% if contributors %}
+	{{ contributors }}
+	{% endif %}
+</div>
 
 {% endblock %}

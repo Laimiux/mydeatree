@@ -2,9 +2,10 @@
 {% block title %}New Idea{% endblock %}
 {% block content %}
 
+{% load pagination %}
 <div class="well">
 	<h1>Adding a new idea to</h1>
-	<h4>{{ parent_idea.title }} <small> {{ parent_idea.text }}</small></h4>
+	<h4>{{ parent_idea.title|softwraphtml }} <small> {{ parent_idea.text|softwraphtml }}</small></h4>
 
 	{% load bootstrap_toolkit %}
 

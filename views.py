@@ -15,11 +15,11 @@ def main_page(request):
         results_per_page = 10
         current_user = request.user; 
         
-        number_of_pages = Idea.objects.filter(owner=current_user, parent=None, contributors=None).count()
+        number_of_pages = Idea.objects.filter(owner=current_user, parent=None).count()
         
         #idea_list = Idea.objects.pagination_by_date(results_per_page, current_page)
         #Idea.objects.filter(owner=current_user, parent=None)
-        idea_list = Idea.objects.filter(owner=current_user, parent=None, contributors=None).order_by('modified_date').reverse()[results_per_page*(current_page-1):current_page*results_per_page]
+        idea_list = Idea.objects.filter(owner=current_user, parent=None).order_by('modified_date').reverse()[results_per_page*(current_page-1):current_page*results_per_page]
                    
                     
         if number_of_pages % results_per_page != 0:

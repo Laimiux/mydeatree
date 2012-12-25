@@ -1,0 +1,35 @@
+{% load pagination %}
+<h1><a href="{{ idea.get_absolute_url }}">{{ idea.title|softwraphtml }}</a> {% if idea.public %}<span class="label label-info">Public</span> {% endif %} </h1>
+<p>
+	{{ idea.text|softwraphtml }}
+</p>
+<p>
+	<div class="btn-group" style="margin: 0;">
+		<button class="btn btn-primary" onclick="location.href='{{ idea.get_add_url }}';">
+			New
+		</button>
+		<button class="btn btn-danger" onclick="location.href='{{ idea.get_del_url }}';">
+			Delete
+		</button>
+		<button class="btn btn-success" onclick="location.href='{{ idea.get_edit_url }}';">
+			Edit
+		</button>
+
+		<div class="btn-group">
+			<a class="btn btn-warning dropdown-toggle" data-toggle="dropdown" href="#" >Share <span class="caret"></span></a>
+			<ul class="dropdown-menu">
+				<li>
+					<a href="{{ idea.get_make_public_url }}">Make it public</a>
+				</li>
+				<li>
+					<a href="#">Facebook</a>
+				</li>
+				<li class="divider"></li>
+				<li>
+					<a href="{{ idea.get_add_collab_url }}">Add Collaborator</a>
+				</li>
+			</ul>
+
+		</div>
+	</div>
+</p>

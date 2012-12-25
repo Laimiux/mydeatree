@@ -2,6 +2,11 @@ from django import forms
 from django.forms import ModelForm
 from ideas.models import Category, Idea
 
+# A simple contact form with four fields.
+class ContributorForm(forms.Form):
+    email = forms.EmailField()
+
+    
 class IdeaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):

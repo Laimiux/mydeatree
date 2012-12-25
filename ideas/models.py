@@ -53,6 +53,12 @@ class Idea(models.Model):
     
     objects = IdeaManager()
     
+    def get_contributors(self):
+        result_list = []
+        if self.contributors:
+            for id in self.contributors:
+                result_list += User.objects.filter(pk__exact=id)
+        return result_list
     
     def save(self, *args, **kwargs):
        ''' On save, update timestamps '''

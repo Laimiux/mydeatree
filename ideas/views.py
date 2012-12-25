@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import Http404
-from ideas.forms import IdeaForm, CategoryForm
+from ideas.forms import IdeaForm, CategoryForm, ContributorForm
 from ideas.models import Idea, Category
 from django.template import RequestContext
 
@@ -39,15 +39,14 @@ def new_children_idea(request, id):
         return HttpResponseRedirect(parent_idea.get_absolute_url())
      return render_to_response('idea_form.html', { 'form': form, 'parent_idea': parent_idea }, context_instance=RequestContext(request))
 
-def show_idea(request, id):
-    # Get the page number.
+def show_private_idea(request, idea):
+     # Get the page number.
     current_page = convert_to_int(request.GET.get('page') or 1)
     # Number of objects per page
     results_per_page = 10
     current_user = request.user; 
-    
-    object_id = convert_to_int(id)      
-    parent_idea = get_object_or_404(Idea, id=object_id, owner=request.user)
+       
+    parent_idea = idea
         
     number_of_pages = parent_idea.idea_set.all().count()
     
@@ -64,24 +63,42 @@ def show_idea(request, id):
                                   'parent_idea' : parent_idea, 'number_of_pages' : number_of_pages, 
                                                 'current_page' : current_page}, context_instance=RequestContext(request))
 
+def show_public_idea(request, idea): 
+    return render_to_response('public_idea.html',{ 'parent_idea' : idea }, RequestContext(request))
+
+def show_collab_idea(request, idea):
+    return HttpResponse("You are looking at a contributing idea")
+
+def show_idea(request, id):
+    object_id = convert_to_int(id)      
+    parent_idea = get_object_or_404(Idea, id=object_id)
+    
+    if parent_idea.owner == request.user:
+        return show_private_idea(request, parent_idea)
+    elif parent_idea.public:
+        return show_public_idea(request, parent_idea)
+
 def show_public_ideas(request):
     idea_list = Idea.objects.get_public_ideas()
     return render_to_response('show_public_ideas.html', { 'idea_list' : idea_list }, RequestContext(request))
 
 def show_shared_ideas(request):
-    idea_list = Idea.objects.filter(contributors__isnull=False, owner = request.user)
+    idea_list = Idea.objects.filter(owner=request.user).exclude(contributors__isnull=True)#.exclude(contributors='')
     return render_to_response('show_shared_ideas.html', { 'idea_list' : idea_list } , RequestContext(request))
 
 def idea_collab(request, id):
     current_user = request.user; 
     
     object_id = convert_to_int(id)      
-    parent_idea = get_object_or_404(Idea, id=object_id, owner=request.user)
+    idea = get_object_or_404(Idea, id=object_id, owner=request.user)
+    
+    # Pass the contributor list to the template
+    contributors = idea.get_contributors()
+    
+    form = ContributorForm()
         
-    return render_to_response('idea_collaboration.html', { 'user_name' : current_user,
-                                  'parent_idea' : parent_idea,}, context_instance=RequestContext(request))
-
-
+    return render_to_response('idea_collaboration.html', { 'user_name' : current_user, 'contributors' : contributors,
+                                  'form' : form, 'parent_idea' : idea,}, RequestContext(request))
 
 def edit_idea(request, id):
     object_id = convert_to_int(id)
