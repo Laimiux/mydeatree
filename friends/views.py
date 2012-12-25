@@ -5,13 +5,23 @@ from friends.forms import FriendForm
 
 from django.http import HttpResponse
 
+from friends.models import UserProfile
+
 from django.contrib.auth.models import User
 from django.forms.util import ErrorList
 
 def show_user_friends(request):
     current_user = request.user
-
-    friend_list = current_user.get_profile().get_friends()
+    
+    # Get friend list
+    # if no profile exists, create one
+    try:
+        friend_list = current_user.get_profile().get_friends()
+    except UserProfile.DoesNotExist:
+        profile = UserProfile(user=current_user)
+        profile.save()
+        friend_list = current_user.get_profile().get_friends()
+    
     form = FriendForm(request.POST or None)
     
     if form.is_valid():
