@@ -1,11 +1,11 @@
 {% load pagination %}
-<h1><a href="{{ idea.get_absolute_url }}">{{ idea.title|softwraphtml }}</a> {% if idea.public %}<span class="label label-info">Public</span> {% endif %} 
-	{% if idea.contributors %}<span class="label label-success">Shared</span> {% endif %}</h1>
+<h3><a href="{{ idea.get_absolute_url }}">{{ idea.title|softwraphtml }}</a> {% if idea.public %}<span class="label label-info">Public</span> {% endif %} 
+	{% if idea.contributors %}<span class="label label-success">Shared</span> {% endif %}</h3>
 <p>
 	{{ idea.text|softwraphtml }}
 </p>
 <p>
-	{% include "includes/idea_owner_links.html" with idea=idea %}
+	{% include "includes/idea_owner_links.html" with idea=idea  %}
 	<!--
 	<div class="btn-group" style="margin: 0;">
 		<button class="btn btn-primary" onclick="location.href='{{ idea.get_add_url }}';">
