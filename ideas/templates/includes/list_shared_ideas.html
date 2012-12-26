@@ -1,0 +1,28 @@
+{% if idea_list %}
+{% load pagination %}
+<div class="container">
+	{% for idea in idea_list %}
+	<div class="well">
+		<h2><a href="{{ idea.get_absolute_url }}">{{ idea.title }} </a><small>by {{ idea.owner }}</small></h2>
+		<p>
+			{{ idea.text }}
+		</p>
+		<p>
+			<h4>Contributors: <small> {% for contrib in idea.get_contributors %} {{ contrib.username }} {% endfor %}</small></h4>
+		</p>
+		{% if idea.owner == request.user %}
+		<!-- Owner buttons -->
+		{% include "includes/idea_owner_links.html" with idea=idea %}
+		{% else %}
+		<!-- Buttons for contributor -->
+		{% include "includes/idea_contributors_links.html" with idea=idea %}
+		{% endif %}
+	</div>
+
+	{% endfor %}
+</div>
+{% else %}
+Currently you have no shared ideas.
+
+{% endif %}
+

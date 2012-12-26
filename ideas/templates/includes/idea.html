@@ -5,6 +5,8 @@
 	{{ idea.text|softwraphtml }}
 </p>
 <p>
+	{% include "includes/idea_owner_links.html" with idea=idea %}
+	<!--
 	<div class="btn-group" style="margin: 0;">
 		<button class="btn btn-primary" onclick="location.href='{{ idea.get_add_url }}';">
 			New
@@ -33,4 +35,5 @@
 
 		</div>
 	</div>
+	-->
 </p>

@@ -31,7 +31,14 @@ def new_top_idea(request):
 
 def new_children_idea(request, id):
      object_id = convert_to_int(id)
-     parent_idea = get_object_or_404(Idea, id=object_id, owner=request.user)
+     parent_idea = get_object_or_404(Idea, id=object_id)
+     if parent_idea.owner == request.user:
+         pass
+     elif request.user.pk in parent_idea.contributors:
+         pass
+     else:
+         raise Http404
+     
      form = IdeaForm(request.POST or None, initial={'title': 'I love your site!', 'text' : 'Sample idea!'}, user=request.user)
      if form.is_valid():
         model = form.save()
@@ -77,7 +84,7 @@ def show_idea(request, id):
     
     if parent_idea.owner == request.user:
         return show_private_idea(request, parent_idea)
-    elif request.user.pk in parent_idea.contributors:
+    elif parent_idea.contributors and request.user.pk in parent_idea.contributors:
         return show_collab_idea(request, parent_idea)
     elif parent_idea.public:
         return show_public_idea(request, parent_idea)
@@ -91,7 +98,6 @@ def show_public_ideas(request):
 def show_shared_ideas(request):
     idea_list = Idea.objects.filter(owner=request.user).exclude(contributors__isnull=True)
     contrib_list = Idea.objects.filter(contributors=request.user.pk)
-    #idea_contrib = Idea.objects.filter(contributors=request.user.pk)
     all_ideas = itertools.chain(idea_list, contrib_list)
     return render_to_response('show_shared_ideas.html', { 'idea_list' : all_ideas } , RequestContext(request))
 
@@ -114,8 +120,16 @@ def idea_collab(request, id):
 
 def edit_idea(request, id):
     object_id = convert_to_int(id)
-    idea = get_object_or_404(Idea, id=object_id, owner=request.user)
-    form = IdeaForm(request.POST or None, user=request.user, instance=idea)
+    idea = get_object_or_404(Idea, id=object_id)
+    
+    if idea.owner == request.user:
+        pass
+    elif request.user.pk in idea.contributors:
+        pass
+    else:
+        raise Http404
+    
+    form = IdeaForm(request.POST or None, instance=idea, user=idea.owner)
     if form.is_valid():
         idea = form.save()
         return HttpResponseRedirect(idea.get_absolute_url())
@@ -126,16 +140,13 @@ def edit_idea(request, id):
 
 def delete_idea(request, id):
     object_id = convert_to_int(id)
-    idea_to_be_deleted = get_object_or_404(Idea, id=object_id, owner=request.user)
-    
+    idea_to_be_deleted = get_object_or_404(Idea, id=object_id, owner=request.user)    
     if request.method == "POST":
         if idea_to_be_deleted.parent is not None:
             returned = idea_to_be_deleted.parent.get_absolute_url()
         else:
-            returned = "/"
-            
+            returned = "/"       
         idea_to_be_deleted.delete()
-        
         return HttpResponseRedirect(returned)
     
     return render_to_response('delete_form.html', { 'idea' : idea_to_be_deleted }, context_instance=RequestContext(request))
@@ -164,7 +175,7 @@ def show_categories(request):
 
 def make_idea_public(request, id):
     idea_id = convert_to_int(id)
-    idea = get_object_or_404(Idea, id=idea_id)
+    idea = get_object_or_404(Idea, id=idea_id, owner=request.user)
     idea.public = True
     idea.save()
     return HttpResponseRedirect("/public/")
