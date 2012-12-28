@@ -1,4 +1,3 @@
-{% if idea_list %}
 {% load pagination %}
 <div class="container">
 	{% for idea in idea_list %}
@@ -23,8 +22,4 @@
 
 	{% endfor %}
 </div>
-{% else %}
-Currently you have no shared ideas.
-
-{% endif %}
 

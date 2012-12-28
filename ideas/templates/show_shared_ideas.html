@@ -12,7 +12,13 @@
 	</div>
 
 	{% include "includes/idea_nav.html" with active=3 %}
+	{% if idea_list %}
 	{% include "includes/list_shared_ideas.html" %}
+	{% else %}
+	<p style='text-align: center;'>
+		Currently there are no shared ideas.
+	</p>
+	{% endif %}
 </div>
 
 {% endblock %}
