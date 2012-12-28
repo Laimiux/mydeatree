@@ -60,6 +60,22 @@ class Idea(models.Model):
                 result_list += User.objects.filter(pk__exact=id)
         return result_list
     
+    def is_original_owner(self, user):
+        if self.owner and self.owner == user:
+            return True
+        elif self.parent:
+            return self.parent.is_original_owner(user)
+        else: 
+            return False
+        
+    def is_contributor(self, user_primary_key):
+        if self.contributors and user_primary_key in self.contributors:
+            return True
+        elif self.parent:
+            return self.parent.is_contributor(user_primary_key)
+        else:
+            return False
+            
     def save(self, *args, **kwargs):
        ''' On save, update timestamps '''
        if not self.id:

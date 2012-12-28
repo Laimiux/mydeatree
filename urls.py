@@ -20,6 +20,7 @@ v1_api.register(UserResource())
 v1_api.register(IdeaResource())
 v1_api.register(CategoryResource())
 
+
 admin.autodiscover()
 
 handler500 = 'djangotoolbox.errorviews.server_error'

@@ -2,8 +2,8 @@
 {% load pagination %}
 <div class="container">
 	{% for idea in idea_list %}
-	<div class="well">
-		<h2><a href="{{ idea.get_absolute_url }}">{{ idea.title }}</a> <small>by {{ idea.owner }}</small> </h2>
+	<div class="well well-small">
+		<h3><a href="{{ idea.get_absolute_url }}">{{ idea.title }}</a> <small>by {{ idea.owner }}</small> </h3>
 		<p>{{ idea.text }}</p>
 		<button class="btn btn-primary">Share</button>
 	</div>

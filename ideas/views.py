@@ -76,18 +76,20 @@ def show_public_idea(request, idea):
     return render_to_response('public_idea.html', { 'parent_idea' : idea }, RequestContext(request))
 
 def show_collab_idea(request, idea):
-    return HttpResponse("You are looking at a contributing idea")
+    
+    return render_to_response('show_contrib_idea.html', { 'parent_idea' : idea }, RequestContext(request))
+
 
 def show_idea(request, id):
     object_id = convert_to_int(id)      
-    parent_idea = get_object_or_404(Idea, id=object_id)
+    idea = get_object_or_404(Idea, id=object_id)
     
-    if parent_idea.owner == request.user:
-        return show_private_idea(request, parent_idea)
-    elif parent_idea.contributors and request.user.pk in parent_idea.contributors:
-        return show_collab_idea(request, parent_idea)
-    elif parent_idea.public:
-        return show_public_idea(request, parent_idea)
+    if idea.owner == request.user:
+        return show_private_idea(request, idea)
+    elif idea.is_contributor(request.user.pk) or idea.is_original_owner(request.user):
+        return show_collab_idea(request, idea)
+    elif idea.public:
+        return show_public_idea(request, idea)
     else:
         raise Http404
     

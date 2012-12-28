@@ -33,9 +33,9 @@ class UserResource(ModelResource):
     
     def apply_authorization_limits(self, request, object_list):
         return object_list.filter(username=request.user)
-        
+ 
 class IdeaResource(ModelResource):
-    #user = fields.ForeignKey(UserResource, 'user')
+    user = fields.ForeignKey(UserResource, 'user', null=True)
     
     class Meta:
         queryset = Idea.objects.all()

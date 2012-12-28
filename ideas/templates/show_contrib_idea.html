@@ -20,9 +20,6 @@
 			Edit Idea
 		</button>
 
-		<button class="btn btn-danger" onclick="location.href='{{ parent_idea.get_del_url }}';">
-			Delete Idea
-		</button>
 
 		{% if parent_idea.parent %}
 		<button class="btn btn-info" onclick="location.href='{{ parent_idea.parent.get_absolute_url }}';">
@@ -30,7 +27,7 @@
 		</button>
 
 		{% else %}
-		<button class="btn btn-info" onclick="location.href='/';">
+		<button class="btn btn-info" onclick="location.href='/shared/';">
 			See All Ideas
 		</button>
 
@@ -39,11 +36,10 @@
 
 </div>
 
+
 <div class="display_ideas">
-	{% include "includes/list_shared_ideas.html" %}
+	{% include "includes/list_shared_ideas.html" with idea_list=parent_idea.idea_set.all %}
 </div>
 
-{% load pagination %}
-{% page_index ?page= %}
 
 {% endblock %}
