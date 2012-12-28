@@ -1,10 +1,28 @@
-<p style="text-align: center;">
-	<button class="btn btn-primary" onclick="location.href='/new/';">
-		New Idea
-	</button>
-</p>
-<div class="display_ideas">
+<div class="container container-fluid">
+	<div class="well">
+		<h1>Ideas</h1>
+		<p>
+			These are your ideas. You can branch out and have more ideas.
+		</p>
+		<p>
+			<button class="btn btn-primary" onclick="location.href='/new/';">
+				New Idea
+			</button>
+		</p>
+	</div>
+
+	<!-- Tabs -->
+
+	{% include "includes/idea_nav.html" with active=1 %}
+
+	{% if idea_list %}
 	{% include "includes/list_ideas.html" %}
+	{% else %}
+	<p style='text-align: center;'>
+		Currently no ideas.
+	</p>
+	{% endif %}
+
+	{% load pagination %}
+	{% page_index ?page= %}
 </div>
-{% load pagination %}
-{% page_index ?page= %}

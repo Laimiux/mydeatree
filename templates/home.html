@@ -4,17 +4,7 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-<div class="container container-fluid">
-	<div class="well">
-		<h1>Ideas</h1>
-		These are your ideas. You can branch out and have more ideas.
-	</div>
-
-	<!-- Tabs -->
-
-	{% include "includes/idea_nav.html" with active=1 %}
-	{% include 'show_top_ideas.html' with idea_list=idea_list %}
-</div>
+{% include "show_top_ideas.html" %}
 {% else %}
 
 <div class="well">

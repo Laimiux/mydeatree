@@ -4,42 +4,15 @@
 {% block content %}
 
 {% load pagination %}
-<div class="hero-unit">
-	
-	<h1>{{ parent_idea.title|softwraphtml }}</h1>
-	<p>
-		{{ parent_idea.text|softwraphtml }}
-	</p>
+<div class="container container-fluid">
+	{% include "includes/top_idea.html" with rights="contributor" %}
 
-	<p style="text-align: left;">
-		<button class="btn btn-primary" onclick="location.href='{{ parent_idea.get_add_url }}';">
-			New Idea
-		</button>
-
-		<button class="btn btn-success" onclick="location.href='{{ parent_idea.get_edit_url }}';">
-			Edit Idea
-		</button>
-
-
-		{% if parent_idea.parent %}
-		<button class="btn btn-info" onclick="location.href='{{ parent_idea.parent.get_absolute_url }}';">
-			Previous Idea
-		</button>
-
-		{% else %}
-		<button class="btn btn-info" onclick="location.href='/shared/';">
-			See All Ideas
-		</button>
-
-		{% endif %}
-	</p>
-
+	{% if user.is_authenticated %}
+	{% include "includes/idea_nav.html" with active=3 %}
+	{% endif %}
+	<div class="display_ideas">
+		{% include "includes/list_shared_ideas.html" with idea_list=parent_idea.idea_set.all %}
+	</div>
 </div>
-
-
-<div class="display_ideas">
-	{% include "includes/list_shared_ideas.html" with idea_list=parent_idea.idea_set.all %}
-</div>
-
 
 {% endblock %}

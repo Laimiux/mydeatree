@@ -2,10 +2,17 @@
 {% block title %}Public Ideas{% endblock %}
 
 {% block content %}
-<div class="hero-unit">
-	<h1>{{ parent_idea.title }}</h1>
-	<p>
-		{{ parent_idea.text }}
-	</p>
-</div>
+{% include "includes/top_idea.html" with rights="public" %}
+
+{% if request.user.is_authenticated %}
+{% include "includes/idea_nav.html" with active=2 %}
+{% endif %}
+
+{% if idea_list %}
+{% include "includes/list_ideas.html" %}
+{% else %}
+<p style='text-align: center;'>
+	Currently no ideas.
+</p>
+{% endif %}
 {% endblock %}

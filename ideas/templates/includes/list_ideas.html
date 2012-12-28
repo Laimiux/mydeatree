@@ -1,10 +1,14 @@
 {% load pagination %}
 <div class="container">
+{% if idea_list %}
 	{% for idea in idea_list %}
 	<div class="well well-small">
 		{% include 'includes/idea.html' with idea=idea %}
 	</div>
 	{% endfor %}
+{% else %}
+	<p style='text-align: center;'> No ideas.</p>
+{% endif %}	
 </div>
 
 

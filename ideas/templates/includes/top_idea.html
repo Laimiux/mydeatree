@@ -1,0 +1,67 @@
+{% load pagination %}
+<div class="hero-unit">
+
+	<h1>{{ parent_idea.title|softwraphtml }}</h1>
+	<p>
+		{{ parent_idea.text|softwraphtml }}
+	</p>
+
+	<!-- Owner controls -->
+	{% if rights == "owner" %}
+	<p style="text-align: left;">
+		<button class="btn btn-primary" onclick="location.href='{{ parent_idea.get_add_url }}';">
+			New Idea
+		</button>
+
+		<button class="btn btn-success" onclick="location.href='{{ parent_idea.get_edit_url }}';">
+			Edit Idea
+		</button>
+
+		<button class="btn btn-danger" onclick="location.href='{{ parent_idea.get_del_url }}';">
+			Delete Idea
+		</button>
+
+		{% if parent_idea.parent %}
+		<button class="btn btn-info" onclick="location.href='{{ parent_idea.parent.get_absolute_url }}';">
+			Previous Idea
+		</button>
+
+		{% else %}
+		<button class="btn btn-info" onclick="location.href='/';">
+			See All Ideas
+		</button>
+
+		{% endif %}
+	</p>
+	{% endif %}
+	<!-- Contributor controls -->
+	{% if rights == "contributor" %}
+	<p style="text-align: left;">
+		<button class="btn btn-primary" onclick="location.href='{{ parent_idea.get_add_url }}';">
+			New Idea
+		</button>
+
+		<button class="btn btn-success" onclick="location.href='{{ parent_idea.get_edit_url }}';">
+			Edit Idea
+		</button>
+
+		{% if parent_idea.parent %}
+		<button class="btn btn-info" onclick="location.href='{{ parent_idea.parent.get_absolute_url }}';">
+			Previous Idea
+		</button>
+
+		{% else %}
+		<button class="btn btn-info" onclick="location.href='/shared/';">
+			See All Ideas
+		</button>
+
+		{% endif %}
+	</p>
+	{% endif %}
+	
+	<!-- Public controls --> 
+	{% if rights == "public" %}
+
+	{% endif %}
+
+</div>
