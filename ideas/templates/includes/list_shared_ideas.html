@@ -2,24 +2,8 @@
 <div class="container">
 	{% for idea in idea_list %}
 	<div class="well well-small">
-		<h3><a href="{{ idea.get_absolute_url }}">{{ idea.title }} </a><small>by {{ idea.owner }}</small></h3>
-		<p>
-			{{ idea.text }}
-		</p>
-		{% if idea.get_contributors %}
-		<p>
-			<h4>Contributors: <small> {% for contrib in idea.get_contributors %} {{ contrib.username }} {% endfor %}</small></h4>
-		</p>
-		{% endif %}
-		{% if idea.owner == request.user %}
-		<!-- Owner buttons -->
-		{% include "includes/idea_owner_links.html" with idea=idea %}
-		{% else %}
-		<!-- Buttons for contributor -->
-		{% include "includes/idea_contributors_links.html" with idea=idea %}
-		{% endif %}
+		{% include "includes/idea.html" with show_contributors="True" show_owner="True" %}
 	</div>
-
 	{% endfor %}
 </div>
 

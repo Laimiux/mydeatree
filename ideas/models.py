@@ -53,6 +53,14 @@ class Idea(models.Model):
     
     objects = IdeaManager()
     
+    
+    # Not finished
+    def get_children_count(self):
+        count = 0     
+      #  for idea in self.idea_set:
+            #count += idea.get_children_count
+        return count 
+    
     def get_contributors(self):
         result_list = []
         if self.contributors:
