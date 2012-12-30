@@ -56,9 +56,9 @@ class Idea(models.Model):
     
     # Not finished
     def get_children_count(self):
-        count = 0     
-      #  for idea in self.idea_set:
-            #count += idea.get_children_count
+        count = self.idea_set.count()    
+        for idea in self.idea_set.all():
+            count += idea.get_children_count()
         return count 
     
     def get_contributors(self):

@@ -48,6 +48,9 @@ def new_children_idea(request, id):
         return HttpResponseRedirect(parent_idea.get_absolute_url())
      return render_to_response('idea_form.html', { 'form': form, 'parent_idea': parent_idea }, context_instance=RequestContext(request))
 
+def new_public_idea(request):
+    return HttpResponse("NEW PUBLIC IDEA")
+
 def show_private_idea(request, idea):
      # Get the page number.
     current_page = convert_to_int(request.GET.get('page') or 1)
