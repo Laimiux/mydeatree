@@ -8,10 +8,12 @@
 		<p>
 			{{ idea.text }}
 		</p>
+		<p> It has {{ idea.get_children_count }} children.</p>
 	</div>
 	<p style="text-align: center;">
 		Are you sure you want to delete it and all it's children?
 	</p>
+	
 	<div style="text-align: center;">
 		<button type="submit" class="btn btn-danger">
 			Delete Idea
