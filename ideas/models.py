@@ -53,8 +53,9 @@ class Idea(models.Model):
     
     objects = IdeaManager()
     
+    #class Meta:
+       # ordering = ['-modified_date']
     
-    # Not finished
     def get_children_count(self):
         count = self.idea_set.count()    
         for idea in self.idea_set.all():

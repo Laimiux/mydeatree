@@ -5,6 +5,7 @@ from django.http import Http404
 from ideas.forms import IdeaForm, CategoryForm, ContributorForm
 from ideas.models import Idea, Category
 from django.template import RequestContext
+from django.db.models import Q
 
 from django.forms.util import ErrorList
 
@@ -101,10 +102,11 @@ def show_public_ideas(request):
     return render_to_response('show_public_ideas.html', { 'idea_list' : idea_list }, RequestContext(request))
 
 def show_shared_ideas(request):
-    idea_list = Idea.objects.filter(owner=request.user).exclude(contributors__isnull=True)
+    idea_list = Idea.objects.exclude(contributors__isnull=True).filter(owner=request.user)
     contrib_list = Idea.objects.filter(contributors=request.user.pk)
     all_ideas = itertools.chain(idea_list, contrib_list)
-    return render_to_response('show_shared_ideas.html', { 'idea_list' : all_ideas } , RequestContext(request))
+    return render_to_response('show_shared_ideas.html', 
+                              { 'idea_list' : all_ideas } , RequestContext(request))
 
 def idea_collab(request, id):
     current_user = request.user; 

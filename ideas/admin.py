@@ -3,7 +3,7 @@ from ideas.models import Idea, Category, IdeaForm
 
 class IdeaAdmin(admin.ModelAdmin):
     form = IdeaForm
-    list_display = ('owner', 'title', 'text')
+    list_display = ('owner', 'title', 'text','public', 'modified_date', 'created_date')
     
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('owner', 'name')
