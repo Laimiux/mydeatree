@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import *
 
+
 from ideas.models import Idea
 
 from ideas.views import *
@@ -7,7 +8,7 @@ from ideas.views import *
 
 urlpatterns = patterns('',
     # Authenticated users urls                 
-    (r'^new/$', requires_login(new_top_idea)),
+    url(r'^new/$', requires_login(new_top_idea), name="new-top-idea"),
 
     (r'^idea/(?P<id>\d+)/add/$', requires_login(new_children_idea)),
     (r'^idea/(?P<id>\d+)/del/$', requires_login(delete_idea)),

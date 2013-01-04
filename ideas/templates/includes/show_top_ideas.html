@@ -1,8 +1,3 @@
-<script>
-	function newIdea() {
-		alert("Blet")
-	}
-</script>
 <div class="container container-fluid">
 	<div class="well">
 		<h1>Ideas</h1>
@@ -10,8 +5,8 @@
 			These are your ideas. You can branch out and have more ideas.
 		</p>
 		<p>
-			{% include "includes/new_idea_modal.html" %}
-			<a href="/new/" role="button" class="btn btn-primary" data-toggle="modal">New Idea</a>
+			{% include "includes/new_idea_modal.html" with form=idea_form %}
+			<a href="{% url new-top-idea %}" role="button" class="btn btn-primary">New Idea</a>
 		</p>
 	</div>
 
