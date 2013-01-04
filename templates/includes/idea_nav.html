@@ -12,14 +12,14 @@
 	{% else %}
 	<li>
 	{% endif %}
-		<a href="/public/">Public</a>
+		<a href="{% url show-public-ideas %}">Public</a>
 	</li>
 	{% if active == 3 %}
 	<li class="active">
 	{% else %}
 	<li>
 	{% endif %}
-		<a href="/shared/">Shared</a>
+		<a href="{% url show-shared-ideas %}">Shared</a>
 	</li>
 
 </ul>

@@ -20,7 +20,8 @@ def requires_login(view):
             return HttpResponseRedirect('/accounts/login/')
         return view(request, *args, **kwargs)
     return new_view
-    
+
+
 def new_top_idea(request):
     form = IdeaForm(request.POST or None, initial={'title': 'I love your site!', 'text' : 'Sample idea!'}, user=request.user)
     if form.is_valid():
@@ -28,14 +29,13 @@ def new_top_idea(request):
         model.owner = request.user
         model.save()
         return HttpResponseRedirect('/')
-    return render_to_response('idea_form_top.html', { 'form': form }, context_instance=RequestContext(request))
+    context = RequestContext(request, { 'form' : form })
+    return render_to_response('idea_form_top.html', context)
 
-def new_children_idea(request, id):
-     object_id = convert_to_int(id)
-     parent_idea = get_object_or_404(Idea, id=object_id)
-     if parent_idea.owner == request.user:
+def new_children_idea(request, idea):     
+     if idea.owner == request.user:
          pass
-     elif request.user.pk in parent_idea.contributors:
+     elif request.user.pk in idea.contributors:
          pass
      else:
          raise Http404
@@ -44,10 +44,12 @@ def new_children_idea(request, id):
      if form.is_valid():
         model = form.save()
         model.owner = request.user
-        model.parent = parent_idea
+        model.parent = idea
         model.save()
-        return HttpResponseRedirect(parent_idea.get_absolute_url())
-     return render_to_response('idea_form.html', { 'form': form, 'parent_idea': parent_idea }, context_instance=RequestContext(request))
+        return HttpResponseRedirect(idea.get_absolute_url())
+
+     context = RequestContext(request,{ 'form': form, 'parent_idea': idea } )
+     return render_to_response('idea_form.html', context )
 
 def new_public_idea(request):
     return HttpResponse("NEW PUBLIC IDEA")
@@ -84,10 +86,7 @@ def show_collab_idea(request, idea):
     return render_to_response('show_contrib_idea.html', { 'parent_idea' : idea }, RequestContext(request))
 
 
-def show_idea(request, id):
-    object_id = convert_to_int(id)      
-    idea = get_object_or_404(Idea, id=object_id)
-    
+def show_idea(request, idea):    
     if idea.owner == request.user:
         return show_private_idea(request, idea)
     elif idea.is_contributor(request.user.pk) or idea.is_original_owner(request.user):

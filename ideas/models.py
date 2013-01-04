@@ -4,6 +4,8 @@ from djangotoolbox.fields import ListField
 from django import forms
 from django.forms import ModelForm
 
+from django.core.urlresolvers import reverse
+
 from friends.models import ModelListField
 
 import datetime
@@ -107,13 +109,13 @@ class Idea(models.Model):
         return "/idea/%i/" % self.id
     
     def get_add_url(self):
-        return self.get_absolute_url() + "add/"
+        return reverse('new-children-idea', args=(self.pk,))
     
     def get_del_url(self):
-        return self.get_absolute_url() + "del/"
+        return reverse('delete-idea', args=(self.pk,))
     
     def get_edit_url(self):
-        return self.get_absolute_url() + "edit/"
+        return reverse('edit-idea', args=(self.pk,))
     
     def get_add_collab_url(self):
         return self.get_absolute_url() + "collaboration/"
