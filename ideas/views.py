@@ -37,7 +37,7 @@ def new_idea(request, template_name, idea=None):
     context = RequestContext(request)    
     return render_to_response(template_name, data, context)
 
-def new_children_idea(request, idea):     
+def new_children_idea(request, template_name, idea):     
      if idea.owner == request.user:
          pass
      elif idea.is_contributor(request.user.pk) or idea.is_original_owner(request.user):
@@ -45,7 +45,7 @@ def new_children_idea(request, idea):
      else:
          raise Http404()
      
-     return new_idea(request, 'idea_form.html', idea)
+     return new_idea(request, template_name, idea)
 
 
 def new_public_idea(request):

@@ -7,7 +7,7 @@ from ideas.views import *
 from ideas.ideas_helpers import get_idea_from_id, dual_format
 
 
-new_idea_decorator = dual_format('idea_form_top.html')
+#new_idea_decorator = dual_format('idea_form_top.html')
 
 
 urlpatterns = patterns('',
@@ -15,7 +15,8 @@ urlpatterns = patterns('',
     #url(r'^new/$', requires_login(new_top_idea), { 'template_name' : 'idea_form_top.html' }, name="new-top-idea"),
     url(r'^new/$', requires_login(new_idea), { 'template_name' : 'idea_form_top.html' }, name="new-top-idea"),
 
-    url(r'^idea/(?P<id>\d+)/add/$', requires_login(get_idea_from_id(new_children_idea)), name="new-children-idea"),
+    url(r'^idea/(?P<id>\d+)/add/$', requires_login(get_idea_from_id(new_children_idea)), 
+        { 'template_name' : 'idea_form.html' }, name="new-children-idea"),
     url(r'^idea/(?P<id>\d+)/del/$', requires_login(get_idea_from_id(delete_idea)), name="delete-idea"),
     url(r'^idea/(?P<id>\d+)/edit/$', requires_login(get_idea_from_id(edit_idea)), name="edit-idea"),
     (r'^idea/(?P<id>\d+)/collaboration/$', requires_login(idea_collab)),
