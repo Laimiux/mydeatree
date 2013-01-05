@@ -4,9 +4,13 @@
 
 {% load pagination %}
 <div class="well">
+	{% if parent_idea %}
 	<h1>Adding a new idea to</h1>
 	<h4>{{ parent_idea.title|softwraphtml }} <small> {{ parent_idea.text|softwraphtml }}</small></h4>
-
+	{% else %}
+	<h1>Create Top Idea</h1>
+	<p>Express yourself in 140 characters or less.</p>
+	{% endif %}
 	{% load bootstrap_toolkit %}
 
 	<form action="" method="post">

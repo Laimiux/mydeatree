@@ -13,7 +13,7 @@ from ideas.ideas_helpers import get_idea_from_id, dual_format
 urlpatterns = patterns('',
     # Authenticated users urls                 
     #url(r'^new/$', requires_login(new_top_idea), { 'template_name' : 'idea_form_top.html' }, name="new-top-idea"),
-    url(r'^new/$', requires_login(new_idea), { 'template_name' : 'idea_form_top.html' }, name="new-top-idea"),
+    url(r'^new/$', requires_login(new_idea), { 'template_name' : 'idea_form.html' }, name="new-top-idea"),
 
     url(r'^idea/(?P<id>\d+)/add/$', requires_login(get_idea_from_id(new_children_idea)), 
         { 'template_name' : 'idea_form.html' }, name="new-children-idea"),

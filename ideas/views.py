@@ -89,7 +89,7 @@ def show_idea(request, idea):
     elif idea.public:
         return show_public_idea(request, idea)
     else:
-        raise Http404
+        raise Http404()
     
 def show_public_ideas(request):
     idea_list = Idea.objects.get_public_ideas()
@@ -125,7 +125,7 @@ def edit_idea(request, idea):
     elif idea.is_contributor(request.user.pk) or idea.is_original_owner(request.user):
         pass
     else:
-        raise Http404
+        raise Http404()
     
     form = IdeaForm(request.POST or None, instance=idea, user=idea.owner)
     if form.is_valid():
