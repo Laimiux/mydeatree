@@ -106,7 +106,7 @@ class Idea(models.Model):
             child.delete() 
     
     def get_absolute_url(self):
-        return "/idea/%i/" % self.id
+        return reverse('show-idea', args=(self.pk,))
     
     def get_add_url(self):
         return reverse('new-children-idea', args=(self.pk,))
@@ -117,6 +117,7 @@ class Idea(models.Model):
     def get_edit_url(self):
         return reverse('edit-idea', args=(self.pk,))
     
+    # Update the last two urls to reverse style.
     def get_add_collab_url(self):
         return self.get_absolute_url() + "collaboration/"
     

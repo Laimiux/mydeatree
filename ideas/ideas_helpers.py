@@ -1,5 +1,5 @@
 from django.utils.functional import wraps
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render_to_response
 from django.template.loader import get_template
 from django.template.context import RequestContext
 
@@ -17,14 +17,11 @@ def get_idea_from_id(view):
         return view(request, idea=idea, *args, **kwargs)
     return wraps(view)(wrapper)
     
-
-
 def dual_format(template_name):
     def decorator(view):
         def wrapper(request, *args, **kwargs):
             data = view(request, *args, **kwargs)
             if request.is_ajax():
-
                 json = simplejson.dumps(data, cls=DjangoJSONEncoder)
                 return HttpResponse(json)
             else:

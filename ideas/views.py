@@ -1,7 +1,5 @@
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect
-from django.http import Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from ideas.forms import IdeaForm, CategoryForm, ContributorForm
 from ideas.models import Idea, Category
 from django.template import RequestContext
@@ -22,34 +20,33 @@ def requires_login(view):
     return new_view
 
 
-def new_top_idea(request):
+# Generic new idea form
+def new_idea(request, template_name, idea=None):
     form = IdeaForm(request.POST or None, initial={'title': 'I love your site!', 'text' : 'Sample idea!'}, user=request.user)
     if form.is_valid():
         model = form.save()
         model.owner = request.user
-        model.save()
-        return HttpResponseRedirect('/')
-    context = RequestContext(request, { 'form' : form })
-    return render_to_response('idea_form_top.html', context)
+        model.parent = idea
+        model.save()     
+        if idea:
+            return HttpResponseRedirect(idea.get_absolute_url())
+        else:
+            return HttpResponseRedirect('/')
+        
+    data = { 'form' : form, 'parent_idea': idea } 
+    context = RequestContext(request)    
+    return render_to_response(template_name, data, context)
 
 def new_children_idea(request, idea):     
      if idea.owner == request.user:
          pass
-     elif request.user.pk in idea.contributors:
+     elif idea.is_contributor(request.user.pk) or idea.is_original_owner(request.user):
          pass
      else:
-         raise Http404
+         raise Http404()
      
-     form = IdeaForm(request.POST or None, initial={'title': 'I love your site!', 'text' : 'Sample idea!'}, user=request.user)
-     if form.is_valid():
-        model = form.save()
-        model.owner = request.user
-        model.parent = idea
-        model.save()
-        return HttpResponseRedirect(idea.get_absolute_url())
+     return new_idea(request, 'idea_form.html', idea)
 
-     context = RequestContext(request,{ 'form': form, 'parent_idea': idea } )
-     return render_to_response('idea_form.html', context )
 
 def new_public_idea(request):
     return HttpResponse("NEW PUBLIC IDEA")
@@ -70,19 +67,17 @@ def show_private_idea(request, idea):
     else:
         number_of_pages = number_of_pages / results_per_page
     
-    
-
     children_ideas = parent_idea.idea_set.all().order_by('modified_date').reverse()[results_per_page * (current_page - 1):current_page * results_per_page]
     
-    return render_to_response('show_children_ideas.html', { 'user_name' : current_user, 'idea_list' : children_ideas,
+    context = RequestContext(request,{ 'user_name' : current_user, 'idea_list' : children_ideas,
                                   'parent_idea' : parent_idea, 'number_of_pages' : number_of_pages,
-                                                'current_page' : current_page}, context_instance=RequestContext(request))
+                                                'current_page' : current_page})
+    return render_to_response('show_children_ideas.html', context)
 
 def show_public_idea(request, idea): 
     return render_to_response('public_idea.html', { 'parent_idea' : idea }, RequestContext(request))
 
 def show_collab_idea(request, idea):
-    
     return render_to_response('show_contrib_idea.html', { 'parent_idea' : idea }, RequestContext(request))
 
 
@@ -124,13 +119,10 @@ def idea_collab(request, id):
     return render_to_response('idea_collaboration.html', { 'user_name' : current_user, 'contributors' : contributors,
                                   'form' : form, 'parent_idea' : idea, }, RequestContext(request))
 
-def edit_idea(request, id):
-    object_id = convert_to_int(id)
-    idea = get_object_or_404(Idea, id=object_id)
-    
+def edit_idea(request, idea):    
     if idea.owner == request.user:
         pass
-    elif request.user.pk in idea.contributors:
+    elif idea.is_contributor(request.user.pk) or idea.is_original_owner(request.user):
         pass
     else:
         raise Http404
@@ -139,28 +131,28 @@ def edit_idea(request, id):
     if form.is_valid():
         idea = form.save()
         return HttpResponseRedirect(idea.get_absolute_url())
-        
-    return render_to_response('idea_edit_form.html', { 'form': form }, context_instance=RequestContext(request))
+    
+    context = RequestContext(request, { 'form': form })
+    return render_to_response('idea_edit_form.html', context)
 
     
 
-def delete_idea(request, id):
-    object_id = convert_to_int(id)
-    idea_to_be_deleted = get_object_or_404(Idea, id=object_id, owner=request.user)    
+def delete_idea(request, idea):
+    if idea.owner != request.user:
+        raise Http404()
+    
     if request.method == "POST":
-        if idea_to_be_deleted.parent is not None:
-            returned = idea_to_be_deleted.parent.get_absolute_url()
+        if idea.parent is not None:
+            returned = idea.parent.get_absolute_url()
         else:
             returned = "/"       
-        idea_to_be_deleted.delete()
+        idea.delete()
         return HttpResponseRedirect(returned)
-    
-    return render_to_response('delete_form.html', { 'idea' : idea_to_be_deleted }, context_instance=RequestContext(request))
+    context = RequestContext(request, { 'idea' : idea })
+    return render_to_response('delete_form.html', context)
             
-def show_categories(request):
-    
-    categories = Category.objects.filter(owner=request.user)
-    
+def show_categories(request): 
+    categories = Category.objects.filter(owner=request.user)   
     # Sticks in a post or renders empty form
     form = CategoryForm(request.POST or None)
 
@@ -175,8 +167,8 @@ def show_categories(request):
         except Category.DoesNotExist:
             category = Category.objects.create(owner=request.user, name=cd['name'])
             return HttpResponseRedirect('/categories/')
-
-    return render_to_response('show_categories.html', { 'categories' : categories, 'form': form, 'layout': 'inline', }, context_instance=RequestContext(request))        
+    context = RequestContext(request, { 'categories' : categories, 'form': form, 'layout': 'inline' })
+    return render_to_response('show_categories.html', context)        
 
 
 def make_idea_public(request, id):
