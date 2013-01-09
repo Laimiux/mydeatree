@@ -7,6 +7,8 @@ from django.db.models import Q
 
 from django.forms.util import ErrorList
 
+from django.core.urlresolvers import reverse
+
 from ideas.utils import convert_to_int
 
 import itertools
@@ -19,6 +21,23 @@ def requires_login(view):
         return view(request, *args, **kwargs)
     return new_view
 
+
+def new_public_idea(request):
+    form = IdeaForm(request.POST or None, user=request.user)
+    
+    if form.is_valid():
+        model = form.save()
+        model.owner = request.user
+        model.public = True
+        model.save()
+        
+        return { 'status' : 'success', 'resource' : model, 'redirect' : reverse('show-public-ideas') }
+    
+    else:
+        
+        return { 'form' : form }
+    
+    
 
 # Generic new idea form
 def new_idea(request, template_name, idea=None):
@@ -47,9 +66,6 @@ def new_children_idea(request, template_name, idea):
      
      return new_idea(request, template_name, idea)
 
-
-def new_public_idea(request):
-    return HttpResponse("NEW PUBLIC IDEA")
 
 def show_private_idea(request, idea):
      # Get the page number.
@@ -93,7 +109,9 @@ def show_idea(request, idea):
     
 def show_public_ideas(request):
     idea_list = Idea.objects.get_public_ideas()
-    return render_to_response('show_public_ideas.html', { 'idea_list' : idea_list }, RequestContext(request))
+    form = IdeaForm(user=request.user)
+    data = { 'idea_list' : idea_list, 'new_idea_link' : reverse("new-public-idea"), 'form' : form}
+    return render_to_response('show_public_ideas.html', data, RequestContext(request))
 
 def show_shared_ideas(request):
     idea_list = Idea.objects.exclude(contributors__isnull=True).filter(owner=request.user)

@@ -2,10 +2,13 @@ from django.utils.functional import wraps
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template.loader import get_template
 from django.template.context import RequestContext
+from django.http import HttpResponseRedirect
 
 from django.core.serializers.json import DjangoJSONEncoder
 
 from ideas.models import Idea
+
+import simplejson
 
 def get_idea_from_id(view):
     """ 
@@ -26,6 +29,9 @@ def dual_format(template_name):
                 return HttpResponse(json)
             else:
                 context = RequestContext(request)
-                return render_to_response(template_name, data, context)
+                if 'redirect' in data:
+                    return HttpResponseRedirect(data['redirect'])
+                else:
+                    return render_to_response(template_name, data, context)
         return wraps(view)(wrapper)
     return decorator

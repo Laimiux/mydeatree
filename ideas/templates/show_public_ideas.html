@@ -10,9 +10,10 @@
 			Ideas posted by fellow members.
 		</p>
 		<p>
-			<button class="btn btn-primary" onclick="location.href='/public/new/';">
+			<button class="btn btn-primary" onclick='location.href="{% url new-public-idea %}"'>
 				New Idea
 			</button>
+			{% include "includes/new_idea_modal.html" with link=new_idea_link %}
 		</p>
 	</div>
 

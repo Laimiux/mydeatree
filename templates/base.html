@@ -64,7 +64,9 @@
 		<!-- THE javascript
 		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
-		<script type="text/javascript" src="/media/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}js/backbone.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}js/backbone-tastypie.js"></script>
 		{% bootstrap_javascript_tag "dropdown" %}
 	</body>
 </html>

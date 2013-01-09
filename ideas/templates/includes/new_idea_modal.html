@@ -1,17 +1,45 @@
-{% load bootstrap_toolkit %} 
+{% load bootstrap_toolkit %}
 <script>
-	function newIdea(){
+	function loadForm(result) {
+		alert(result)
+	}
+	window.onload = function(){
+		//alert("Page loaded")
+		/*
+		$.ajax({
+			url : "{{ link }}",
+			success:loadForm,
+		})
+		*/
+	}
+	function newIdea() {
+		var url = "{{ link }}"
+		
+		
+		// Add form validation
 		var form = document.forms[0];
-		var title = form.elements["id_title"]
-		var text = form.elements['id_text']
-		var category = form.elements['id_category']
-		var post_object = { 'title' : title.value, 'text' : text.value, 'category' : category.value };
-		alert("Submitting new idea " + title.value + " " + text.value + " " + post_object);
-
+		var title = form.elements["id_title"];
+		var text = form.elements['id_text'];
+		var category = form.elements['id_category'];
+		
+		$.ajax({
+			type : "POST",
+			url : url,
+			accepts: 'application/json',
+			contentType : "application/json",
+			data : JSON.stringify({ "title" : title.value, "text" : text.value, "category" : category.value }),
+			//dataType : "application/json",
+			//processData : false,
+			contentType : "application/json",
+			success:function(result){
+				alert("Idea created")
+			}
+		});
 	}
 </script>
 <!-- Button to trigger modal -->
 <a href="#newIdeaModal" role="button" class="btn btn-primary" data-toggle="modal">New Idea</a>
+
 
 <!-- Modal -->
 <div id="newIdeaModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -31,7 +59,7 @@
 		<button class="btn" data-dismiss="modal" aria-hidden="true">
 			Close
 		</button>
-		<button class="btn btn-primary" onclick="newIdea();">
+		<button class="btn btn-primary" onclick="newIdea()">
 			Submit
 		</button>
 	</div>

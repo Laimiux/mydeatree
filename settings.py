@@ -30,6 +30,7 @@ INSTALLED_APPS = (
     'pagination',
     'friends',
     'tastypie',
+    'backbone_tastypie',
     'djangotoolbox',
     
     # djangoappengine should come last, so it can override a few manage.py commands
@@ -52,6 +53,7 @@ MIDDLEWARE_CLASSES = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.request',
+    'django.core.context_processors.static',
     'django.core.context_processors.media',
 )
 
@@ -75,8 +77,8 @@ SERVER_EMAIL = 'limeblaststudios@gmail.com'
 STATIC_ROOT = os.path.join(ROOT_PATH, "static/")
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = os.path.join(ROOT_PATH, 'media')
-MEDIA_URL = '/media'
+MEDIA_ROOT = os.path.join(ROOT_PATH, 'media/')
+MEDIA_URL = '/media/'
 
 
 LOGIN_REDIRECT_URL = '/'
@@ -86,7 +88,7 @@ TEMPLATE_DIRS = (os.path.join(ROOT_PATH, 'templates'),)
 
 ROOT_URLCONF = 'urls'
 
-BOOTSTRAP_BASE_URL      = MEDIA_URL + '/bootstrap/'
+BOOTSTRAP_BASE_URL      = MEDIA_URL + 'bootstrap/'
 BOOTSTRAP_CSS_BASE_URL  = BOOTSTRAP_BASE_URL + 'css/'
 BOOTSTRAP_CSS_URL       = BOOTSTRAP_CSS_BASE_URL + 'bootstrap.css'
 BOOTSTRAP_JS_BASE_URL   = BOOTSTRAP_BASE_URL + 'js/'

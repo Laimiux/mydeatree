@@ -6,8 +6,13 @@
 		</p>
 		<p>
 			{# Add new-idea button#}
-			{# {% include "includes/new_idea_modal.html" with form=idea_form %} #}
+			{% include "includes/new_idea_modal.html" with form=idea_form %}
 			<a href="{% url new-top-idea %}" role="button" class="btn btn-primary">New Idea</a>
+
+			{# Temporary thing #}
+			<button onclick="addIdea('hjkfhe','klwfel')" class="btn btn-danger">
+				Boo
+			</button>
 		</p>
 	</div>
 
@@ -15,12 +20,26 @@
 
 	{% include "includes/idea_nav.html" with active=1 %}
 
-	{% if idea_list %}
-	{% include "includes/list_ideas.html" %}
-	{% else %}
-	<p style='text-align: center;'>
-		Currently no ideas.
-	</p>
-	{% endif %}
-
+	<div id="idea_list" class="container">
+		{% if idea_list %}
+		{% include "includes/list_ideas.html" %}
+		{% else %}
+		<p id="no_ideas_paragraph" style='text-align: center;'>
+			Currently no ideas.
+		</p>
+		{% endif %}
+	</div>
 </div>
+
+<script>
+	function addIdea(title, text) {
+		var idea_list = document.getElementById('idea_list');
+		idea_list.innerHTML = "<div class='well'>blah</div>" + idea_list.innerHTML;
+
+		var no_ideas_paragraph = document.getElementById('no_ideas_paragraph');
+		if (no_ideas_paragraph != null) {
+			// exists.
+			no_ideas_paragraph.parentNode.removeChild(no_ideas_paragraph);
+		}
+	}
+</script>
