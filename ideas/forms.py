@@ -10,7 +10,8 @@ class ContributorForm(forms.Form):
 class IdeaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop("user")  
+        owner = kwargs.pop("owner", None)  
+        
         super(IdeaForm, self).__init__(*args, **kwargs)
         
         self.fields['title'].required = True
@@ -20,8 +21,8 @@ class IdeaForm(forms.ModelForm):
         
         self.fields['category'].required = False
               
-        if user:
-            self.fields['category'].queryset = Category.objects.filter(owner=user)
+        if owner:
+            self.fields['category'].queryset = Category.objects.filter(owner=owner)
         
         
     def clean_text(self):

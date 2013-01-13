@@ -1,17 +1,21 @@
 # myapp/api.py
 from django.contrib.auth.models import User
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
-from tastypie.authorization import Authorization
-from tastypie.authentication import BasicAuthentication
-from tastypie.authorization import DjangoAuthorization
+from tastypie.authentication import Authentication, BasicAuthentication
+from tastypie.authorization import Authorization, DjangoAuthorization
 from tastypie.validation import FormValidation, CleanedDataFormValidation
 from django.shortcuts import get_object_or_404
 
 from tastypie import fields
-from ideas.models import Idea, Category
-from ideas.forms import IdeaForm
-
 from django.forms.models import ModelChoiceField
+from django.db import IntegrityError
+
+from tastypie.exceptions import BadRequest
+
+
+from ideas.models import Idea
+from ideas.forms import IdeaForm
+from forms import UserForm
 
 class ModelFormValidation(FormValidation):
     """
@@ -87,27 +91,25 @@ class BasicAuthenticationWithCookies(BasicAuthentication):
                 return True
         return super(BasicAuthenticationWithCookies, self).is_authenticated(request, **kwargs)
     
-    
-class CategoryResource(ModelResource):
-    class Meta:
-        queryset = Category.objects.all()
-        resource_name = 'category'
-
-    def apply_authorization_limits(self, request, object_list):
-        return object_list.filter(owner=request.user)
-
 class UserResource(ModelResource):
     class Meta:
         queryset = User.objects.all()
         resource_name = 'user'
-        fields = ['username', 'first_name', 'last_name', 'last_login']
-        excludes = ['email', 'password', 'is_active', 'is_staff', 'is_superuser']
+        fields = ['username', 'first_name', 'last_name', 'last_login', 'password']
+        #excludes = ['email', 'password', 'is_active', 'is_staff', 'is_superuser']
         
-        allowed_methods = ['get']
-        # Add it here.
-        authentication = BasicAuthentication()
-        authorization = DjangoAuthorization()
+        allowed_methods = ['get', 'post']
+        authentication = Authentication()
+        authorization = Authorization()
+        #authorization = DjangoAuthorization()
+        validation = ModelFormValidation(form_class=UserForm)
         
+    def obj_create(self, bundle, request=None, **kwargs):
+        bundle = super(UserResource, self).obj_create(bundle, request, **kwargs)
+        bundle.obj.set_password(bundle.data.get('password'))
+        bundle.obj.save() 
+
+        return bundle
     
     def apply_authorization_limits(self, request, object_list):
         return object_list.filter(username=request.user)
@@ -117,22 +119,26 @@ class UserResource(ModelResource):
  
   
 class IdeaResource(ModelResource):
-   # parent = fields.ToOneField('api.resources.IdeaResource', 'parent', full=True, related_name='parent', null=True)
-    #children = fields.ToManyField('api.resources.ChildrenIdeaResource', 'idea_set', full=True, related_name='parent')
+    parent = fields.ToOneField('api.resources.IdeaResource', 'parent', related_name='parent', null=True)
     
     class Meta:
         queryset = Idea.objects.all()
         resource_name = 'idea'
-        list_allowed_methods = ['get', 'post', 'delete', 'head', 'put']
+        list_allowed_methods = ['get', 'post', 'patch', 'head', 'put']
         #excludes = ['id']
-        #ordering = ('modified_date',)
+        ordering = ['title', '-modified_date']
         authentication = BasicAuthenticationWithCookies()
         authorization = DjangoAuthorization()
-        #validation = FormValidation(form_class=IdeaForm)
-        
+        filtering = {
+            "parent" : ALL_WITH_RELATIONS,
+            "title" : ('exact', 'startswith',),
+        }
+        validation = ModelFormValidation(form_class=IdeaForm)
         
     def obj_create(self, bundle, request=None, **kwargs):
-        return super(IdeaResource, self).obj_create(bundle, request, owner=request.user)
+        #bundle.data['owner'] = { 'owner': request.user }
+        return super(IdeaResource, self).obj_create(bundle, request, owner=request.user, **kwargs)
+
         
     def apply_authorization_limits(self, request, object_list):
         return object_list.filter(owner=request.user)
@@ -140,12 +146,4 @@ class IdeaResource(ModelResource):
     def determine_format(self, request): 
         return "application/json" 
     
-class ChildrenIdeaResource(ModelResource):
-    #parent = fields.ToOneField(IdeaResource, 'parent')  
-    #children = fields.ToManyField('api.resources.ChildrenIdeaResource', 'idea_set', full=True, related_name='parent')
-    
-    class Meta:
-        queryset = Idea.objects.exclude(parent=None)
-        resource_name = "children_ideas"
-        
        

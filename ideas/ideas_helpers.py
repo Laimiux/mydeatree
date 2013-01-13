@@ -8,7 +8,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 from ideas.models import Idea
 
-import simplejson
+from django.utils import simplejson
 
 def get_idea_from_id(view):
     """ 

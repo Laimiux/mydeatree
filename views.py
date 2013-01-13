@@ -28,7 +28,7 @@ def main_page(request):
 #        else:
 #            number_of_pages = number_of_pages/results_per_page
 
-        new_idea_form = IdeaForm(user=request.user)
+        new_idea_form = IdeaForm(owner=request.user)
         
               
         return render_to_response('home.html', { 'user' : request.user, 'idea_form' : new_idea_form,

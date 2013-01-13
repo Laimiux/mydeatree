@@ -55,9 +55,6 @@ class Idea(models.Model):
     
     objects = IdeaManager()
     
-    #class Meta:
-       # ordering = ['-modified_date']
-    
     def get_children_count(self):
         count = self.idea_set.count()    
         for idea in self.idea_set.all():
@@ -96,6 +93,8 @@ class Idea(models.Model):
        if self.parent:
            self.parent.modified_date = self.modified_date
            self.parent.save()
+           
+       
            
        super(Idea, self).save(*args, **kwargs)
         

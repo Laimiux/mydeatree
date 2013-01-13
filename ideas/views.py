@@ -41,7 +41,7 @@ def new_public_idea(request):
 
 # Generic new idea form
 def new_idea(request, template_name, idea=None):
-    form = IdeaForm(request.POST or None, initial={'title': 'I love your site!', 'text' : 'Sample idea!'}, user=request.user)
+    form = IdeaForm(request.POST or None, initial={'title': 'I love your site!', 'text' : 'Sample idea!'}, owner=request.user)
     if form.is_valid():
         model = form.save()
         model.owner = request.user
@@ -97,10 +97,10 @@ def show_collab_idea(request, idea):
     return render_to_response('show_contrib_idea.html', { 'parent_idea' : idea }, RequestContext(request))
 
 
-def show_idea(request, idea):    
+def show_idea(request, idea):     
     if idea.owner == request.user:
         return show_private_idea(request, idea)
-    elif idea.is_contributor(request.user.pk) or idea.is_original_owner(request.user):
+    elif request.user.is_authenticated() and (idea.is_contributor(request.user.pk) or idea.is_original_owner(request.user)):
         return show_collab_idea(request, idea)
     elif idea.public:
         return show_public_idea(request, idea)
