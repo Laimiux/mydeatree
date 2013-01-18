@@ -2,7 +2,7 @@
 from django.contrib.auth.models import User
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.authentication import Authentication, BasicAuthentication
-from tastypie.authorization import Authorization, DjangoAuthorization
+from tastypie.authorization import Authorization, DjangoAuthorization, ReadOnlyAuthorization
 from tastypie.validation import FormValidation, CleanedDataFormValidation
 from django.shortcuts import get_object_or_404
 
@@ -16,6 +16,7 @@ from tastypie.exceptions import BadRequest
 from ideas.models import Idea
 from ideas.forms import IdeaForm
 from forms import UserForm
+from api.helpers import AnonymousPostAuthentication, BasicAuthenticationWithCookies, OwnerAuthorization
 
 class ModelFormValidation(FormValidation):
     """
@@ -75,33 +76,30 @@ class ModelFormValidation(FormValidation):
         if form.is_valid():
             return {}
         return form.errors
- 
- 
-class BasicAuthenticationWithCookies(BasicAuthentication):
-    def __init__(self, *args, **kwargs):
-        super(BasicAuthenticationWithCookies, self).__init__(*args, **kwargs)
- 
-    def is_authenticated(self, request, **kwargs):
-        from django.contrib.sessions.models import Session
-        if 'sessionid' in request.COOKIES:
-            s = Session.objects.get(pk=request.COOKIES['sessionid'])
-            if '_auth_user_id' in s.get_decoded():
-                u = User.objects.get(id=s.get_decoded()['_auth_user_id'])
-                request.user = u
-                return True
-        return super(BasicAuthenticationWithCookies, self).is_authenticated(request, **kwargs)
     
+class UsernameResource(ModelResource):
+    class Meta:
+        queryset = User.objects.all()
+        allowed_methods = ['get']
+        authentication = BasicAuthentication()
+        authorization = ReadOnlyAuthorization()
+        fields = ['username']
+        include_resource_uri = False
+    
+    def determine_format(self, request): 
+        return "application/json"     
+ 
+
 class UserResource(ModelResource):
     class Meta:
         queryset = User.objects.all()
         resource_name = 'user'
-        fields = ['username', 'first_name', 'last_name', 'last_login', 'password']
+        fields = ['username', 'email', 'public', 'first_name', 'last_name', 'last_login', 'password']
         #excludes = ['email', 'password', 'is_active', 'is_staff', 'is_superuser']
         
         allowed_methods = ['get', 'post']
-        authentication = Authentication()
+        authentication = AnonymousPostAuthentication()
         authorization = Authorization()
-        #authorization = DjangoAuthorization()
         validation = ModelFormValidation(form_class=UserForm)
         
     def obj_create(self, bundle, request=None, **kwargs):
@@ -124,11 +122,11 @@ class IdeaResource(ModelResource):
     class Meta:
         queryset = Idea.objects.all()
         resource_name = 'idea'
-        list_allowed_methods = ['get', 'post', 'patch', 'head', 'put']
+        list_allowed_methods = ['get', 'post', 'put', 'delete']
         #excludes = ['id']
-        ordering = ['title', '-modified_date']
+        #ordering = ['title', '-modified_date']
         authentication = BasicAuthenticationWithCookies()
-        authorization = DjangoAuthorization()
+        authorization = OwnerAuthorization()
         filtering = {
             "parent" : ALL_WITH_RELATIONS,
             "title" : ('exact', 'startswith',),
@@ -136,9 +134,11 @@ class IdeaResource(ModelResource):
         validation = ModelFormValidation(form_class=IdeaForm)
         
     def obj_create(self, bundle, request=None, **kwargs):
-        #bundle.data['owner'] = { 'owner': request.user }
-        return super(IdeaResource, self).obj_create(bundle, request, owner=request.user, **kwargs)
-
+        if request and hasattr(request, 'user'):
+            return super(IdeaResource, self).obj_create(bundle, request, owner=request.user, **kwargs)
+        else:
+            return super(IdeaResource, self).obj_create(bundle, request, **kwargs)
+        
         
     def apply_authorization_limits(self, request, object_list):
         return object_list.filter(owner=request.user)
@@ -146,4 +146,19 @@ class IdeaResource(ModelResource):
     def determine_format(self, request): 
         return "application/json" 
     
+class PublicIdeaResource(ModelResource):  
+    owner = fields.ToOneField('api.resources.UsernameResource', 'owner', related_name='owner', null=True, full=True)
+    
+    class Meta:
+        queryset = Idea.objects.all()
+        list_allowed_methods = ['get']
+        resource_name = "public_ideas"
+        authentication = Authentication()
+        
+             
+    def apply_authorization_limits(self, request, object_list):
+        return object_list.filter(public=True)  
+    
+    def determine_format(self, request): 
+        return "application/json" 
        

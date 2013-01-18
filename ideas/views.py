@@ -23,7 +23,7 @@ def requires_login(view):
 
 
 def new_public_idea(request):
-    form = IdeaForm(request.POST or None, user=request.user)
+    form = IdeaForm(request.POST or None, owner=request.user)
     
     if form.is_valid():
         model = form.save()
@@ -109,7 +109,7 @@ def show_idea(request, idea):
     
 def show_public_ideas(request):
     idea_list = Idea.objects.get_public_ideas()
-    form = IdeaForm(user=request.user)
+    form = IdeaForm(owner=request.user)
     data = { 'idea_list' : idea_list, 'new_idea_link' : reverse("new-public-idea"), 'form' : form}
     return render_to_response('show_public_ideas.html', data, RequestContext(request))
 
@@ -145,7 +145,7 @@ def edit_idea(request, idea):
     else:
         raise Http404()
     
-    form = IdeaForm(request.POST or None, instance=idea, user=idea.owner)
+    form = IdeaForm(request.POST or None, instance=idea, owner=idea.owner)
     if form.is_valid():
         idea = form.save()
         return HttpResponseRedirect(idea.get_absolute_url())
