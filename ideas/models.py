@@ -44,7 +44,7 @@ class Idea(models.Model):
     title = models.CharField(max_length=30)
     text = models.CharField(max_length=140) 
     parent = models.ForeignKey('self', blank=True, null=True)
-    category = models.ForeignKey(Category, blank=True, null=True)
+    #category = models.ForeignKey(Category, blank=True, null=True)
     
     public = models.BooleanField(default=False)
     

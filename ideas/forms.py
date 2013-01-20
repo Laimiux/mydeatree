@@ -19,10 +19,10 @@ class IdeaForm(forms.ModelForm):
         self.fields['title'].error_messages = {'required': 'Please enter title'}
         self.fields['text'].max_length = 140
         
-        self.fields['category'].required = False
+        #self.fields['category'].required = False
               
-        if owner:
-            self.fields['category'].queryset = Category.objects.filter(owner=owner)
+        #if owner:
+        #    self.fields['category'].queryset = Category.objects.filter(owner=owner)
         
         
     def clean_text(self):
@@ -34,7 +34,7 @@ class IdeaForm(forms.ModelForm):
     
     class Meta:
         model = Idea
-        fields = ('title', 'text', 'category')
+        fields = ('title', 'text')
         widgets = {
             'text': forms.Textarea(attrs={'cols': 20, 'rows': 10, 'maxlength': 140}),
         }
