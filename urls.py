@@ -17,7 +17,7 @@ from tastypie.api import Api
 
 v1_api = Api(api_name='v1')
 v1_api.register(UserResource())
-v1_api.register(IdeaResource())
+v1_api.register(IdeaResource(), canonical=True)
 v1_api.register(PublicIdeaResource())
 
 
@@ -37,7 +37,7 @@ urlpatterns = patterns('',
     (r'^', include('ideas.urls')),
     (r'^', include('contactus.urls')),
     (r'^', include('friends.urls')),
-    (r'^api/', include(v1_api.urls)),
+    url(r'^api/', include(v1_api.urls)),
 
 )
 

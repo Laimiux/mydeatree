@@ -32,7 +32,7 @@ def main_page(request):
         
               
         return render_to_response('home.html', { 'user' : request.user, 'idea_form' : new_idea_form,
-                                                 'idea_list' : idea_list}, context_instance=context)
+                                                 'link' : 'api/v1/ideas/','idea_list' : idea_list}, context_instance=context)
     else:
        return render_to_response('home.html', context_instance=context) 
     

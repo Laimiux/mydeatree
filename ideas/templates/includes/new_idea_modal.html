@@ -13,21 +13,18 @@
 		*/
 	}
 	function newIdea() {
-		var url = "{{ link }}"
-		
-		
+		var url = "{% url api_dispatch_list resource_name='idea' api_name='v1' %}"
 		// Add form validation
 		var form = document.forms[0];
 		var title = form.elements["id_title"];
 		var text = form.elements['id_text'];
-		var category = form.elements['id_category'];
 		
 		$.ajax({
 			type : "POST",
 			url : url,
 			accepts: 'application/json',
 			contentType : "application/json",
-			data : JSON.stringify({ "title" : title.value, "text" : text.value, "category" : category.value }),
+			data : JSON.stringify({ "title" : title.value, "text" : text.value }),
 			//dataType : "application/json",
 			//processData : false,
 			contentType : "application/json",
