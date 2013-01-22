@@ -162,3 +162,12 @@ class PublicIdeaResource(ModelResource):
     def determine_format(self, request): 
         return "application/json" 
        
+    def alter_list_data_to_serialize(self, request, data):
+        data['public_ideas'] = data['objects']
+        del data['objects']
+        return data
+
+    def alter_deserialized_list_data(self, request, data):
+        data['objects'] = data['public_ideas']
+        del data['locations']
+        return data

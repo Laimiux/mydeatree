@@ -3,14 +3,16 @@
 	function loadForm(result) {
 		alert(result)
 	}
-	window.onload = function(){
+
+
+	window.onload = function() {
 		//alert("Page loaded")
 		/*
-		$.ajax({
-			url : "{{ link }}",
-			success:loadForm,
-		})
-		*/
+		 $.ajax({
+		 url : "{{ link }}",
+		 success:loadForm,
+		 })
+		 */
 	}
 	function newIdea() {
 		var url = "{% url api_dispatch_list resource_name='idea' api_name='v1' %}"
@@ -18,25 +20,50 @@
 		var form = document.forms[0];
 		var title = form.elements["id_title"];
 		var text = form.elements['id_text'];
-		
+
 		$.ajax({
 			type : "POST",
 			url : url,
-			accepts: 'application/json',
+			accepts : 'application/json',
 			contentType : "application/json",
-			data : JSON.stringify({ "title" : title.value, "text" : text.value }),
+			data : JSON.stringify({
+				"title" : title.value,
+				"text" : text.value
+			}),
 			//dataType : "application/json",
 			//processData : false,
+			error : function(jq, textStatus, errorThrown) {
+				var error = $.parseJSON(jq.responseText);
+				var idea = error.idea;
+
+				var isTitleError = typeof idea.title != 'undefined';
+				var isTextError = typeof idea.text != 'undefined';
+
+				if (isTitleError || isTextError) {
+					var error_field = document.getElementById('form_error_field');
+					error_field.innerHTML = "<h5>Errors:</h5><ul>";
+
+					if (isTitleError) {
+						error_field.innerHTML = error_field.innerHTML + "<li>" + idea.title + "</li>";
+					}
+					if (isTextError) {
+						error_field.innerHTML = error_field.innerHTML + "<li>" + idea.text + "</li>";
+					}
+					
+					error_field.innerHTML = error_field.innerHTML + "</ul>";
+
+				}
+
+			},
 			contentType : "application/json",
-			success:function(result){
-				alert("Idea created")
+			success : function(result) {
+				alert("Idea created");
 			}
 		});
 	}
 </script>
 <!-- Button to trigger modal -->
 <a href="#newIdeaModal" role="button" class="btn btn-primary" data-toggle="modal">New Idea</a>
-
 
 <!-- Modal -->
 <div id="newIdeaModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -47,6 +74,7 @@
 		<h3 id="myModalLabel">New Idea</h3>
 	</div>
 	<div class="modal-body">
+		<div id="form_error_field"></div>
 		<form class="modal-form">
 			{% csrf_token %}
 			{{ form|as_bootstrap }}

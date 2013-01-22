@@ -16,6 +16,7 @@ class IdeaForm(forms.ModelForm):
         
         self.fields['title'].required = True
         self.fields['title'].max_length = 30
+        self.fields['text'].error_messages = {'required' : 'Please enter text'}
         self.fields['title'].error_messages = {'required': 'Please enter title'}
         self.fields['text'].max_length = 140
         
@@ -29,7 +30,7 @@ class IdeaForm(forms.ModelForm):
         text = self.cleaned_data['text']
         num_words = len(text)
         if num_words < 10:
-            raise forms.ValidationError("Not enough characters, you need to have more than 10!")
+            raise forms.ValidationError("Text needs to have more than 10 characters!")
         return text
     
     class Meta:
