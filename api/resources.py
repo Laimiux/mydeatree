@@ -117,14 +117,12 @@ class UserResource(ModelResource):
  
   
 class IdeaResource(ModelResource):
-    parent = fields.ToOneField('api.resources.IdeaResource', 'parent', related_name='parent', null=True)
+    parent = fields.ToOneField('api.resources.IdeaResource', 'parent', related_name='children', null=True, full=False)
     
     class Meta:
         queryset = Idea.objects.all()
         resource_name = 'idea'
         list_allowed_methods = ['get', 'post', 'put', 'delete']
-        #excludes = ['id']
-        #ordering = ['title', '-modified_date']
         authentication = BasicAuthenticationWithCookies()
         authorization = OwnerAuthorization()
         filtering = {
@@ -162,12 +160,12 @@ class PublicIdeaResource(ModelResource):
     def determine_format(self, request): 
         return "application/json" 
        
-    def alter_list_data_to_serialize(self, request, data):
-        data['public_ideas'] = data['objects']
-        del data['objects']
-        return data
-
-    def alter_deserialized_list_data(self, request, data):
-        data['objects'] = data['public_ideas']
-        del data['locations']
-        return data
+#    def alter_list_data_to_serialize(self, request, data):
+#        data['public_ideas'] = data['objects']
+#        del data['objects']
+#        return data
+#
+#    def alter_deserialized_list_data(self, request, data):
+#        data['objects'] = data['public_ideas']
+#        del data['locations']
+#        return data

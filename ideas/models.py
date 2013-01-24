@@ -86,17 +86,25 @@ class Idea(models.Model):
             
     def save(self, *args, **kwargs):
        ''' On save, update timestamps '''
+       import sys
+       print >>sys.stderr, 'Saving ' + self.title
+       
        if not self.id:
             self.created_date = datetime.datetime.today()
        self.modified_date = datetime.datetime.today()
        
-       if self.parent:
-           self.parent.modified_date = self.modified_date
-           self.parent.save()
-           
        
-           
+       
+       if not self.parent is None:
+           if hasattr(self.parent, 'modified_date'):
+               self.parent.modified_date = datetime.datetime.today()
+               self.parent.save()
+       # Protect an idea from saving itself as a parent
+       if self == self.parent:
+           self.parent = None
        super(Idea, self).save(*args, **kwargs)
+    
+       
         
     def delete(self):
         children_ideas = self.idea_set.all()
