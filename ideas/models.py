@@ -99,9 +99,6 @@ class Idea(models.Model):
            if hasattr(self.parent, 'modified_date'):
                self.parent.modified_date = datetime.datetime.today()
                self.parent.save()
-       # Protect an idea from saving itself as a parent
-       if self == self.parent:
-           self.parent = None
        super(Idea, self).save(*args, **kwargs)
     
        

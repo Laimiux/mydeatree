@@ -1,6 +1,54 @@
 {% extends 'base.html' %}
 {% block title %}Public Ideas{% endblock %}
 
+{% block preload_js %}
+<script>
+	
+	function getPublicIdeas() {
+		var url = "{% url api_dispatch_list resource_name='public_ideas' api_name='v1' %}"
+		$.ajax({
+			type : "GET",
+			url : url,
+			accepts : 'application/json',
+			contentType : "application/json",
+			data : JSON.stringify({
+				"title" : title.value,
+				"text" : text.value
+			}),
+			//dataType : "application/json",
+			//processData : false,
+			error : function(jq, textStatus, errorThrown) {
+				var error = $.parseJSON(jq.responseText);
+				var idea = error.idea;
+
+				var isTitleError = typeof idea.title != 'undefined';
+				var isTextError = typeof idea.text != 'undefined';
+
+				if (isTitleError || isTextError) {
+					var error_field = document.getElementById('form_error_field');
+					error_field.innerHTML = "<h5>Errors:</h5><ul>";
+
+					if (isTitleError) {
+						error_field.innerHTML = error_field.innerHTML + "<li>" + idea.title + "</li>";
+					}
+					if (isTextError) {
+						error_field.innerHTML = error_field.innerHTML + "<li>" + idea.text + "</li>";
+					}
+					
+					error_field.innerHTML = error_field.innerHTML + "</ul>";
+
+				}
+
+			},
+			contentType : "application/json",
+			success : function(result) {
+				alert("Idea created");
+			}
+		});	
+	}
+</script>
+{% endblock %}
+
 {% block content %}
 
 <div class="container container-fluid">

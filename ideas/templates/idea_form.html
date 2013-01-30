@@ -3,12 +3,18 @@
 {% block content %}
 
 {% load pagination %}
+{% if parent_idea %}
+<div class="well">
+	<h4>{{ parent_idea.title|softwraphtml }}</h4>
+	<p>{{ parent_idea.text|softwraphtml }}</p>
+</div>
+
+{% endif %}
 <div class="well">
 	{% if parent_idea %}
-	<h1>Adding a new idea to</h1>
-	<h4>{{ parent_idea.title|softwraphtml }} <small> {{ parent_idea.text|softwraphtml }}</small></h4>
+	<h3>Create children idea</h3>
 	{% else %}
-	<h1>Create Top Idea</h1>
+	<h3>Create parent idea</h3>
 	<p>Express yourself in 140 characters or less.</p>
 	{% endif %}
 	{% load bootstrap_toolkit %}
