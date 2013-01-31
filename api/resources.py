@@ -77,6 +77,11 @@ class ModelFormValidation(FormValidation):
             return {}
         return form.errors
     
+class BackboneCompatibleResource(ModelResource):
+
+    class Meta:
+        always_return_data = True
+
 class UsernameResource(ModelResource):
     class Meta:
         queryset = User.objects.all()
@@ -120,6 +125,7 @@ class IdeaResource(ModelResource):
     parent = fields.ToOneField('api.resources.IdeaResource', 'parent', related_name='children', null=True, full=False)
     
     class Meta:
+        always_return_data = True
         queryset = Idea.objects.all()
         resource_name = 'idea'
         list_allowed_methods = ['get', 'post', 'put', 'delete']

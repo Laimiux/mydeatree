@@ -14,6 +14,8 @@ AUTOLOAD_SITECONF = 'indexes'
 
 SECRET_KEY = '=r-$b*8hglm+858&9t043hlm6-&6-3d3vfc4((7yd0dbrakhvi'
 
+TIME_ZONE = 'America/Los_Angeles'
+
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',

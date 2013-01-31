@@ -36,4 +36,7 @@ def main_page(request):
     else:
        return render_to_response('home.html', context_instance=context) 
     
+def main_backbone(request):
+    context = RequestContext(request)
+    return render_to_response('home_backbone.html', context_instance=context)
  
