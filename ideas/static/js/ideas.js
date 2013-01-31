@@ -1,7 +1,3 @@
-/**
- * @author Laimonas Turauskas
- */
-
 // Load the application once the DOM is ready, using `jQuery.ready`:
 (function() {
 
@@ -15,33 +11,14 @@
 
 	window.IdeaList = Backbone.Collection.extend({
 		urlRoot: IDEA_API,
-		model: Idea,
 		parse: function(data) {
 			return data.objects;
 		}
 	});
 
-	/*
-	 // The collection of ideas is backed by *remote server*
-	 var IdeaList = Backbone.Collection.extend({
-	 url: IDEA_API,
-	 // Reference to this collection's model
-	 model: Idea,
-	 maybeFetch: function(options) {
-	 // Helper function to fetch only if this collection has not been fetched before.
-	 if(this._fetched) {
-	 // If this has already been fetched, call the success, if it exists
-	 options.success && option.success();
-	 return;
-	 }
-	 }
-
-	 });
-	 */
-
 	window.IdeaView = Backbone.View.extend({
-		tagName : 'li',
-		className : 'idea',
+		tagName : 'div',
+		className : 'well',
 		
 
 		render : function() {

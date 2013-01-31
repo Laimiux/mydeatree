@@ -1,67 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
+{% extends 'base.html' %}
+{% block title %}Welcome{% endblock %}
 
-		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
-		Remove this if you use the .htaccess -->
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+{% block content %}
 
-		<title>home_backbone</title>
-		<meta name="description" content="" />
-		<meta name="author" content="Laimonas Turauskas" />
+{% if user.is_authenticated %}
+<div id="app" class="container">
 
-		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
-		<link rel="shortcut icon" href="/favicon.ico" />
-		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-
-		<script>
-			IDEA_API = "{% url api_dispatch_list api_name="v1" resource_name="idea" %}";
-		</script>
-	</head>
-
-	<body>
-		<div id="app">
-			<header>
-				<h1>home_backbone</h1>
-			</header>
-			<nav>
-				<p>
-					<a href="/">Home</a>
-				</p>
-				<p>
-					<a href="/contact">Contact</a>
-				</p>
-			</nav>
-			
-			<div id="input">
-				<strong>What's going on?</strong>
-				<textarea id="title"></textarea>
-				<textarea id="text"></textarea>
+	<div id="input">
+		<strong>What's going on?</strong>
+		<textarea id="title"></textarea>
+		<textarea id="text"></textarea>						
 				
-				<button class="idea">
-					Tweet
-				</button>
-			</div>
-			<div>
-				<ul id="ideas"></ul>
 
-			</div>
 
-			<footer>
-				<p>
-					&copy; Copyright  by Laimonas Turauskas
-				</p>
-			</footer>
-		</div>
 
-		<script type="text/javascript" src="{{ MEDIA_URL }}jquery-1.8.3.min.js"></script>
-		<script type="text/javascript" src="{{ STATIC_URL }}js/underscore.js"></script>
-		<script type="text/javascript" src="{{ STATIC_URL }}js/json2.js"></script>
-		<script type="text/javascript" src="{{ STATIC_URL }}js/backbone.js"></script>
-		<script type="text/javascript" src="{{ STATIC_URL }}js/backbone-tastypie.js"></script>
-		<script type="text/javascript" src="{{ STATIC_URL }}js/knockout.js"></script>
-		<script type="text/javascript" src="{{ STATIC_URL }}js/ideas.js"></script>
+		<button class="idea">
+			Tweet
+		</button>
+	</div>
+	<div id="ideas">
 
-	</body>
-</html>
+	</div>
+	{% verbatim %}
+	{{ This won't be touched by {% django's %} template system }}
+	{% endverbatim %}
+
+</div>
+
+{% else %}
+
+<div class="well">
+	<h1>Welcome to MydeaTree!</h1>
+	<p>
+		You ever wanted to keep track of all your awesome ideas? Well
+		look no more. Sign up and enjoy!
+	</p>
+</div>
+
+<div class="row">
+	<div class="span5">
+		{% include "includes/body_sign_up.html" %}
+	</div>
+
+	<div class="span4">
+		{% include "includes/header_login.html" %}
+	</div>
+</div>
+
+{% endif %}
+
+{% endblock %}
+
