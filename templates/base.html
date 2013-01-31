@@ -13,7 +13,7 @@
 				padding-top: 60px;
 			}
 		</style>
-		
+
 		<script>
 			IDEA_API = "{% url api_dispatch_list api_name="v1" resource_name="idea" %}";
 		</script>
@@ -65,9 +65,22 @@
 			{% endblock %}
 
 		</div>
+
+		{% load verbatim %}
+		{% verbatim %}
+		<!-- TEMPLATES -->
+		<script id="private_idea_template" type="text/x-handlebars-template">
+			<h1>{{title}}</h1>
+			<p>
+			{{text}}
+			</p>
+		</script>
+		{% endverbatim %}
+
 		<!-- THE javascript
 		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" src="{{ STATIC_URL }}js/handlebars.js"></script>
 		<script type="text/javascript" src="{{ MEDIA_URL }}jquery-1.8.3.min.js"></script>
 		<script type="text/javascript" src="{{ STATIC_URL }}js/underscore.js"></script>
 		<script type="text/javascript" src="{{ STATIC_URL }}js/json2.js"></script>

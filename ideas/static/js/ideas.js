@@ -10,8 +10,8 @@
 	});
 
 	window.IdeaList = Backbone.Collection.extend({
-		urlRoot: IDEA_API,
-		parse: function(data) {
+		urlRoot : IDEA_API,
+		parse : function(data) {
 			return data.objects;
 		}
 	});
@@ -19,10 +19,16 @@
 	window.IdeaView = Backbone.View.extend({
 		tagName : 'div',
 		className : 'well',
-		
 
 		render : function() {
-			$(this.el).html(this.model.get('title') + " " + this.model.get('text') + " created on " + this.model.get('created_date')); // + " " + this.model.text + " created on " + this.model.created_date);
+			// Compile the template using Handlebars
+			var template = Handlebars.compile($("#private_idea_template").html());
+		
+			
+			
+			
+			$(this.el).html(template(this.model.toJSON()));
+			// + " " + this.model.text + " created on " + this.model.created_date);
 			return this;
 		}
 	});
@@ -42,9 +48,8 @@
 			this.ideas.bind('all', this.render);
 			this.ideas.fetch();
 		},
-		
-		
-		render: function() {
+
+		render : function() {
 			this.addAll();
 		},
 
@@ -72,13 +77,10 @@
 				this.$('#text').val('')
 			}
 		},
-		count: function() {
+		count : function() {
 			return this.ideas.length;
 		},
-
-				
 	});
-
 
 	window.app = new App();
 })();
