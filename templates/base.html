@@ -77,7 +77,12 @@
 		<script type="text/javascript" src="{{ STATIC_URL }}js/backbone-tastypie.js"></script>
 		<script type="text/javascript" src="{{ STATIC_URL }}js/knockout.js"></script>
 		<script type="text/javascript" src="{{ STATIC_URL }}js/handlebars.js"></script>
-		<script type="text/javascript" src="{{ STATIC_URL }}js/ideas.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}js/models/idea.js"></script>	
+		<script type="text/javascript" src="{{ STATIC_URL }}js/collections/ideas.js"></script>	
+		<script type="text/javascript" src="{{ STATIC_URL }}js/views/ideas.js"></script>	
+		<script type="text/javascript" src="{{ STATIC_URL }}js/views/app.js"></script>	
+		<script type="text/javascript" src="{{ STATIC_URL }}js/app.js"></script>	
+		<!--<script type="text/javascript" src="{{ STATIC_URL }}js/ideas.js"></script>-->
 		<script type="text/javascript">
 			$(document).ready(function() {
 				
@@ -88,7 +93,7 @@
 		<!-- TEMPLATES -->
 		<script id="private_idea_template" type="text/x-handlebars-template">
 
-			<h1>{{title}}  {{#if public}}<span class="label label-info">Public</span>{{/if}}</h1>
+			<h1><a href="#" class="toggleToParent">{{title}}</a>  {{#if public}}<span class="label label-info">Public</span>{{/if}}</h1>
 			<p>
 			{{text}}
 			</p>

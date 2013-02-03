@@ -5,15 +5,29 @@
 
 {% if user.is_authenticated %}
 <div id="app" class="container">
+	<div class="well">
+		<h1>Ideas</h1>
+		<p>
+			These are your ideas. You can branch out and have more ideas.
+		</p>
+		<p>
+			<div id="new_idea_modal">
+				{% include "includes/new_idea_modal.html" with form=idea_form %}
+			</div>
+
+		</p>
+	</div>
+
 	<div id="information">
-		
+
 	</div>
 
 	<div id="input">
 		<strong>What's going on?</strong>
 		<textarea id="title"></textarea>
-		<textarea id="text"></textarea>								
+		<textarea id="text"></textarea>										
 				
+
 		<button class="idea">
 			Tweet
 		</button>

@@ -38,5 +38,9 @@ def main_page(request):
     
 def main_backbone(request):
     context = RequestContext(request)
-    return render_to_response('home_backbone.html', context_instance=context)
+    if request.user.is_authenticated():
+        new_idea_form = IdeaForm(owner=request.user)
+        return render_to_response('home_backbone.html', { 'idea_form' : new_idea_form} , context_instance=context)
+    else:
+        return render_to_response('home_backbone.html', context_instance=context)
  
