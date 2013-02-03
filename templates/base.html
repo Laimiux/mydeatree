@@ -66,28 +66,36 @@
 
 		</div>
 
-		{% load verbatim %}
-		{% verbatim %}
-		<!-- TEMPLATES -->
-		<script id="private_idea_template" type="text/x-handlebars-template">
-			<h1>{{title}}</h1>
-			<p>
-			{{text}}
-			</p>
-		</script>
-		{% endverbatim %}
-
 		<!-- THE javascript
 		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
-		<script type="text/javascript" src="{{ STATIC_URL }}js/handlebars.js"></script>
+		<!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.3/jquery.min.js"></script>-->
 		<script type="text/javascript" src="{{ MEDIA_URL }}jquery-1.8.3.min.js"></script>
 		<script type="text/javascript" src="{{ STATIC_URL }}js/underscore.js"></script>
 		<script type="text/javascript" src="{{ STATIC_URL }}js/json2.js"></script>
 		<script type="text/javascript" src="{{ STATIC_URL }}js/backbone.js"></script>
 		<script type="text/javascript" src="{{ STATIC_URL }}js/backbone-tastypie.js"></script>
 		<script type="text/javascript" src="{{ STATIC_URL }}js/knockout.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}js/handlebars.js"></script>
 		<script type="text/javascript" src="{{ STATIC_URL }}js/ideas.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				
+			});
+		</script>
+		{% load verbatim %}
+		{% verbatim %}
+		<!-- TEMPLATES -->
+		<script id="private_idea_template" type="text/x-handlebars-template">
+
+			<h1>{{title}}  {{#if public}}<span class="label label-info">Public</span>{{/if}}</h1>
+			<p>
+			{{text}}
+			</p>
+			<p><a href="#" class="newChildrenIdea">New</a> | <a href="#" class="editIdea">Edit</a> | <a href="#" class="deleteIdea">Delete</a></p>
+
+		</script>
+		{% endverbatim %}
 
 		{% bootstrap_javascript_tag "dropdown" %}
 	</body>

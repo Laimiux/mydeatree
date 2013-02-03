@@ -3,10 +3,6 @@ jQuery templates use constructs like:
  
     {{if condition}} print something{{/if}}
  
-Or like:
- 
-    {% if condition %} print {%=object.something %}{% endif %}
- 
 This, of course, completely screws up Django templates,
 because Django thinks {{ and }} mean something.
  
@@ -24,7 +20,7 @@ class VerbatimNode(template.Node):
  
     def __init__(self, text):
         self.text = text
- 
+    
     def render(self, context):
         return self.text
  
@@ -37,14 +33,12 @@ def verbatim(parser, token):
         if token.contents == 'endverbatim':
             break
         if token.token_type == template.TOKEN_VAR:
-            text.append('{{ ')
+            text.append('{{')
         elif token.token_type == template.TOKEN_BLOCK:
             text.append('{%')
         text.append(token.contents)
         if token.token_type == template.TOKEN_VAR:
-            text.append(' }}')
+            text.append('}}')
         elif token.token_type == template.TOKEN_BLOCK:
-            if not text[-1].startswith('='):
-                text[-1:-1] = [' ']
-            text.append(' %}')
+            text.append('%}')
     return VerbatimNode(''.join(text))

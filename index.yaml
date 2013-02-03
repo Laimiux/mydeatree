@@ -80,6 +80,17 @@ indexes:
 - kind: ideas_idea
   properties:
   - name: owner_id
+  - name: modified_date
+
+- kind: ideas_idea
+  properties:
+  - name: owner_id
+  - name: modified_date
+    direction: desc
+
+- kind: ideas_idea
+  properties:
+  - name: owner_id
   - name: parent_id
   - name: __key__
     direction: desc

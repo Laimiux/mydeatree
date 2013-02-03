@@ -13,31 +13,51 @@
 		urlRoot : IDEA_API,
 		parse : function(data) {
 			return data.objects;
-		}
+		},
+		
+		
 	});
 
 	window.IdeaView = Backbone.View.extend({
 		tagName : 'div',
 		className : 'well',
+		
+		events: {
+			'click .newChildrenIdea' : 'toggleNewIdea',
+			'click .editIdea' : 'edit',
+			'click .deleteIdea' : 'remove',
+		},
 
 		render : function() {
 			// Compile the template using Handlebars
 			var template = Handlebars.compile($("#private_idea_template").html());
 		
-			
-			
-			
+						
 			$(this.el).html(template(this.model.toJSON()));
 			// + " " + this.model.text + " created on " + this.model.created_date);
 			return this;
+		},
+		
+		toggleNewIdea: function() {
+			alert(this.model.id)
+		},
+		
+		edit: function() {
+			
+		},
+		
+		remove: function() {
+			
 		}
+		
+		
 	});
 
 	window.App = Backbone.View.extend({
 		el : $('#app'),
 
 		events : {
-			'click .idea' : 'createIdea'
+			'click .idea' : 'createIdea',
 		},
 
 		initialize : function() {
@@ -46,7 +66,7 @@
 			this.ideas.bind('add', this.addOne);
 			this.ideas.bind('refresh', this.addAll);
 			this.ideas.bind('all', this.render);
-			this.ideas.fetch();
+			this.ideas.fetch({data: {order_by: '-modified_date'}});
 		},
 
 		render : function() {
@@ -77,6 +97,8 @@
 				this.$('#text').val('')
 			}
 		},
+		
+		
 		count : function() {
 			return this.ideas.length;
 		},

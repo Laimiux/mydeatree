@@ -131,9 +131,12 @@ class IdeaResource(ModelResource):
         list_allowed_methods = ['get', 'post', 'put', 'delete']
         authentication = BasicAuthenticationWithCookies()
         authorization = OwnerAuthorization()
+        
+        ordering = ['modified_date']
+        
         filtering = {
-            "parent" : ALL_WITH_RELATIONS,
-            "title" : ('exact', 'startswith',),
+            "parent" : ALL,
+            "modified_date" : ['gt', 'lt']
         }
         validation = ModelFormValidation(form_class=IdeaForm)
         
@@ -143,6 +146,10 @@ class IdeaResource(ModelResource):
         else:
             return super(IdeaResource, self).obj_create(bundle, request, **kwargs)
         
+        
+   # def apply_sorting(self, obj_list, options=None):
+   #     obj_list.order_by('modified_date')
+   #     return super(IdeaResource, self).apply_sorting(obj_list, options)
         
     def apply_authorization_limits(self, request, object_list):
         return object_list.filter(owner=request.user)

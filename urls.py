@@ -38,6 +38,7 @@ urlpatterns = patterns('',
     (r'^', include('contactus.urls')),
     (r'^', include('friends.urls')),
     url(r'^api/', include(v1_api.urls)),
+    
     (r'^home/$', 'views.main_backbone')
     
 )
