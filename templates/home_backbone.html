@@ -5,6 +5,10 @@
 
 {% if user.is_authenticated %}
 <div id="app" class="container">
+	<div class="well" id="idea_header">
+		
+	</div>
+	
 	<div class="well">
 		<h1>Ideas</h1>
 		<p>
@@ -17,25 +21,16 @@
 
 		</p>
 	</div>
+	
 
 	<div id="information">
 
 	</div>
 
-	<div id="input">
-		<strong>What's going on?</strong>
-		<textarea id="title"></textarea>
-		<textarea id="text"></textarea>										
-				
-
-		<button class="idea">
-			Tweet
-		</button>
-	</div>
 	<div id="ideas">
 
 	</div>
-
+	<div id="end_of_ideas"></div>
 </div>
 
 {% else %}

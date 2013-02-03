@@ -14,7 +14,8 @@
 		 })
 		 */
 	}
-	function newIdea() {
+	
+	/*function newIdea() {
 		var url = "{% url api_dispatch_list resource_name='idea' api_name='v1' %}"
 		// Add form validation
 		var form = document.forms[0];
@@ -60,7 +61,9 @@
 				alert("Idea created");
 			}
 		});
-	}
+		}
+		*/
+	
 </script>
 <!-- Button to trigger modal -->
 <a href="#newIdeaModal" role="button" class="btn btn-primary" data-toggle="modal">New Idea</a>
@@ -74,7 +77,7 @@
 		<h3 id="myModalLabel">New Idea</h3>
 	</div>
 	<div class="modal-body">
-		<div id="form_error_field"></div>
+		<div id="idea_error_field"></div>
 		<form class="modal-form">
 			{% csrf_token %}
 			{{ form|as_bootstrap }}
@@ -84,8 +87,6 @@
 		<button class="btn" data-dismiss="modal" aria-hidden="true">
 			Close
 		</button>
-		<button class="btn btn-primary" onclick="newIdea()">
-			Submit
-		</button>
+		<a href="#" id="createNewIdea" class="btn btn-primary">Submit</a>
 	</div>
 </div>
