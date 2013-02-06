@@ -6,9 +6,9 @@
 {% if user.is_authenticated %}
 <div id="app" class="container">
 	<div class="well" id="idea_header">
-		
+
 	</div>
-	
+
 	<div class="well">
 		<h1>Ideas</h1>
 		<p>
@@ -21,7 +21,6 @@
 
 		</p>
 	</div>
-	
 
 	<div id="information">
 
@@ -54,6 +53,19 @@
 </div>
 
 {% endif %}
+{% load verbatim %}
+{% verbatim %}
+<script id="private_header_idea_template" type="text/x-handlebars-template">
+
+	<h1>{{title}} {{#if public}}<span class="label label-info">Public</span>{{/if}}</h1>
+	<p>
+	{{text}}
+	</p>
+	<!--<p><a href="#" class="newChildrenIdea">New</a> | <a href="#" class="editIdea">Edit</a> | <a href="#" class="deleteIdea">Delete</a></p>
+	-->
+
+</script>
+{% endverbatim %}
 
 {% endblock %}
 

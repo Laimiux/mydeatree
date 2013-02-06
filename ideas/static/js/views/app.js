@@ -7,27 +7,66 @@ $(function($) {'use strict';
 
 		events : {
 			'click #createNewIdea' : 'createNewIdea',
+			'scroll' : 'checkScroll',
 		},
 
 		initialize : function() {
-			_.bindAll(this, 'addOne', 'addAll', 'addOneToTop', 'render', 'toggleToParent');
+			_.bindAll(this, 'addOne', 'showTopIdeas', 'addOneToTop', 'render', 'checkScroll');
+			// bind to window a scroll fucntion
+			$(window).scroll(this.checkScroll);
+
 			//app.ideas = new IdeaList();
-			app.Ideas.bind('add', this.addOneToTop);
-			app.Ideas.bind('refresh', this.addAll);
+			//app.Ideas.bind('parent-change', this.addChildren, this);
+			app.Ideas.on('reset', this.addAll);
+			app.Ideas.on('add', this.addOneToTop)
+			//app.Ideas.bind('add', this.addOneToTop);
+			//app.Ideas.bind('refresh', this.addAll);
+			app.Ideas.isLoading = true;
 			app.Ideas.bind('all', this.render);
 			app.Ideas.fetch({
 				data : {
 					order_by : '-modified_date'
+				},
+				update : true,
+				remove : false,
+				success : function() {
+					app.Ideas.isLoading = false;
 				}
 			});
+
 		},
 
 		render : function() {
-			this.addAll();
+			if (app.ParentIdea && app.ParentIdea != '') {
+				this.showChildrenIdeas(app.ParentIdea);
+			} else {
+				this.showTopIdeas();
+			}
 		},
 
-		addAll : function() {
-			app.Ideas.each(this.addOne);
+		showChildrenIdeas : function(parent) {
+			// Remove all old ideas from DOM
+			this.$('#ideas').html('');
+
+			// Get children ideas of a parent
+			var childrenIdeas = app.Ideas.where({
+				parent : IDEA_API + parent + "/"
+			})
+			console.log(childrenIdeas)
+			_.each(childrenIdeas, this.addOne)
+		},
+
+		showTopIdeas : function() {
+			// Remove all old ideas from DOM
+			this.$('#ideas').html('');
+
+			// Get ideas that don't have a parent
+			var topIdeas = app.Ideas.where({
+				parent : null
+			});
+			console.log(topIdeas);
+			// Display those ideas
+			_.each(topIdeas, this.addOne);
 		},
 
 		addOne : function(idea) {
@@ -69,7 +108,7 @@ $(function($) {'use strict';
 					if (isTitleError || isTextError) {
 						var error_field = $('#idea_error_field');
 						error_field.empty()
-						
+
 						error_field.append("<h5>Errors:</h5><ul>");
 
 						if (isTitleError) {
@@ -87,12 +126,20 @@ $(function($) {'use strict';
 
 		},
 
-		count : function() {
-			return app.Ideas.length;
-		},
-
-		toggleToParent : function(parent_uri) {
-
+		checkScroll : function() {
+			var triggerPoint = 100;
+			// 100px from the bottom
+			if (!app.Ideas.isLoading && !app.Ideas.completedSync && this.el.scrollTop + this.el.clientHeight + triggerPoint > this.el.scrollHeight) {
+				// Load next page
+				app.Ideas.isLoading = true;
+				app.Ideas.fetch({
+					update: true,
+					remove: false,
+					success: function(ideas) {
+						app.Ideas.isLoading = false;		
+					}
+				});
+			}
 		}
 	});
 

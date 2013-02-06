@@ -27,6 +27,21 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
+- kind: app_favoriteidealist
+  properties:
+  - name: __key__
+    direction: desc
+
+- kind: app_favoriteideas
+  properties:
+  - name: __key__
+    direction: desc
+
+- kind: favorites_favorite
+  properties:
+  - name: __key__
+    direction: desc
+
 - kind: friends_myclass
   properties:
   - name: __key__

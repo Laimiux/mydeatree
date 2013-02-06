@@ -4,7 +4,17 @@
 from djangoappengine.settings_base import *
 
 import os
+
+# This is correct for the Django 1.4-style project layout; for the old-style
+# project layout with ``settings.py`` and ``manage.py`` in the same directory,
+# you'd want to only call ``os.path.dirname`` once.
 ROOT_PATH = os.path.dirname(__file__)
+ 
+# This would be if you put all your tests within a top-level "tests" package.
+TEST_DISCOVERY_ROOT = os.path.join(ROOT_PATH, "tests")
+ 
+# This assumes you place the above ``DiscoveryRunner`` in ``tests/runner.py``.
+TEST_RUNNER = "tests.runner.DiscoveryRunner"
 
 
 # Activate django-dbindexer for the default database
@@ -31,6 +41,8 @@ INSTALLED_APPS = (
     'contactus',
     'pagination',
     'friends',
+    'favorites',
+    'app',
     'tastypie',
     'backbone_tastypie',
     'djangotoolbox',
@@ -61,7 +73,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 # This test runner captures stdout and associates tracebacks with their
 # corresponding output. Helps a lot with print-debugging.
-TEST_RUNNER = 'djangotoolbox.test.CapturingTestSuiteRunner'
+#TEST_RUNNER = 'djangotoolbox.test.CapturingTestSuiteRunner'
 
 # For mail
 EMAIL_USE_TLS = True
