@@ -124,3 +124,8 @@ EMAIL_BACKEND = 'appengine_emailbackend.async.EmailBackend'
 ADMINS = (
     ('Laimonas Turauskas', 'laimiux@gmail.com'),
 )
+
+# For the website link construction
+WEB_BASE = "https://mydeatree.appspot.com"
+
+

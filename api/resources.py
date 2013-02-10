@@ -20,6 +20,9 @@ from api.helpers import AnonymousPostAuthentication, BasicAuthenticationWithCook
 
 from ideas.ideas_helpers import uri_to_pk
 
+from django.core.urlresolvers import reverse
+from django.conf import settings
+
 class ModelFormValidation(FormValidation):
     """
     Override tastypie's standard ``FormValidation`` since this does not care
@@ -163,6 +166,11 @@ class PublicIdeaResource(ModelResource):
         
     def determine_format(self, request): 
         return "application/json" 
+    
+    def dehydrate(self, bundle):
+        #include a link for public ideas
+        bundle.data['link'] = settings.WEB_BASE + reverse('show-idea', args=(bundle.data['id'],))
+        return bundle
     
     # Makes sure if parent isn't public not to show its uri.
     def dehydrate_parent(self, bundle):
