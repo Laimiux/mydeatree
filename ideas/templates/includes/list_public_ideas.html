@@ -5,7 +5,7 @@
 	<div class="well well-small">
 		<h3><a href="{{ idea.get_absolute_url }}">{{ idea.title }}</a> <small>by {{ idea.owner }}</small> </h3>
 		<p>{{ idea.text }}</p>
-		<button class="btn btn-primary">Share</button>
+		<button class="btn btn-primary">Share</button> | <a href="#">Favorite</a>
 	</div>
 	
 	{% endfor %}

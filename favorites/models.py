@@ -1,10 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from friends.fields import ModelListField
+
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-
-from friends.models import ModelListField
 
 # Create your models here.
 class Favorite(models.Model):

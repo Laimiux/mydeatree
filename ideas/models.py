@@ -6,7 +6,7 @@ from django.forms import ModelForm
 
 from django.core.urlresolvers import reverse
 
-from friends.models import ModelListField
+from friends.fields import ModelListField
 
 import datetime
 

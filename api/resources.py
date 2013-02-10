@@ -18,6 +18,8 @@ from ideas.forms import IdeaForm
 from forms import UserForm
 from api.helpers import AnonymousPostAuthentication, BasicAuthenticationWithCookies, OwnerAuthorization
 
+from ideas.ideas_helpers import uri_to_pk
+
 class ModelFormValidation(FormValidation):
     """
     Override tastypie's standard ``FormValidation`` since this does not care
@@ -77,10 +79,6 @@ class ModelFormValidation(FormValidation):
             return {}
         return form.errors
     
-class BackboneCompatibleResource(ModelResource):
-
-    class Meta:
-        always_return_data = True
 
 class UsernameResource(ModelResource):
     class Meta:
@@ -119,7 +117,6 @@ class UserResource(ModelResource):
     
     def determine_format(self, request): 
         return "application/json" 
- 
   
 class IdeaResource(ModelResource):
     parent = fields.ToOneField('api.resources.IdeaResource', 'parent', related_name='children', null=True, full=False)
@@ -154,21 +151,32 @@ class IdeaResource(ModelResource):
         return "application/json" 
     
 class PublicIdeaResource(ModelResource):  
-    owner = fields.ToOneField('api.resources.UsernameResource', 'owner', related_name='owner', null=True, full=True)
-    
+    parent = fields.ToOneField('api.resources.PublicIdeaResource', 'parent', related_name='children', null=True, full=False)
+    owner = fields.ToOneField('api.resources.UsernameResource', 'owner', related_name='user', null=True, full=True)
+
     class Meta:
-        queryset = Idea.objects.all()
+        queryset = Idea.objects.filter(public=True)
         list_allowed_methods = ['get']
         resource_name = "public_ideas"
         authentication = Authentication()
+        authorization = ReadOnlyAuthorization()
         
-             
-    def apply_authorization_limits(self, request, object_list):
-        return object_list.filter(public=True)  
-    
     def determine_format(self, request): 
         return "application/json" 
-       
+    
+    # Makes sure if parent isn't public not to show its uri.
+    def dehydrate_parent(self, bundle):
+        parent_uri = bundle.data['parent']
+        if parent_uri is None:
+            return parent_uri
+        else:
+            parent_id = uri_to_pk(parent_uri)
+            try:
+                self.Meta.queryset.get(pk=parent_id)
+                return parent_uri
+            except Idea.DoesNotExist:
+                return None
+            
 #    def alter_list_data_to_serialize(self, request, data):
 #        data['public_ideas'] = data['objects']
 #        del data['objects']

@@ -53,6 +53,7 @@
 </div>
 
 {% endif %}
+
 {% load verbatim %}
 {% verbatim %}
 <script id="private_header_idea_template" type="text/x-handlebars-template">
@@ -67,5 +68,20 @@
 </script>
 {% endverbatim %}
 
+{% endblock %}
+
+{% block bodyjs %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/underscore.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/json2.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/backbone.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/backbone-tastypie.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/knockout.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/handlebars.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/models/idea.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/collections/ideas.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/views/ideas.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/views/app.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/routers/router.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app.js"></script>
 {% endblock %}
 

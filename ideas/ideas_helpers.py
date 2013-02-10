@@ -10,6 +10,7 @@ from ideas.models import Idea
 
 from django.utils import simplejson
 
+
 def get_idea_from_id(view):
     """ 
     Retrieves a specific idea,
@@ -35,3 +36,33 @@ def dual_format(template_name):
                     return render_to_response(template_name, data, context)
         return wraps(view)(wrapper)
     return decorator
+
+def uri_to_pk(uri):
+        """
+        Returns the integer PK part of a URI.
+
+        Assumes ``/api/v1/resource/123/`` format. If conversion fails, this just
+        returns the URI unmodified.
+
+        Also handles lists of URIs
+        """
+
+        if uri is None:
+            return None
+
+        # convert everything to lists
+        multiple = not isinstance(uri, basestring)
+        uris = uri if multiple else [uri]
+
+        # handle all passed URIs
+        converted = []
+        for one_uri in uris:
+            try:
+                # hopefully /api/v1/<resource_name>/<pk>/
+                converted.append(int(one_uri.split('/')[-2]))
+            except (IndexError, ValueError):
+                raise ValueError(
+                    "URI %s could not be converted to PK integer." % one_uri)
+
+        # convert back to original format
+        return converted if multiple else converted[0]

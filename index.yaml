@@ -37,6 +37,11 @@ indexes:
   - name: __key__
     direction: desc
 
+- kind: contributors_objectcontributor
+  properties:
+  - name: __key__
+    direction: desc
+
 - kind: favorites_favorite
   properties:
   - name: __key__

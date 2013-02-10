@@ -1,30 +1,13 @@
 from django.db import models
+from django.forms import ModelForm
 
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
-from djangotoolbox.fields import ListField
 
-from django.forms import ModelForm
-from django.forms.widgets import SelectMultiple
-from django.forms.fields import MultipleChoiceField
 
-class ModelListField(ListField):
-    def formfield(self, **kwargs):
-        return FormListField(**kwargs)
-
-class ListFieldWidget(SelectMultiple):
-    pass
-
-class FormListField(MultipleChoiceField):
-    """
-    This is a custom form field that can display a ModelListField as a Multiple Select GUI element.
-    """
-    widget = ListFieldWidget
-
-    def clean(self, value):
-        #TODO: clean your data in whatever way is correct in your case and return cleaned data instead of just the value
-        return value
-
+from friends.fields import ModelListField
+    
+from app.models import FavoriteIdeaList
 
 # Create your models here.
 class UserProfile(models.Model):  
@@ -37,6 +20,8 @@ class UserProfile(models.Model):
     
     # A list of emails that are user's friends.
     friends = ModelListField(models.ForeignKey(User), null=True, blank=True)
+    
+    favorite_ideas = models.ForeignKey(FavoriteIdeaList, null=True, blank=True)
     
     def get_friends(self):
         if not self.friends:
