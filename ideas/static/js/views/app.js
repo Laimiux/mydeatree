@@ -6,7 +6,7 @@ $(function($) {'use strict';
 		el : $('#app'),
 
 		events : {
-			'click #createNewIdea' : 'createNewIdea',
+			'click #submitIdea' : 'updateOrCreateIdea',
 			'scroll' : 'checkScroll',
 		},
 
@@ -52,7 +52,6 @@ $(function($) {'use strict';
 			var childrenIdeas = app.Ideas.where({
 				parent : IDEA_API + parent + "/"
 			})
-			console.log(childrenIdeas)
 			_.each(childrenIdeas, this.addOne)
 		},
 
@@ -64,7 +63,6 @@ $(function($) {'use strict';
 			var topIdeas = app.Ideas.where({
 				parent : null
 			});
-			console.log(topIdeas);
 			// Display those ideas
 			_.each(topIdeas, this.addOne);
 		},
@@ -83,20 +81,39 @@ $(function($) {'use strict';
 			this.$('#ideas').prepend(view.render().el)
 		},
 
-		createNewIdea : function() {
-			var title = this.$('#id_title').val();
-			var text = this.$('#id_text').val();
+		updateOrCreateIdea : function() {
+			var idea_pk = this.$('#id_idea_pk').val();
+			console.log(idea_pk)
 
-			var hmm = app.Ideas.create({
-				title : title,
-				text : text
+			if (idea_pk && typeof idea_pk != 'undefined') {
+				var idea = app.Ideas.get(idea_pk);
+				this.updateIdea(idea);
+			} else {
+				console.log("creating new idea...")
+				this.createNewIdea();
+			}
+
+			return false;
+		},
+
+		updateIdea : function(idea) {
+			var idea_title = this.$('#id_title').val();
+			var idea_text = this.$('#id_text').val();
+			var idea_public = this.$('#id_public').is(':checked');
+
+			console.log(idea_public);
+
+			//var idea_parent = this.$('#id_parent').val();
+			//console.log(idea_parent)
+
+			idea.save({
+				title : idea_title,
+				text : idea_text,
+				public : idea_public
 			}, {
 				wait : true,
 				success : function(model, response) {
-
-					$('#newIdeaModal').modal('hide');
-					$('#id_title').val('')
-					$('#id_text').val('')
+					$('#IdeaModal').modal('hide')
 				},
 				error : function(model, response) {
 					var error = $.parseJSON(response.responseText);
@@ -126,6 +143,63 @@ $(function($) {'use strict';
 
 		},
 
+		createNewIdea : function() {
+			var title = this.$('#id_title').val();
+			var text = this.$('#id_text').val();
+			var idea_public = this.$('#id_public').is(':checked');
+			var idea_parent = this.$('#id_parent').val() || null;
+			
+			console.log("parent is " + idea_parent)
+			
+			
+
+			app.Ideas.create({
+				title : title,
+				text : text,
+				public : idea_public,
+				parent : idea_parent
+			}, {
+				wait : true,
+				success : function(model, response) {
+
+					$('#IdeaModal').modal('hide');
+				},
+				error : function(model, response) {
+					var error = $.parseJSON(response.responseText);
+					var idea = error.idea;
+
+					if (typeof idea != 'undefined') {
+
+						var isTitleError = typeof idea.title != 'undefined';
+						var isTextError = typeof idea.text != 'undefined';
+
+						if (isTitleError || isTextError) {
+							var error_field = $('#idea_error_field');
+							error_field.empty()
+
+							error_field.append("<h5>Errors:</h5><ul>");
+
+							if (isTitleError) {
+								error_field.append("<li>" + idea.title + "</li>");
+							}
+							if (isTextError) {
+								error_field.append("<li>" + idea.text + "</li>");
+							}
+
+							error_field.append("</ul>");
+
+						}
+					} else {
+						var error_field = $('#idea_error_field');
+						error_field.empty();
+						
+						error_field.append("<b>There was some unexplained error</b>")
+					}
+				}
+			});
+
+		},
+
 		checkScroll : function() {
 			var triggerPoint = 100;
 			// 100px from the bottom
@@ -133,10 +207,10 @@ $(function($) {'use strict';
 				// Load next page
 				app.Ideas.isLoading = true;
 				app.Ideas.fetch({
-					update: true,
-					remove: false,
-					success: function(ideas) {
-						app.Ideas.isLoading = false;		
+					update : true,
+					remove : false,
+					success : function(ideas) {
+						app.Ideas.isLoading = false;
 					}
 				});
 			}

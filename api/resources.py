@@ -23,6 +23,10 @@ from ideas.ideas_helpers import uri_to_pk
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
+from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
+
+from favorites.models import FavoriteItem
+
 class ModelFormValidation(FormValidation):
     """
     Override tastypie's standard ``FormValidation`` since this does not care
@@ -101,8 +105,7 @@ class UserResource(ModelResource):
         queryset = User.objects.all()
         resource_name = 'user'
         fields = ['username', 'email', 'public', 'first_name', 'last_name', 'last_login', 'password']
-        #excludes = ['email', 'password', 'is_active', 'is_staff', 'is_superuser']
-        
+
         allowed_methods = ['get', 'post']
         authentication = AnonymousPostAuthentication()
         authorization = Authorization()
@@ -116,7 +119,10 @@ class UserResource(ModelResource):
         return bundle
     
     def apply_authorization_limits(self, request, object_list):
-        return object_list.filter(username=request.user)
+        if request and request.user:
+            return object_list.filter(username=request.user)
+        else:
+            return []
     
     def determine_format(self, request): 
         return "application/json" 
@@ -139,7 +145,7 @@ class IdeaResource(ModelResource):
             "modified_date" : ['gt', 'lt']
         }
         validation = ModelFormValidation(form_class=IdeaForm)
-        
+                
     def obj_create(self, bundle, request=None, **kwargs):
         if request and hasattr(request, 'user'):
             return super(IdeaResource, self).obj_create(bundle, request, owner=request.user, **kwargs)
@@ -149,6 +155,7 @@ class IdeaResource(ModelResource):
         
     def apply_authorization_limits(self, request, object_list):
         return object_list.filter(owner=request.user)
+
     
     def determine_format(self, request): 
         return "application/json" 
@@ -185,6 +192,30 @@ class PublicIdeaResource(ModelResource):
             except Idea.DoesNotExist:
                 return None
             
+class FavoriteItemResource(ModelResource):
+    content_object = GenericForeignKeyField({
+        Idea: PublicIdeaResource,
+    }, 'content_object')
+
+    class Meta:
+        resource_name = 'favorite_items'
+        queryset = FavoriteItem.objects.all()
+        authentication = BasicAuthenticationWithCookies()
+        authorization = DjangoAuthorization()
+            
+    def determine_format(self, request): 
+        return "application/json" 
+    
+    def obj_create(self, bundle, request=None, **kwargs):
+        if request and hasattr(request, 'user'):
+            return super(FavoriteItemResource, self).obj_create(bundle, request, user=request.user, **kwargs)
+        else:
+            return super(FavoriteItemResource, self).obj_create(bundle, request, **kwargs)
+    
+    def apply_authorization_limits(self, request, object_list):
+        return object_list.filter(user=request.user)
+    
+    
 #    def alter_list_data_to_serialize(self, request, data):
 #        data['public_ideas'] = data['objects']
 #        del data['objects']

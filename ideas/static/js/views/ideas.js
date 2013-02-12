@@ -29,17 +29,35 @@ $(function() {
 		},
 		
 		toggleNewIdea: function() {
-			alert(this.model.id)
+			$('#id_parent').val(this.model.id)
+			console.log($('#id_parent').val())
+			$('#IdeaModal').modal('show');
+			//alert(this.model.id)
 		},
 		
 		edit: function() {
+			$('#id_parent').val(this.model.get('parent'))
+			$('#id_title').val(this.model.get('title'));
+			$('#id_text').val(this.model.get('text'));
+			$('#id_idea_pk').val(this.model.id);
 			
+			if (this.model.get('public')) {
+				$('#id_public').attr('checked', true);
+			}
+			
+			console.log(this.model.get('id'))
+			$("#IdeaModal").modal('show');
+			
+			return false;		
 		},
 		
 		
 		
 		clear: function() {
-			this.model.destroy();	
+			if(confirmDelete()) {
+				this.model.destroy();
+			}
+			return false;	
 		},
 		
 		toggleParent: function() {

@@ -19,6 +19,7 @@ class IdeaForm(forms.ModelForm):
         self.fields['text'].error_messages = {'required' : 'Please enter text'}
         self.fields['title'].error_messages = {'required': 'Please enter title'}
         self.fields['text'].max_length = 140
+        self.fields['public'].label = 'Would you like to make the idea public?'
         
         #self.fields['category'].required = False
               
@@ -35,7 +36,7 @@ class IdeaForm(forms.ModelForm):
     
     class Meta:
         model = Idea
-        fields = ('title', 'text')
+        fields = ('title', 'text', 'public')
         widgets = {
             'text': forms.Textarea(attrs={'cols': 20, 'rows': 10, 'maxlength': 140}),
         }

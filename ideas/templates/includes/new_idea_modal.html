@@ -1,20 +1,5 @@
 {% load bootstrap_toolkit %}
 <script>
-	function loadForm(result) {
-		alert(result)
-	}
-
-
-	window.onload = function() {
-		//alert("Page loaded")
-		/*
-		 $.ajax({
-		 url : "{{ link }}",
-		 success:loadForm,
-		 })
-		 */
-	}
-	
 	/*function newIdea() {
 		var url = "{% url api_dispatch_list resource_name='idea' api_name='v1' %}"
 		// Add form validation
@@ -81,6 +66,9 @@
 		<form class="modal-form">
 			{% csrf_token %}
 			{{ form|as_bootstrap }}
+			<!-- Extra fields of the form like parent -->
+			<input type="hidden" id="idea_parent" name="idea_parent" value=null>
+			
 		</form>
 	</div>
 	<div class="modal-footer">

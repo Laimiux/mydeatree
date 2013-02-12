@@ -28,8 +28,7 @@ class BasicAuthenticationWithCookies(BasicAuthentication):
                 return True
         return super(BasicAuthenticationWithCookies, self).is_authenticated(request, **kwargs)
     
-class OwnerAuthorization(Authorization):
-    
+class OwnerAuthorization(Authorization): 
     # Optional but useful for advanced limiting, such as per user.
     def apply_limits(self, request, object_list):
         if request and hasattr(request, 'user'):

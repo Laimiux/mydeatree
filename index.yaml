@@ -47,6 +47,11 @@ indexes:
   - name: __key__
     direction: desc
 
+- kind: favorites_favoriteitem
+  properties:
+  - name: __key__
+    direction: desc
+
 - kind: friends_myclass
   properties:
   - name: __key__
