@@ -8,13 +8,15 @@ var app = app || {};
 
 	var Workspace = Backbone.Router.extend({
 		routes:{
-			'parent/:id': 'setParent',
+			'parent/:id/#': 'setParent',
 			'*default': 'defaultRoute',
 		},
 		
-		setParent: function( param ) {
-			window.app.ParentIdea = param.trim() || '';
+		setParent: function( id ) {
+			window.app.ParentIdea = id
+			//window.app.ParentIdea = param.trim() || '';
 			console.log(window.app.ParentIdea);
+			//console.log(param.id)
 			
 			window.app.Ideas.trigger('parent-change');
 		},

@@ -10,7 +10,7 @@ $(function() {
 			'click .newChildrenIdea' : 'toggleNewIdea',
 			'click .editIdea' : 'edit',
 			'click .deleteIdea' : 'clear',
-			'click .toggleToParent' : 'toggleParent',
+			//'click .setAsParent' : 'toggleParent',
 		},
 		
 		initialize: function() {
@@ -63,11 +63,11 @@ $(function() {
 		toggleParent: function() {
 
 
-			this.model.trigger('parent-change', { parent : this.model.get('id') })
+			//this.model.trigger('parent-change', { parent : this.model.get('id') })
 			
 			
-			var template = Handlebars.compile($('#private_header_idea_template').html());
-			$('#idea_header').html(template(this.model.toJSON()));
+			//var template = Handlebars.compile($('#private_header_idea_template').html());
+			//$('#idea_header').html(template(this.model.toJSON()));
 		},
 		
 		

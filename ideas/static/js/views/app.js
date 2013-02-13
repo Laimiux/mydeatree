@@ -8,6 +8,7 @@ $(function($) {'use strict';
 		events : {
 			'click #submitIdea' : 'updateOrCreateIdea',
 			'scroll' : 'checkScroll',
+			'default' : 'setDefault'
 		},
 
 		initialize : function() {
@@ -36,14 +37,31 @@ $(function($) {'use strict';
 
 		},
 
+		setDefault : function() {
+			console.log("Default state")	
+		},
 		render : function() {
 			if (app.ParentIdea && app.ParentIdea != '') {
+				this.setParentHeader();
 				this.showChildrenIdeas(app.ParentIdea);
 			} else {
+				this.setEmptyHeader();
 				this.showTopIdeas();
 			}
 		},
-
+		
+		
+		setEmptyHeader : function() {
+			var template = Handlebars.compile($('#no_parent_idea_header_template').html());
+			$('#idea_header').html(template());	
+		},
+		
+		setParentHeader: function() {
+			var model = app.Ideas.get(IDEA_API + app.ParentIdea + '/')
+			console.log(model)
+			var template = Handlebars.compile($('#private_header_idea_template').html());
+			$('#idea_header').html(template(model.toJSON()));		
+		},
 		showChildrenIdeas : function(parent) {
 			// Remove all old ideas from DOM
 			this.$('#ideas').html('');
@@ -157,7 +175,7 @@ $(function($) {'use strict';
 				title : title,
 				text : text,
 				public : idea_public,
-				parent : idea_parent
+				parent : idea_parent2
 			}, {
 				wait : true,
 				success : function(model, response) {
