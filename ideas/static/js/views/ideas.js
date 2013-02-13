@@ -3,7 +3,7 @@ var app = app || {};
 $(function() {
 	app.IdeaView = Backbone.View.extend({
 		tagName : 'div',
-		className : 'well',
+		className : 'well well-small',
 		
 		
 		events: {

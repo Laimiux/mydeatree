@@ -6,26 +6,26 @@
 {% if user.is_authenticated %}
 <div id="app" class="container">
 	{% include "includes/idea_modal.html" with form=idea_form %}
-	<div class="well" id="idea_header">
+	<div id="idea_header">
 
 	</div>
 
-<!--
+	<!--
 	<div class="well">
-		<h1>Ideas</h1>
-		<p>
-			These are your ideas. You can branch out and have more ideas.
-		</p>
-		<p>
+	<h1>Ideas</h1>
+	<p>
+	These are your ideas. You can branch out and have more ideas.
+	</p>
+	<p>
 
-			<a href="#IdeaModal" role="button" class="btn btn-primary" data-toggle="modal">New Idea</a>
-			<div id="new_idea_modal">
+	<a href="#IdeaModal" role="button" class="btn btn-primary" data-toggle="modal">New Idea</a>
+	<div id="new_idea_modal">
 
-			</div>
-
-		</p>
 	</div>
--->
+
+	</p>
+	</div>
+	-->
 
 	<div id="information">
 
@@ -61,27 +61,29 @@
 
 {% load verbatim %}
 <script id="no_parent_idea_header_template" type="text/x-handlebars-template">
-		<h1>Ideas</h1>
-		<p>
-			These are your ideas. You can branch out and have more ideas.
-		</p>
-		<p>
-			<!-- Button to trigger modal -->
-			<a href="#IdeaModal" role="button" class="btn btn-primary" data-toggle="modal">New Idea</a>
-		</p>	
-</script>
+	<div class="well">
 
+	<h1>Ideas</h1>
+	<p>
+	These are your ideas. You can branch out and have more ideas.
+	</p>
+	<p>
+	<!-- Button to trigger modal -->
+	<a href="#IdeaModal" role="button" class="btn btn-primary" data-toggle="modal">New Idea</a>
+	</p>
+	</div>
+</script>
 
 {% verbatim %}
 <script id="private_header_idea_template" type="text/x-handlebars-template">
-
+	<div class="hero-unit">
 	<h1>{{title}} {{#if public}}<span class="label label-info">Public</span>{{/if}}</h1>
 	<p>
 	{{text}}
 	</p>
 	<!--<p><a href="#" class="newChildrenIdea">New</a> | <a href="#" class="editIdea">Edit</a> | <a href="#" class="deleteIdea">Delete</a></p>
 	-->
-
+	</div>
 </script>
 {% endverbatim %}
 
