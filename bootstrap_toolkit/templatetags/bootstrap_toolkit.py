@@ -26,6 +26,9 @@ BOOTSTRAP_CSS_URL = getattr(settings, 'BOOTSTRAP_CSS_URL',
     BOOTSTRAP_CSS_BASE_URL + 'bootstrap.css'
 )
 
+BOOTSTRAP_RESPONSIVE_CSS_URL = getattr(settings, 'BOOTSTRAP_RESPONSIVE_CSS_URL',
+                                       BOOTSTRAP_CSS_BASE_URL + 'bootstrap-responsive.css')
+
 register = template.Library()
 
 @register.simple_tag
@@ -34,6 +37,20 @@ def bootstrap_stylesheet_url():
     URL to Bootstrap Stylesheet (CSS)
     """
     return BOOTSTRAP_CSS_URL
+
+@register.simple_tag
+def bootstrap_responsive_stylesheet_url():
+    """
+    URL to Bootstrap responsive Stylesheet(CSS)
+    """
+    return BOOTSTRAP_RESPONSIVE_CSS_URL
+
+@register.simple_tag
+def bootstrap_responsive_stylesheet_tag():
+    """
+    HTML tag to insert Bootstrap responsive stylesheet
+    """
+    return u'<link rel="stylesheet" href="%s">' % bootstrap_responsive_stylesheet_url()
 
 @register.simple_tag
 def bootstrap_stylesheet_tag():

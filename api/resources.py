@@ -137,6 +137,7 @@ class IdeaResource(ModelResource):
         list_allowed_methods = ['get', 'post', 'put', 'delete']
         authentication = BasicAuthenticationWithCookies()
         authorization = OwnerAuthorization()
+        limit = 100
         
         ordering = ['modified_date']
         
@@ -195,7 +196,7 @@ class PublicIdeaResource(ModelResource):
 class FavoriteItemResource(ModelResource):
     content_object = GenericForeignKeyField({
         Idea: PublicIdeaResource,
-    }, 'content_object')
+    }, 'content_object', null=True)
 
     class Meta:
         resource_name = 'favorite_items'

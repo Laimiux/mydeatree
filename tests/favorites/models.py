@@ -1,8 +1,16 @@
 from django.db import models
+from django.contrib.contenttypes import generic
 
-from favorites.models import FavoriteObjectList
+from favorites.models import FavoriteItem
 
+from favorites.signals import remove_favorite_items
 
-# Create your models here.
-class FavoriteSolidList(FavoriteObjectList):
-    pass
+class SimpleModel(models.Model):
+    text = models.CharField(max_length=30)
+    #favorites = generic.GenericRelation(FavoriteItem, null=True)
+    
+    
+    def delete(self):
+        remove_favorite_items(self)
+        super(SimpleModel, self).delete()
+

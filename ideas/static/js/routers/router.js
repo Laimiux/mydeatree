@@ -9,7 +9,12 @@ var app = app || {};
 	var Workspace = Backbone.Router.extend({
 		routes:{
 			'parent/:id/#': 'setParent',
+			'parent/:id/new/#' : 'newChildrenIdea',
 			'*default': 'defaultRoute',
+		},
+		
+		newChildrenIdea: function(id) {
+			this.setParent(id)
 		},
 		
 		setParent: function( id ) {

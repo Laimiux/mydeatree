@@ -10,7 +10,6 @@ $(function() {
 			'click .newChildrenIdea' : 'toggleNewIdea',
 			'click .editIdea' : 'edit',
 			'click .deleteIdea' : 'clear',
-			//'click .setAsParent' : 'toggleParent',
 		},
 		
 		initialize: function() {
@@ -32,7 +31,8 @@ $(function() {
 			$('#id_parent').val(this.model.id)
 			console.log($('#id_parent').val())
 			$('#IdeaModal').modal('show');
-			//alert(this.model.id)
+			
+			return false;
 		},
 		
 		edit: function() {
@@ -59,19 +59,6 @@ $(function() {
 			}
 			return false;	
 		},
-		
-		toggleParent: function() {
-
-
-			//this.model.trigger('parent-change', { parent : this.model.get('id') })
-			
-			
-			//var template = Handlebars.compile($('#private_header_idea_template').html());
-			//$('#idea_header').html(template(this.model.toJSON()));
-		},
-		
-		
-		
-		
+				
 	});
 });

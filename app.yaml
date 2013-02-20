@@ -28,3 +28,8 @@ handlers:
 
 - url: /.*
   script: djangoappengine.main.application
+  
+  
+error_handlers:
+- error_code: over_quota
+  file: over_quota.html

@@ -81,6 +81,7 @@
 	<p>
 	{{text}}
 	</p>
+	<p><a href="#/parent/{{ id }}/new/#" class="newChildrenIdea">New</a> | <a href="#" class="editIdea">Edit</a> | <a href="#" class="deleteIdea">Delete</a></p>
 	<!--<p><a href="#" class="newChildrenIdea">New</a> | <a href="#" class="editIdea">Edit</a> | <a href="#" class="deleteIdea">Delete</a></p>
 	-->
 	</div>
@@ -90,6 +91,7 @@
 {% endblock %}
 
 {% block bodyjs %}
+{% if user.is_authenticated %}
 <script type="text/javascript" src="{{ STATIC_URL }}js/underscore.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/json2.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/backbone.js"></script>
@@ -102,6 +104,8 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/views/app.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/routers/router.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/app.js"></script>
+
+{% endif %}
 
 <script type="text/javascript">
 	function confirmDelete() {

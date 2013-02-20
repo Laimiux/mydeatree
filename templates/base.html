@@ -5,6 +5,7 @@
 		<meta charset="utf-8">
 		<meta name="description" content="">
 		<meta name="author" content="Laimonas Turauskas">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		<title>{% block title %}{% endblock %} - MydeaTree</title>
 
@@ -18,6 +19,7 @@
 			IDEA_API = "{% url api_dispatch_list api_name="v1" resource_name="idea" %}";
 		</script>
 		{% bootstrap_stylesheet_tag %}
+		{% bootstrap_responsive_stylesheet_tag %}
 
 		{% block css %}
 		{% endblock %}

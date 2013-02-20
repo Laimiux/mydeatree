@@ -6,37 +6,23 @@ from friends.fields import ModelListField
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 
-# Create your models here.
-class Favorite(models.Model):
-    user = models.ForeignKey(User)
-    content_type = models.ForeignKey(ContentType)
-    object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
-    
+# Create your models here.    
 class FavoriteItem(models.Model):
     user = models.ForeignKey(User)
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')    
-
-class FavoriteObjectList(models.Model):
-    owner = models.ForeignKey(User)
-
-    favorites = ModelListField(models.ForeignKey(Favorite), null=True, blank=True)
+    content_object = generic.GenericForeignKey('content_type', 'object_id')  
     
-    class Meta:
-        abstract = True
-            
-    def add_to_list(self, obj):
-        fav = Favorite(content_object=obj)
-        fav.save()
-        
-        if not self.favorites:
-            self.favorites = []
+    
+    def save(self, *args, **kwargs):
+       ''' On save, update timestamps '''
+       import sys
+       print >>sys.stderr, 'Saving favorite object'
 
-        self.favorites.append(fav.pk)
-        self.save()
-        
+       
+       super(FavoriteItem, self).save(*args, **kwargs)
+
+
     
 
 

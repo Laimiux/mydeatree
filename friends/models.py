@@ -7,8 +7,6 @@ from django.db.models.signals import post_save
 
 from friends.fields import ModelListField
     
-from app.models import FavoriteIdeaList
-
 # Create your models here.
 class UserProfile(models.Model):  
     """
@@ -20,8 +18,6 @@ class UserProfile(models.Model):
     
     # A list of emails that are user's friends.
     friends = ModelListField(models.ForeignKey(User), null=True, blank=True)
-    
-    favorite_ideas = models.ForeignKey(FavoriteIdeaList, null=True, blank=True)
     
     def get_friends(self):
         if not self.friends:

@@ -5,8 +5,11 @@ from django import forms
 from django.forms import ModelForm
 
 from django.core.urlresolvers import reverse
+from django.contrib.contenttypes import generic
 
 from friends.fields import ModelListField
+
+from favorites.models import FavoriteItem
 
 import datetime
 
@@ -52,6 +55,7 @@ class Idea(models.Model):
     modified_date = models.DateTimeField(default=datetime.datetime.today())
 
     contributors = ModelListField(models.ForeignKey(User), null=True, blank=True)
+
     
     objects = IdeaManager()
     
@@ -103,11 +107,10 @@ class Idea(models.Model):
     
        
         
-    def delete(self):
-        children_ideas = self.idea_set.all()
+    def delete(self, **kwargs):
+        self.idea_set.all().delete()
+        
         super(Idea, self).delete()     
-        for child in children_ideas:
-            child.delete() 
     
     def get_absolute_url(self):
         return reverse('show-idea', args=(self.pk,))
