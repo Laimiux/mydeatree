@@ -41,7 +41,7 @@ class Category(models.Model):
     
     def __unicode__(self):
         return self.name
-
+    
 class Idea(models.Model): 
     owner = models.ForeignKey(User, null=True, blank=True)
     title = models.CharField(max_length=30)
@@ -151,3 +151,7 @@ class IdeaForm(ModelForm):
     class Meta:
         model = Idea
  
+class Favorite(models.Model):
+    owner = models.ForeignKey(User)
+    favorite_idea = models.ForeignKey(Idea)
+

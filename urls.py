@@ -12,14 +12,14 @@ from ideas.views import requires_login
 
 from registration.forms import RegistrationFormUniqueEmail
 
-from api.resources import IdeaResource, UserResource, PublicIdeaResource, FavoriteItemResource
+from api.resources import IdeaResource, UserResource, PublicIdeaResource, FavoriteIdeaResource
 from tastypie.api import Api
 
 v1_api = Api(api_name='v1')
 v1_api.register(UserResource())
 v1_api.register(IdeaResource(), canonical=True)
 v1_api.register(PublicIdeaResource())
-v1_api.register(FavoriteItemResource())
+v1_api.register(FavoriteIdeaResource())
 
 
 admin.autodiscover()

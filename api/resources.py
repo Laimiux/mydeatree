@@ -13,7 +13,7 @@ from django.db import IntegrityError
 from tastypie.exceptions import BadRequest
 
 
-from ideas.models import Idea
+from ideas.models import Idea, Favorite
 from ideas.forms import IdeaForm
 from forms import UserForm
 from api.helpers import AnonymousPostAuthentication, BasicAuthenticationWithCookies, OwnerAuthorization
@@ -24,8 +24,6 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 
 from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
-
-from favorites.models import FavoriteItem
 
 class ModelFormValidation(FormValidation):
     """
@@ -193,14 +191,12 @@ class PublicIdeaResource(ModelResource):
             except Idea.DoesNotExist:
                 return None
             
-class FavoriteItemResource(ModelResource):
-    content_object = GenericForeignKeyField({
-        Idea: PublicIdeaResource,
-    }, 'content_object', null=True)
-
+class FavoriteIdeaResource(ModelResource):
+    idea = fields.ToOneField('api.resources.PublicIdeaResource', 'favorite_idea', related_name='favorites', null=True, full=False)
+    
     class Meta:
-        resource_name = 'favorite_items'
-        queryset = FavoriteItem.objects.all()
+        resource_name = 'favorite_ideas'
+        queryset = Favorite.objects.all()
         authentication = BasicAuthenticationWithCookies()
         authorization = DjangoAuthorization()
             
@@ -209,12 +205,12 @@ class FavoriteItemResource(ModelResource):
     
     def obj_create(self, bundle, request=None, **kwargs):
         if request and hasattr(request, 'user'):
-            return super(FavoriteItemResource, self).obj_create(bundle, request, user=request.user, **kwargs)
+            return super(FavoriteItemResource, self).obj_create(bundle, request, owner=request.user, **kwargs)
         else:
             return super(FavoriteItemResource, self).obj_create(bundle, request, **kwargs)
     
     def apply_authorization_limits(self, request, object_list):
-        return object_list.filter(user=request.user)
+        return object_list.filter(owner=request.user)
     
     
 #    def alter_list_data_to_serialize(self, request, data):

@@ -67,6 +67,11 @@ indexes:
   - name: __key__
     direction: desc
 
+- kind: ideas_favorite
+  properties:
+  - name: __key__
+    direction: desc
+
 - kind: ideas_id
   properties:
   - name: __key__

@@ -26,12 +26,17 @@ class IdeaForm(forms.ModelForm):
         #if owner:
         #    self.fields['category'].queryset = Category.objects.filter(owner=owner)
         
+    def clean_title(self):
+        title = self.cleaned_data['title']
+        if len(title) < 5:
+            raise forms.ValidationError("Title needs to have more than 4 characters")
+        return title
         
     def clean_text(self):
         text = self.cleaned_data['text']
         num_words = len(text)
         if num_words < 10:
-            raise forms.ValidationError("Text needs to have more than 10 characters!")
+            raise forms.ValidationError("Text needs to have more than 9 characters!")
         return text
     
     class Meta:

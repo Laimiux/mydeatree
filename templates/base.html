@@ -71,16 +71,32 @@
 		<!-- THE javascript
 		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
+
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-38711842-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script');
+				ga.type = 'text/javascript';
+				ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0];
+				s.parentNode.insertBefore(ga, s);
+			})();
+
+		</script>
 		<!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.3/jquery.min.js"></script>-->
 		<script type="text/javascript" src="{{ MEDIA_URL }}jquery-1.8.3.min.js"></script>
-		
+
 		<!-- Extra js for other places of the app -->
 		{% block bodyjs %}
 		{% endblock %}
-		
+
 		<script type="text/javascript">
 			$(document).ready(function() {
-				
+
 			});
 		</script>
 		{% load verbatim %}
@@ -98,8 +114,7 @@
 		{% endverbatim %}
 
 		{% bootstrap_javascript_tag "dropdown" %}
-		
-		
+
 		{% block afterjs %}
 		{% endblock %}
 	</body>
