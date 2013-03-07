@@ -174,6 +174,9 @@ class PublicIdeaResource(ModelResource):
         return "application/json" 
     
     def dehydrate(self, bundle):
+        #include number of direct children
+        public_children_count = Idea.objects.get(pk=bundle.data['id']).idea_set.filter(public=True).count()
+        bundle.data['children_count'] = public_children_count 
         #include a link for public ideas
         bundle.data['link'] = settings.WEB_BASE + reverse('show-idea', args=(bundle.data['id'],))
         return bundle
