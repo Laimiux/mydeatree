@@ -23,8 +23,8 @@ def requires_login(view):
 
 
 def new_public_idea(request):
-    form = IdeaForm(request.POST or None, owner=request.user)
-    
+    form = IdeaForm(request.POST or None, initial={ 'public':True }, owner=request.user)
+                                                   
     if form.is_valid():
         model = form.save()
         model.owner = request.user
@@ -169,25 +169,6 @@ def delete_idea(request, idea):
     context = RequestContext(request, { 'idea' : idea })
     return render_to_response('delete_form.html', context)
             
-def show_categories(request): 
-    categories = Category.objects.filter(owner=request.user)   
-    # Sticks in a post or renders empty form
-    form = CategoryForm(request.POST or None)
-
-    if form.is_valid():
-        cd = form.cleaned_data
-        try:
-            #Add better checking for same categories
-            duplicates = Category.objects.get(name=cd['name'], owner=request.user)
-
-            errors = form._errors.setdefault("name", ErrorList())
-            errors.append(u"There already exists a category with such name")
-        except Category.DoesNotExist:
-            category = Category.objects.create(owner=request.user, name=cd['name'])
-            return HttpResponseRedirect('/categories/')
-    context = RequestContext(request, { 'categories' : categories, 'form': form, 'layout': 'inline' })
-    return render_to_response('show_categories.html', context)        
-
 
 def make_idea_public(request, id):
     idea_id = convert_to_int(id)

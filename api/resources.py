@@ -178,7 +178,7 @@ class PublicIdeaResource(ModelResource):
         public_children_count = Idea.objects.get(pk=bundle.data['id']).idea_set.filter(public=True).count()
         bundle.data['children_count'] = public_children_count 
         #include a link for public ideas
-        bundle.data['link'] = settings.WEB_BASE + reverse('show-idea', args=(bundle.data['id'],))
+        # bundle.data['link'] = settings.WEB_BASE + reverse('show-idea', args=(bundle.data['id'],))
         return bundle
     
     # Makes sure if parent isn't public not to show its uri.
@@ -198,24 +198,33 @@ class FavoriteIdeaResource(ModelResource):
     idea = fields.ToOneField('api.resources.PublicIdeaResource', 'favorite_idea', related_name='favorites', null=True, full=False)
     
     class Meta:
+        list_allowed_methods = ['get', 'post', 'delete']
         resource_name = 'favorite_ideas'
         queryset = Favorite.objects.all()
         authentication = BasicAuthenticationWithCookies()
-        authorization = DjangoAuthorization()
+        authorization = OwnerAuthorization()
+        
             
     def determine_format(self, request): 
         return "application/json" 
     
     def obj_create(self, bundle, request=None, **kwargs):
         if request and hasattr(request, 'user'):
-            return super(FavoriteItemResource, self).obj_create(bundle, request, owner=request.user, **kwargs)
+            return super(FavoriteIdeaResource, self).obj_create(bundle, request, owner=request.user, **kwargs)
         else:
-            return super(FavoriteItemResource, self).obj_create(bundle, request, **kwargs)
+            return super(FavoriteIdeaResource, self).obj_create(bundle, request, **kwargs)
     
     def apply_authorization_limits(self, request, object_list):
         return object_list.filter(owner=request.user)
     
-    
+ 
+class ContributorResource(ModelResource):
+    idea = fields.ToOneField('api.resources.IdeaResource', 'idea', related_name='contributor', null=True, full=False) 
+    user = fields.ToOneField('api.resources.UsernameResource', 'owner', related_name='user', null=True, full=True)  
+
+
+
+
 #    def alter_list_data_to_serialize(self, request, data):
 #        data['public_ideas'] = data['objects']
 #        del data['objects']

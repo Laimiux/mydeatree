@@ -59,6 +59,8 @@ class Idea(models.Model):
     
     objects = IdeaManager()
     
+    # Not protected against loops where idea has children and one of its children is 
+    # its parent. Should be a way to avoid this.
     def get_children_count(self):
         count = self.idea_set.count()    
         for idea in self.idea_set.all():
@@ -108,8 +110,7 @@ class Idea(models.Model):
        
         
     def delete(self, **kwargs):
-        self.idea_set.all().delete()
-        
+        self.idea_set.all().delete() 
         super(Idea, self).delete()     
     
     def get_absolute_url(self):
