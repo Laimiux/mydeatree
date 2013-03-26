@@ -166,6 +166,10 @@ class Favorite(models.Model):
         
         if self.favorite_idea.owner == self.owner:
             raise ValidationError("Cannot favorite your own idea")
+        
+        if not self.id and Favorite.objects.filter(owner=self.owner, favorite_idea=self.favorite_idea).exists():
+            raise IntegrityError("Cannot favorite the same idea twice.") 
+
         super(Favorite, self).clean(*args, **kwargs)
         
     def full_clean(self, *args, **kwargs):
@@ -174,8 +178,6 @@ class Favorite(models.Model):
         
     def save(self, *args, **kwargs):
         self.full_clean()
-        if not self.id and Favorite.objects.filter(owner=self.owner, favorite_idea=self.favorite_idea).exists():
-            raise IntegrityError("Cannot favorite the same idea twice.") 
 
         super(Favorite, self).save(*args, **kwargs)
 
