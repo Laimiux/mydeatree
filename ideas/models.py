@@ -91,11 +91,39 @@ class Idea(models.Model):
             return self.parent.is_contributor(user_primary_key)
         else:
             return False
+        
+    def is_parent_a_child(self, parent):
+        for idea in self.idea_set.all():
+           if idea == parent:
+               return True
+           else:
+               return idea.is_parent_a_child(parent)
+           
+        return False
+        
+    def clean(self, *args, **kwargs):
+        from django.core.exceptions import ValidationError
+        
+        if self.id and hasattr(self, 'parent'):
+            if self.parent == self:
+                raise ValidationError("Idea cannot be parent of itself.")
+            
+            if self.is_parent_a_child(self.parent):
+                raise ValidationError("Idea child cannot be a parent")
+
+        super(Idea, self).clean(*args, **kwargs)
+        
+    def full_clean(self, *args, **kwargs):
+        return self.clean(*args, **kwargs)     
+        
             
     def save(self, *args, **kwargs):
        ''' On save, update timestamps '''
        import sys
        print >>sys.stderr, 'Saving ' + self.title
+       
+       self.full_clean() 
+       
        
        if not self.id:
             self.created_date = datetime.datetime.today()
@@ -154,6 +182,8 @@ class IdeaForm(ModelForm):
     class Meta:
         model = Idea
  
+ 
+
 class Favorite(models.Model):
     owner = models.ForeignKey(User)
     favorite_idea = models.ForeignKey(Idea)
@@ -164,11 +194,20 @@ class Favorite(models.Model):
     def clean(self, *args, **kwargs):
         from django.core.exceptions import ValidationError
         
+        if not hasattr(self, 'favorite_idea'):
+            raise ValidationError("Favorite needs you to provide favorite_idea field")
+        
+        if not hasattr(self, 'owner'):
+            raise ValidationError("Favorite needs owner field")
+        
         if self.favorite_idea.owner == self.owner:
             raise ValidationError("Cannot favorite your own idea")
         
-        if not self.id and Favorite.objects.filter(owner=self.owner, favorite_idea=self.favorite_idea).exists():
+        if Favorite.objects.filter(owner=self.owner, favorite_idea=self.favorite_idea).exists():
             raise IntegrityError("Cannot favorite the same idea twice.") 
+        
+        if not self.favorite_idea.public:
+            raise ValidationError("Cannot favorite private idea.") 
 
         super(Favorite, self).clean(*args, **kwargs)
         

@@ -6,7 +6,6 @@ from ideas.models import Category, Idea
 class ContributorForm(forms.Form):
     email = forms.EmailField()
 
-    
 class IdeaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
