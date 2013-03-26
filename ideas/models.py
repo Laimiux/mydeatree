@@ -160,10 +160,22 @@ class Favorite(models.Model):
     
     class Meta:
         unique_together = (("owner", "favorite_idea"),)
+     
+    def clean(self, *args, **kwargs):
+        from django.core.exceptions import ValidationError
+        
+        if self.favorite_idea.owner == self.owner:
+            raise ValidationError("Cannot favorite your own idea")
+        super(Favorite, self).clean(*args, **kwargs)
+        
+    def full_clean(self, *args, **kwargs):
+        return self.clean(*args, **kwargs) 
+         
         
     def save(self, *args, **kwargs):
-       if not self.id and Favorite.objects.filter(owner=self.owner, favorite_idea=self.favorite_idea).exists():
-          raise IntegrityError("Cannot favorite the same idea twice.") 
+        self.full_clean()
+        if not self.id and Favorite.objects.filter(owner=self.owner, favorite_idea=self.favorite_idea).exists():
+            raise IntegrityError("Cannot favorite the same idea twice.") 
 
-       super(Favorite, self).save(*args, **kwargs)
+        super(Favorite, self).save(*args, **kwargs)
 

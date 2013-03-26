@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from ideas.models import Idea, Favorite
 
 from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 
 
 def create_user(user='laimis'):
@@ -19,8 +20,8 @@ def create_user(user='laimis'):
     user.save()
     return user
 
-def create_idea(title='Sample Idea', text='Some random idea'):
-    idea = Idea(title=title, text=text)
+def create_idea(title='Sample Idea', text='Some random idea', owner=None):
+    idea = Idea(title=title, text=text, owner=owner)
     idea.save()
     return idea
     
@@ -78,5 +79,18 @@ class IdeaTest(TestCase):
          
         favorite2 = Favorite(owner=user1, favorite_idea=idea)
         self.assertRaises(IntegrityError, favorite2.save) 
+        
+    def test_no_self_favorite(self):
+        """
+        Tests that you cannot favorite your own ideas.
+        """
+        user = create_user()
+        idea = create_idea(owner=user)
+        
+        favorite = Favorite(owner=user, favorite_idea=idea)
+        
+        self.assertRaises(ValidationError, favorite.save)
+        
+        
 
         
