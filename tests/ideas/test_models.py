@@ -9,13 +9,22 @@ from django.test import TestCase
 
 from django.contrib.auth.models import User
 
-from ideas.models import Idea
+from ideas.models import Idea, Favorite
+
+from django.db import IntegrityError
 
 
-def create_user():
-    user = User(username="laimis", password="blahblah")
+def create_user(user='laimis'):
+    user = User(username=user, password="blahblah")
     user.save()
     return user
+
+def create_idea(title='Sample Idea', text='Some random idea'):
+    idea = Idea(title=title, text=text)
+    idea.save()
+    return idea
+    
+    
 
 class IdeaTest(TestCase):
     def test_parent_idea_delete(self):
@@ -25,8 +34,7 @@ class IdeaTest(TestCase):
         """
         user = create_user()
         
-        parent = Idea(title="Parent Idea", text="this is the parent idea")
-        parent.save()
+        parent = create_idea(title="Parent Idea", text="this is the parent idea")
         
         children = parent.idea_set.create(title="Children Idea", text="this is a children idea")
         
@@ -44,8 +52,7 @@ class IdeaTest(TestCase):
         """ 
         user = create_user()
         
-        idea = Idea(title="Parent Idea", text="this is the parent idea")
-        idea.save()
+        idea = create_idea(title="Parent Idea", text="this is the parent idea")
         
         
         self.assertEqual(idea.get_children_count(), 0)
@@ -55,4 +62,21 @@ class IdeaTest(TestCase):
         
         
         self.assertEqual(idea.get_children_count(), 1)
+        
+        
+    def test_favorite_uniqueness(self):
+        """
+        Tests that you cannot create two favorites that have same owner and idea
+        """
+        user1 = create_user()
+        #user2 = create_user(user='kingninja')
+        
+        idea = create_idea()
+        
+        favorite = Favorite(owner=user1, favorite_idea=idea)
+        favorite.save()
+         
+        favorite2 = Favorite(owner=user1, favorite_idea=idea)
+        self.assertRaises(IntegrityError, favorite2.save) 
+
         

@@ -11,6 +11,8 @@ from friends.fields import ModelListField
 
 from favorites.models import FavoriteItem
 
+from django.db import IntegrityError
+
 import datetime
 
     
@@ -155,4 +157,13 @@ class IdeaForm(ModelForm):
 class Favorite(models.Model):
     owner = models.ForeignKey(User)
     favorite_idea = models.ForeignKey(Idea)
+    
+    class Meta:
+        unique_together = (("owner", "favorite_idea"),)
+        
+    def save(self, *args, **kwargs):
+       if not self.id and Favorite.objects.filter(owner=self.owner, favorite_idea=self.favorite_idea).exists():
+          raise IntegrityError("Cannot favorite the same idea twice.") 
+
+       super(Favorite, self).save(*args, **kwargs)
 
