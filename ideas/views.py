@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from ideas.forms import IdeaForm, CategoryForm, ContributorForm
+from ideas.forms import IdeaForm, ContributorForm
 from ideas.models import Idea, Category
 from django.template import RequestContext
 from django.db.models import Q

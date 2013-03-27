@@ -3,18 +3,18 @@ from django.contrib.auth.models import User
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.authentication import Authentication, BasicAuthentication
 from tastypie.authorization import Authorization, DjangoAuthorization, ReadOnlyAuthorization
-from tastypie.validation import FormValidation, CleanedDataFormValidation
+from tastypie.validation import CleanedDataFormValidation
 from django.shortcuts import get_object_or_404
 
 from tastypie import fields
-from django.forms.models import ModelChoiceField
+
 from django.db import IntegrityError
 
 from tastypie.exceptions import BadRequest
 
 
 from ideas.models import Idea, Favorite
-from ideas.forms import IdeaForm
+from ideas.forms import IdeaForm, FavoriteForm
 from forms import UserForm
 from api.helpers import AnonymousPostAuthentication, BasicAuthenticationWithCookies, OwnerAuthorization
 
@@ -25,65 +25,7 @@ from django.conf import settings
 
 from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
 
-class ModelFormValidation(FormValidation):
-    """
-    Override tastypie's standard ``FormValidation`` since this does not care
-    about URI to PK conversion for ``ToOneField`` or ``ToManyField``.
-    """
-
-    def uri_to_pk(self, uri):
-        """
-        Returns the integer PK part of a URI.
-
-        Assumes ``/api/v1/resource/123/`` format. If conversion fails, this just
-        returns the URI unmodified.
-
-        Also handles lists of URIs
-        """
-
-        if uri is None:
-            return None
-
-        # convert everything to lists
-        multiple = not isinstance(uri, basestring)
-        uris = uri if multiple else [uri]
-
-        # handle all passed URIs
-        converted = []
-        for one_uri in uris:
-            try:
-                # hopefully /api/v1/<resource_name>/<pk>/
-                converted.append(int(one_uri.split('/')[-2]))
-            except (IndexError, ValueError):
-                raise ValueError(
-                    "URI %s could not be converted to PK integer." % one_uri)
-
-        # convert back to original format
-        return converted if multiple else converted[0]
-
-    def is_valid(self, bundle, request=None):
-        data = bundle.data
-        # Ensure we get a bound Form, regardless of the state of the bundle.
-        if data is None:
-            data = {}
-        # copy data, so we don't modify the bundle
-        data = data.copy()
-
-        # convert URIs to PK integers for all relation fields
-        relation_fields = [name for name, field in
-                           self.form_class.base_fields.items()
-                           if issubclass(field.__class__, ModelChoiceField)]
-
-        for field in relation_fields:
-            if field in data:
-                data[field] = self.uri_to_pk(data[field])
-
-        # validate and return messages on error
-        form = self.form_class(data)
-        if form.is_valid():
-            return {}
-        return form.errors
-    
+from api.validation import ModelFormValidation
 
 class UsernameResource(ModelResource):
     class Meta:
@@ -104,17 +46,17 @@ class UserResource(ModelResource):
         resource_name = 'user'
         fields = ['username', 'email', 'public', 'first_name', 'last_name', 'last_login', 'password']
 
-        allowed_methods = ['get', 'post']
-        authentication = AnonymousPostAuthentication()
+        allowed_methods = ['get']
+        authentication = BasicAuthentication()
         authorization = Authorization()
         validation = ModelFormValidation(form_class=UserForm)
         
-    def obj_create(self, bundle, request=None, **kwargs):
-        bundle = super(UserResource, self).obj_create(bundle, request, **kwargs)
-        bundle.obj.set_password(bundle.data.get('password'))
-        bundle.obj.save() 
-
-        return bundle
+#    def obj_create(self, bundle, request=None, **kwargs):
+#        bundle = super(UserResource, self).obj_create(bundle, request, **kwargs)
+#        bundle.obj.set_password(bundle.data.get('password'))
+#        bundle.obj.save() 
+#
+#        return bundle
     
     def apply_authorization_limits(self, request, object_list):
         if request and request.user:
@@ -195,7 +137,9 @@ class PublicIdeaResource(ModelResource):
                 return None
             
 class FavoriteIdeaResource(ModelResource):
-    idea = fields.ToOneField('api.resources.PublicIdeaResource', 'favorite_idea', related_name='favorites', null=True, full=False)
+   # idea = fields.ToOneField('api.resources.PublicIdeaResource', 'favorite_idea', related_name='favorites', null=True, full=False)
+    owner = fields.ToOneField('api.resources.UserResource', 'owner')
+    favorite_idea = fields.ToOneField('api.resources.PublicIdeaResource', 'favorite_idea', null=True, full=False)
     
     class Meta:
         list_allowed_methods = ['get', 'post', 'delete']
@@ -203,16 +147,24 @@ class FavoriteIdeaResource(ModelResource):
         queryset = Favorite.objects.all()
         authentication = BasicAuthenticationWithCookies()
         authorization = OwnerAuthorization()
-        
+
+        validation = ModelFormValidation(form_class=FavoriteForm)
             
     def determine_format(self, request): 
         return "application/json" 
     
     def obj_create(self, bundle, request=None, **kwargs):
-        if request and hasattr(request, 'user'):
-            return super(FavoriteIdeaResource, self).obj_create(bundle, request, owner=request.user, **kwargs)
-        else:
-            return super(FavoriteIdeaResource, self).obj_create(bundle, request, **kwargs)
+        return super(FavoriteIdeaResource, self).obj_create(bundle, request, **kwargs)
+#        if request and hasattr(request, 'user'):
+#            return super(FavoriteIdeaResource, self).obj_create(bundle, request, owner=request.user, **kwargs)
+#        else:
+#            return super(FavoriteIdeaResource, self).obj_create(bundle, request, **kwargs)
+
+
+    def full_hydrate(self, bundle, request=None):
+        # Put owner pk from request
+        bundle.data['owner'] = bundle.request.user.pk
+        return bundle  
     
     def apply_authorization_limits(self, request, object_list):
         return object_list.filter(owner=request.user)

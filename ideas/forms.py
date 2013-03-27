@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from ideas.models import Category, Idea
+from ideas.models import Favorite, Idea
 
 # A simple contact form with four fields.
 class ContributorForm(forms.Form):
@@ -20,10 +20,6 @@ class IdeaForm(forms.ModelForm):
         self.fields['text'].max_length = 140
         self.fields['public'].label = 'Would you like to make the idea public?'
         
-        #self.fields['category'].required = False
-              
-        #if owner:
-        #    self.fields['category'].queryset = Category.objects.filter(owner=owner)
         
     def clean_title(self):
         title = self.cleaned_data['title']
@@ -46,18 +42,24 @@ class IdeaForm(forms.ModelForm):
         }
 
     
-class CategoryForm(forms.ModelForm):
-    
-    def __init__(self, *args, **kwargs): 
-        super(CategoryForm, self).__init__(*args, **kwargs)
-        self.fields['name'].max_length = 30
-    
-    def clean_name(self):
-        text = self.cleaned_data['name']
-        if len(text) < 4:
-            raise forms.ValidationError("Category name has to be more than 3 letters") 
-        return text
-    
+class FavoriteForm(forms.ModelForm):
     class Meta:
-        model = Category
-        fields = ['name']
+        model = Favorite 
+        fields = ('favorite_idea', 'owner')
+#===============================================================================
+# class CategoryForm(forms.ModelForm):
+#    
+#    def __init__(self, *args, **kwargs): 
+#        super(CategoryForm, self).__init__(*args, **kwargs)
+#        self.fields['name'].max_length = 30
+#    
+#    def clean_name(self):
+#        text = self.cleaned_data['name']
+#        if len(text) < 4:
+#            raise forms.ValidationError("Category name has to be more than 3 letters") 
+#        return text
+#    
+#    class Meta:
+#        model = Category
+#        fields = ['name']
+#===============================================================================
