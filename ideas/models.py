@@ -141,7 +141,8 @@ class Idea(models.Model):
         
     def delete(self, **kwargs):
         self.idea_set.all().delete() 
-        super(Idea, self).delete()     
+        super(Idea, self).delete()
+             
     
     def get_absolute_url(self):
         return reverse('show-idea', args=(self.pk,))
@@ -153,6 +154,18 @@ class Idea(models.Model):
         return reverse('delete-idea', args=(self.pk,))
     
     def get_edit_url(self):
+        return reverse('edit-idea', args=(self.pk,))
+    
+    @property
+    def add_url(self):
+        return reverse('new-children-idea', args=(self.pk,))
+    
+    @property
+    def del_url(self):
+        return reverse('delete-idea', args=(self.pk,))
+    
+    @property
+    def edit_url(self):
         return reverse('edit-idea', args=(self.pk,))
     
     # Update the last two urls to reverse style.
