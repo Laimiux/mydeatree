@@ -27,6 +27,8 @@ from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
 
 from api.validation import ModelFormValidation
 
+from django.core.urlresolvers import reverse
+
 class UsernameResource(ModelResource):
     class Meta:
         queryset = User.objects.all()
@@ -160,11 +162,14 @@ class FavoriteIdeaResource(ModelResource):
 #        else:
 #            return super(FavoriteIdeaResource, self).obj_create(bundle, request, **kwargs)
 
-
-    def full_hydrate(self, bundle, request=None):
+    def hydrate_owner(self, bundle):
         # Put owner pk from request
-        bundle.data['owner'] = bundle.request.user.pk
-        return bundle  
+        #"{% url api_dispatch_list api_name="v1" resource_name="favorite_ideas" %}";
+        #url = reverse('api_dispatch_list', kwargs={'resource_name': 'myresource', 'api_name': 'v1'})
+        #bundle.data['owner'] = bundle.request.user.pk
+        user_pk = bundle.request.user.pk
+        bundle.data['owner'] = reverse('api_dispatch_detail', kwargs={'resource_name' : 'user', 'api_name' : 'v1', 'pk' : user_pk})
+        return bundle 
     
     def apply_authorization_limits(self, request, object_list):
         return object_list.filter(owner=request.user)
