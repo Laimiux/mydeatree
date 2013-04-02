@@ -7,6 +7,8 @@ from ideas.models import Idea
 
 class FavoriteResourceTest(ResourceTestCase):
     
+    fixtures = ['users.json','ideas.json','test_data.json']
+    
     def setUp(self):
         super(FavoriteResourceTest, self).setUp()
         
@@ -68,6 +70,8 @@ class FavoriteResourceTest(ResourceTestCase):
         print resp.content
         
         self.assertHttpCreated(resp)
+        
+    
         
 
 

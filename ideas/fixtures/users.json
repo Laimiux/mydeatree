@@ -1,0 +1,42 @@
+[
+    {
+        "pk": 1, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "ninja_user", 
+            "first_name": "", 
+            "last_name": "", 
+            "is_active": true, 
+            "idxf_email_l_iexact": "simple@email.com", 
+            "idxf_username_l_iexact": "ninja_user", 
+            "is_superuser": false, 
+            "is_staff": false, 
+            "last_login": "2013-03-21 23:49:03", 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "sha1$552f5$4c6ab59aae899492a36443f3d8db879b9180e471", 
+            "email": "simple@email.com", 
+            "date_joined": "2013-03-05 23:45:25"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "sample_user", 
+            "first_name": "Sample", 
+            "last_name": "Sampleton", 
+            "is_active": true, 
+            "idxf_email_l_iexact": "sample@gmail.com", 
+            "idxf_username_l_iexact": "sample_user", 
+            "is_superuser": false, 
+            "is_staff": false, 
+            "last_login": "2013-03-25 23:53:00", 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "sha1$552f5$4c6ab59aae899492a36443f3d8db879b9180e471", 
+            "email": "sample@gmail.com", 
+            "date_joined": "2013-03-25 23:53:00"
+        }
+    }
+]

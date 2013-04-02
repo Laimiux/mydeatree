@@ -1,0 +1,58 @@
+[
+    {
+        "pk": 1, 
+        "model": "ideas.idea", 
+        "fields": {
+            "modified_date": "2013-03-26 22:18:49", 
+            "contributors": null, 
+            "parent": null, 
+            "title": "First Public Idea", 
+            "text": "For testing you know!", 
+            "created_date": "2013-03-06 07:46:29", 
+            "owner": 1, 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "ideas.idea", 
+        "fields": {
+            "modified_date": "2013-03-26 22:18:49", 
+            "contributors": null, 
+            "parent": 1, 
+            "title": "Children Idea", 
+            "text": "Nothing like simple ideas", 
+            "created_date": "2013-03-07 19:48:25", 
+            "owner": 1, 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "ideas.idea", 
+        "fields": {
+            "modified_date": "2013-03-26 22:18:49", 
+            "contributors": null, 
+            "parent": 2, 
+            "title": "Another Children Idea", 
+            "text": "Blah blah blah blah blah blah", 
+            "created_date": "2013-03-26 22:18:49", 
+            "owner": 1, 
+            "public": false
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "ideas.idea", 
+        "fields": {
+            "modified_date": "2013-03-25 23:57:24", 
+            "contributors": null, 
+            "parent": null, 
+            "title": "Sample Idea", 
+            "text": "From Sample User to Sample Ear", 
+            "created_date": "2013-03-25 23:53:40", 
+            "owner": 2, 
+            "public": true
+        }
+    }
+]

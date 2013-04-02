@@ -1,0 +1,10 @@
+[
+	{
+		"model": "ideas.Favorite",
+		"pk": 1,
+		"fields": {
+			"owner": 1,
+			"favorite_idea": 4
+		}
+	}
+]

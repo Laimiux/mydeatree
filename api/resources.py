@@ -144,6 +144,7 @@ class FavoriteIdeaResource(ModelResource):
     favorite_idea = fields.ToOneField('api.resources.PublicIdeaResource', 'favorite_idea', null=True, full=False)
     
     class Meta:
+        always_return_data = True
         list_allowed_methods = ['get', 'post', 'delete']
         resource_name = 'favorite_ideas'
         queryset = Favorite.objects.all()
