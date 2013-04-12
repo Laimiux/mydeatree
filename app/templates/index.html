@@ -1,0 +1,33 @@
+<!doctype html>
+{% load bootstrap_toolkit %}
+<html lang="en" ng-app="mydeatree">
+	<head>
+		<meta charset="utf-8">
+		<title>My HTML File</title>
+		<script>
+			PUBLIC_IDEA_API = "{% url api_dispatch_list api_name="v1" resource_name="public_ideas" %}";
+			IDEA_API = "{% url api_dispatch_list api_name="v1" resource_name="idea" %}";
+			FAVORITE_IDEA_API = "{% url api_dispatch_list api_name="v1" resource_name="favorite_ideas" %}";
+		</script>
+		<script src="/js/angular.min.js"></script>
+		<script src="/js/app.js"></script>
+		<script src="/js/controllers.js"></script>
+		<script type="text/javascript">
+			/*
+			 var m = angular.module('mydeatree', []);
+			 m.config(function($interpolateProvider) {
+			 $interpolateProvider.startSymbol('[[');
+			 $interpolateProvider.endSymbol(']]');
+			 });
+			 */
+		</script>
+
+		{% bootstrap_stylesheet_tag %}
+		{% bootstrap_responsive_stylesheet_tag %}
+	</head>
+	<body>
+		<div ng-view></div>
+
+
+	</body>
+</html>

@@ -4,10 +4,12 @@ from tastypie.test import ResourceTestCase
 
 from ideas.models import Idea
 
+from django.db import IntegrityError
+
 
 class FavoriteResourceTest(ResourceTestCase):
     
-    fixtures = ['users.json','ideas.json','test_data.json']
+    fixtures = ['users.json', 'ideas.json', 'test_data.json']
     
     def setUp(self):
         super(FavoriteResourceTest, self).setUp()
@@ -47,10 +49,14 @@ class FavoriteResourceTest(ResourceTestCase):
         """
         Tests to make sure that you cannot favorite your own favorite idea.
         """
+        post_data = {
+            'favorite_idea': '/api/v1/public_ideas/{0}/'.format(self.public_idea.pk)
+        }
+        
         response = '{"favorite_ideas": {"__all__": ["Cannot favorite your own idea"]}}'
-        resp = self.api_client.post(self.resource_url, format='json', data=self.post_data, authentication=self.get_credentials())
+        resp = self.api_client.post(self.resource_url, format='json', data=post_data, authentication=self.get_credentials())
         self.assertEqual(resp.content, response)
-        self.assertEqual(resp.status_code, 400)
+        self.assertHttpBadRequest(resp)
 
        
        
@@ -66,10 +72,12 @@ class FavoriteResourceTest(ResourceTestCase):
         
         resp = self.api_client.post(self.resource_url, format='json', data=post_data, authentication=self.get_credentials()) 
         
-        print post_data
-        print resp.content
         
         self.assertHttpCreated(resp)
+        
+
+     
+        
         
     
         

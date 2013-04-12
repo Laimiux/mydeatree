@@ -1,0 +1,23 @@
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span2">
+			Search:
+			<input ng-model="idea_query">
+			Sort by:
+			<select ng-model="orderProp">
+				<option value="-modified_date">Newest</option>
+				<option value="title">Alphabetical</option>
+			</select>
+		</div>
+		<div class="span10">
+			<ul class="public_ideas">
+				<div ng-repeat="pIdea in public_ideas | filter:idea_query | orderBy:orderProp" class="well well-small">
+					<a href="#/public_ideas/[[pIdea.id]]">[[ pIdea.title ]]</a>
+					<p>
+						[[ pIdea.text ]]
+					</p>
+				</div>
+			</ul>
+		</div>
+	</div>
+</div>

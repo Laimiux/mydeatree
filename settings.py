@@ -89,8 +89,8 @@ DEFAULT_FROM_EMAIL = 'limeblaststudios@gmail.com'
 SERVER_EMAIL = 'limeblaststudios@gmail.com'
 
 # For the static files
-STATIC_ROOT = os.path.join(ROOT_PATH, "static/")
-STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(ROOT_PATH, "staticfiles/")
+STATIC_URL = '/staticfiles/'
 
 MEDIA_ROOT = os.path.join(ROOT_PATH, 'media/')
 MEDIA_URL = '/media/'

@@ -43,4 +43,6 @@ def main_backbone(request):
         return render_to_response('home_backbone.html', { 'idea_form' : new_idea_form} , context_instance=context)
     else:
         return render_to_response('home_backbone.html', context_instance=context)
+    
+
  

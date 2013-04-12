@@ -40,7 +40,8 @@ urlpatterns = patterns('',
     (r'^', include('friends.urls')),
     url(r'^api/', include(v1_api.urls)),
     
-    (r'^home/$', 'views.main_backbone')
+    (r'^home/$', 'views.main_backbone'),
+    (r'^angular/$', 'app.views.angular_view')
     
 )
 
