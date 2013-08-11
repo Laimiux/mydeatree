@@ -29,14 +29,17 @@ handlers:
 - url: /js
   static_dir: staticfiles/js
   
-- url: /phones
-  static_dir: staticfiles/phones
+- url: /css
+  static_dir: staticfiles/css
   
 - url: /img
   static_dir: staticfiles/images
 
 - url: /partials
   static_dir: staticfiles/partials
+  
+- url: /fonts
+  static_dir: staticfiles/fonts
 
 - url: /.*
   script: djangoappengine.main.application

@@ -79,14 +79,14 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 # For mail
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'limeblaststudios'
-EMAIL_HOST_PASSWORD = 'RussianPussy'
+EMAIL_HOST_USER = 'YourEmail@YourHost.com'
+EMAIL_HOST_PASSWORD = 'YourPassword'
 EMAIL_PORT = 587
 
 # For registration app
 ACCOUNT_ACTIVATION_DAYS = 7 
-DEFAULT_FROM_EMAIL = 'limeblaststudios@gmail.com'
-SERVER_EMAIL = 'limeblaststudios@gmail.com'
+DEFAULT_FROM_EMAIL = 'YourEmail@YourHost.com'
+SERVER_EMAIL = 'YourEmail@YourHost.com'
 
 # For the static files
 STATIC_ROOT = os.path.join(ROOT_PATH, "staticfiles/")
@@ -122,7 +122,7 @@ EMAIL_BACKEND = 'appengine_emailbackend.async.EmailBackend'
 #DEBUG = TEMPLATE_DEBUG = False
 
 ADMINS = (
-    ('Laimonas Turauskas', 'laimiux@gmail.com'),
+    ('Lime The Great', 'laimiux@gmail.com'),
 )
 
 # For the website link construction

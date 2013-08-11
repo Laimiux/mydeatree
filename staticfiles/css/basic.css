@@ -1,0 +1,37 @@
+@font-face {
+	font-family: calamity_jane;
+	src: url('/fonts/calamity_janenf_bold.ttf');
+}
+
+
+body {
+	font: normal 100%/1.5 museo_sans_500regular, tahoma, verdana, sans-serif;
+}
+
+h1 {
+	font-size: 10em;
+}
+p {
+	font-size: 1.4em;
+}
+
+/* styles for smartphones and very small screen resolution */
+@media only screen and (min-width: 320px) and (max-width: 400px) {
+	body {
+		/*background: blue;*/
+	}
+}
+
+/* styles for screen resolutions bigger than smartphones but smaller or equal to 1024px */
+@media only screen and (min-width: 401px) and (max-width: 1024px) {
+	body {
+		background: red;
+	}
+}
+
+/* styles for screen resolutions for a very wide resolution */
+@media only screen and (min-width: 2000px) {
+	body {
+		background: green;
+	}
+}

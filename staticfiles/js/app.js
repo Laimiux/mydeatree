@@ -1,4 +1,4 @@
-var module = angular.module('mydeatree', [])
+var module = angular.module('mydeatree', ['mydeatreeServices'])
 
 module.config(function($interpolateProvider) {
 	$interpolateProvider.startSymbol('[[');

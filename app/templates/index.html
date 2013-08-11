@@ -1,33 +1,40 @@
-<!doctype html>
+<!DOCTYPE html>
 {% load bootstrap_toolkit %}
 <html lang="en" ng-app="mydeatree">
 	<head>
 		<meta charset="utf-8">
-		<title>My HTML File</title>
-		<script>
-			PUBLIC_IDEA_API = "{% url api_dispatch_list api_name="v1" resource_name="public_ideas" %}";
-			IDEA_API = "{% url api_dispatch_list api_name="v1" resource_name="idea" %}";
-			FAVORITE_IDEA_API = "{% url api_dispatch_list api_name="v1" resource_name="favorite_ideas" %}";
-		</script>
-		<script src="/js/angular.min.js"></script>
-		<script src="/js/app.js"></script>
-		<script src="/js/controllers.js"></script>
-		<script type="text/javascript">
-			/*
-			 var m = angular.module('mydeatree', []);
-			 m.config(function($interpolateProvider) {
-			 $interpolateProvider.startSymbol('[[');
-			 $interpolateProvider.endSymbol(']]');
-			 });
-			 */
-		</script>
-
-		{% bootstrap_stylesheet_tag %}
+		<!-- Force the browser to use the width of the device as the width of view area -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>AngularJS Front End</title>
+		
+		<link rel="stylesheet" href="/fonts/museosans_500/stylesheet.css" />
+		{% bootstrap_stylesheet_tag %} 
 		{% bootstrap_responsive_stylesheet_tag %}
+		<link rel="stylesheet" href="/css/basic.css" />
+		
 	</head>
+
 	<body>
+		<header>
+
+		</header>
 		<div ng-view></div>
 
-
 	</body>
+
+	<footer>
+
+	</footer>
+
+	<!-- Load js at the end of page -->
+	<script>
+		PUBLIC_IDEA_API = "{% url api_dispatch_list api_name="v1" resource_name="public_ideas" %}";
+		IDEA_API = "{% url api_dispatch_list api_name="v1" resource_name="idea" %}";
+		FAVORITE_IDEA_API = "{% url api_dispatch_list api_name="v1" resource_name="favorite_ideas" %}";
+	</script>
+	<script src="/js/angular-1.1.4/angular.min.js"></script>
+	<script src="/js/angular-1.1.4/angular-resource.min.js"></script>
+	<script src="/js/app.js"></script>
+	<script src="/js/services.js"></script>
+	<script src="/js/controllers.js"></script>
 </html>
